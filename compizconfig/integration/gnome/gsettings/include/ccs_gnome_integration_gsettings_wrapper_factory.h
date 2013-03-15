@@ -20,8 +20,8 @@
  *	Sam Spilsbury <sam.spilsbury@canonical.com>
  *
  **/
-#ifndef _CCS_GNOME_INTEGRATION_GSETTINGS_WRAPPER_FACTORY_H
-#define _CCS_GNOME_INTEGRATION_GSETTINGS_WRAPPER_FACTORY_H
+#ifndef _CCS_MATE_INTEGRATION_GSETTINGS_WRAPPER_FACTORY_H
+#define _CCS_MATE_INTEGRATION_GSETTINGS_WRAPPER_FACTORY_H
 
 #include <ccs-defs.h>
 
@@ -31,13 +31,13 @@ COMPIZCONFIG_BEGIN_DECLS
 
 #include <ccs-fwd.h>
 #include <ccs_gsettings_backend_fwd.h>
-#include <ccs_gnome_fwd.h>
+#include <ccs_mate_fwd.h>
 
 CCSGSettingsWrapperFactory *
-ccsGNOMEIntegrationGSettingsWrapperFactoryDefaultImplNew (CCSObjectAllocationInterface *ai,
+ccsMATEIntegrationGSettingsWrapperFactoryDefaultImplNew (CCSObjectAllocationInterface *ai,
 							  CCSGSettingsWrapperFactory   *factory,
 							  GCallback                    callback,
-							  CCSGNOMEValueChangeData      *data);
+							  CCSMATEValueChangeData      *data);
 
 COMPIZCONFIG_END_DECLS
 

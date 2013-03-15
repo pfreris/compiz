@@ -35,7 +35,7 @@ GWDSettingsWritable *writable;
 GWDSettings	    *settings;
 
 gdouble decoration_alpha = 0.5;
-#ifdef USE_METACITY
+#ifdef USE_MARCO
 MetaButtonLayout meta_button_layout;
 gboolean	 meta_button_layout_set = FALSE;
 #endif
@@ -207,8 +207,8 @@ main (int argc, char *argv[])
 	    }
 	}
 
-#ifdef USE_METACITY
-	else if (strcmp (argv[i], "--metacity-theme") == 0)
+#ifdef USE_MARCO
+	else if (strcmp (argv[i], "--marco-theme") == 0)
 	{
 	    if (argc > ++i)
 		option_meta_theme = argv[i];
@@ -222,8 +222,8 @@ main (int argc, char *argv[])
 		     "[--replace] "
 		     "[--blur none|titlebar|all] "
 
-#ifdef USE_METACITY
-		     "[--metacity-theme THEME] "
+#ifdef USE_MARCO
+		     "[--marco-theme THEME] "
 #endif
 
 		     "[--help]"

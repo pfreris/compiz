@@ -1,10 +1,10 @@
-option (BUILD_GTK "Build gtk-window-decorator and Gnome related toold" 1)
-option (BUILD_METACITY "Gtk-window-decorator metacity theme support" 1)
-option (BUILD_GNOME "GNOME integration" 1)
+option (BUILD_GTK "Build gtk-window-decorator and Mate related toold" 1)
+option (BUILD_MARCO "Gtk-window-decorator marco theme support" 1)
+option (BUILD_MATE "MATE integration" 1)
 
 compiz_set (USE_GTK ${BUILD_GTK})
-compiz_set (USE_METACITY ${BUILD_METACITY})
-compiz_set (USE_GNOME ${BUILD_GNOME})
+compiz_set (USE_MARCO ${BUILD_MARCO})
+compiz_set (USE_MATE ${BUILD_MATE})
 
 if (USE_GTK)
     pkg_check_modules (GTK_WINDOW_DECORATOR
@@ -28,56 +28,56 @@ if (USE_GTK)
         compiz_pkg_check_modules (HAVE_LIBWNCK_2_18_1 libwnck-1.0>=2.18.1)
         compiz_pkg_check_modules (HAVE_LIBWNCK_2_19_4 libwnck-1.0>=2.19.4)
 
-        if (USE_METACITY)
-            pkg_check_modules (METACITY libmetacity-private)
-            if (METACITY_FOUND)
-		compiz_pkg_check_modules (HAVE_METACITY_2_15_21 libmetacity-private>=2.15.21)
-		compiz_pkg_check_modules (HAVE_METACITY_2_17_0 libmetacity-private>=2.17.0)
-		compiz_pkg_check_modules (HAVE_METACITY_2_23_2 libmetacity-private>=2.23.2)
-            else (METACITY_FOUND)
-		compiz_set (USE_METACITY 0)
-            endif (METACITY_FOUND)
-        endif (USE_METACITY)
+        if (USE_MARCO)
+            pkg_check_modules (MARCO libmarco-private)
+            if (MARCO_FOUND)
+		compiz_pkg_check_modules (HAVE_MARCO_2_15_21 libmarco-private>=2.15.21)
+		compiz_pkg_check_modules (HAVE_MARCO_2_17_0 libmarco-private>=2.17.0)
+		compiz_pkg_check_modules (HAVE_MARCO_2_23_2 libmarco-private>=2.23.2)
+            else (MARCO_FOUND)
+		compiz_set (USE_MARCO 0)
+            endif (MARCO_FOUND)
+        endif (USE_MARCO)
 
-	if (USE_GNOME)
-	    compiz_pkg_check_modules (GNOME_WINDOW_SETTINGS
-		gnome-window-settings-2.0
-		gnome-desktop-2.0
+	if (USE_MATE)
+	    compiz_pkg_check_modules (MATE_WINDOW_SETTINGS
+		mate-window-settings-2.0
+		mate-desktop-2.0
 	    )
 
-	    if (GNOME_WINDOW_SETTINGS_FOUND)
+	    if (MATE_WINDOW_SETTINGS_FOUND)
 	        exec_program (${PKG_CONFIG_EXECUTABLE} 
-		  ARGS "--variable=prefix gnome-window-settings-2.0" 
+		  ARGS "--variable=prefix mate-window-settings-2.0" 
 		  OUTPUT_VARIABLE windowsettingsdatadir
 		)
 		set (windowsettingsdatadir ${windowsettingsdatadir}/share)
 		exec_program (${PKG_CONFIG_EXECUTABLE} 
-		  ARGS "--variable=libdir gnome-window-settings-2.0"
+		  ARGS "--variable=libdir mate-window-settings-2.0"
 		  OUTPUT_VARIABLE windowsettingslibdir
 		)
-	    else (GNOME_WINDOW_SETTINGS_FOUND)
-		compiz_set (USE_GNOME 0)
-	    endif (GNOME_WINDOW_SETTINGS_FOUND)
-	endif (USE_GNOME)
+	    else (MATE_WINDOW_SETTINGS_FOUND)
+		compiz_set (USE_MATE 0)
+	    endif (MATE_WINDOW_SETTINGS_FOUND)
+	endif (USE_MATE)
 
-	if (USE_GNOME_KEYBINDINGS)
-	    compiz_pkg_check_modules (GNOME_KEY_BINDINGS gnome-keybindings)
-	    if (GNOME_KEY_BINDINGS_FOUND)
+	if (USE_MATE_KEYBINDINGS)
+	    compiz_pkg_check_modules (MATE_KEY_BINDINGS mate-keybindings)
+	    if (MATE_KEY_BINDINGS_FOUND)
 		exec_program (${PKG_CONFIG_EXECUTABLE}
-		  ARGS "--variable=keysdir gnome-keybindings"
+		  ARGS "--variable=keysdir mate-keybindings"
 		  OUTPUT_VARIABLE keybindingsdir
 		)
-	    else (GNOME_KEY_BINDINGS_FOUND)
-		compiz_set (USE_GNOME_KEYBINDINGS 0)
-	    endif (GNOME_KEY_BINDINGS_FOUND)
-        endif (USE_GNOME_KEYBINDINGS)
+	    else (MATE_KEY_BINDINGS_FOUND)
+		compiz_set (USE_MATE_KEYBINDINGS 0)
+	    endif (MATE_KEY_BINDINGS_FOUND)
+        endif (USE_MATE_KEYBINDINGS)
     else (GTK_WINDOW_DECORATOR_FOUND)
 	compiz_set (USE_GTK 0)
     endif (GTK_WINDOW_DECORATOR_FOUND)
 endif (USE_GTK)
 
 if (NOT USE_GTK)
-    compiz_set (USE_METACITY 0)
+    compiz_set (USE_MARCO 0)
 endif (NOT USE_GTK)
 
 configure_file (
@@ -86,4 +86,4 @@ configure_file (
 )
 
 add_subdirectory (window-decorator)
-add_subdirectory (gnome)
+add_subdirectory (mate)

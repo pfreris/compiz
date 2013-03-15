@@ -4,7 +4,7 @@
     <plugin name="workarounds" useBcop="true">
         <category>Utility</category>
         <_short>Workarounds</_short>
-        <_long>Metacity-like workarounds.</_long>
+        <_long>Marco-like workarounds.</_long>
 	<deps>
 	        <relation type="after">
 			<plugin>composite</plugin>

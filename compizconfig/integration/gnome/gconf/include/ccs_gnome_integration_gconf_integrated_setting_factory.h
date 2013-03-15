@@ -1,28 +1,28 @@
-#ifndef _CCS_GNOME_GCONF_INTEGRATED_SETTING_FACTORY_H
-#define _CCS_GNOME_GCONF_INTEGRATED_SETTING_FACTORY_H
+#ifndef _CCS_MATE_MATECONF_INTEGRATED_SETTING_FACTORY_H
+#define _CCS_MATE_MATECONF_INTEGRATED_SETTING_FACTORY_H
 
 #include <ccs-defs.h>
 #include <ccs-object.h>
 #include <ccs-fwd.h>
-#include <ccs_gnome_fwd.h>
-#include <gconf/gconf-client.h>
+#include <ccs_mate_fwd.h>
+#include <mateconf/mateconf-client.h>
 
 COMPIZCONFIG_BEGIN_DECLS
 
 /**
- * @brief ccsGConfIntegratedSettingFactoryNew
- * @param client an existing GConfClient or NULL
+ * @brief ccsMateConfIntegratedSettingFactoryNew
+ * @param client an existing MateConfClient or NULL
  * @param data some data to pass to the change callback
  * @param ai a CCSObjectAllocationInterface
  * @return a new CCSIntegratedSettingFactory
  *
- * CCSGConfIntegratedSettingFactory implements CCSIntegratedSettingFactory *
- * and will create CCSGConfIntegratedSetting objects (which implement
+ * CCSMateConfIntegratedSettingFactory implements CCSIntegratedSettingFactory *
+ * and will create CCSMateConfIntegratedSetting objects (which implement
  * CCSIntegratedSetting).
  */
 CCSIntegratedSettingFactory *
-ccsGConfIntegratedSettingFactoryNew (GConfClient		  *client,
-				     CCSGNOMEValueChangeData	  *data,
+ccsMateConfIntegratedSettingFactoryNew (MateConfClient		  *client,
+				     CCSMATEValueChangeData	  *data,
 				     CCSObjectAllocationInterface *ai);
 
 COMPIZCONFIG_END_DECLS

@@ -14,7 +14,7 @@ NOTE 1: Common setup "Compile compiz and install to ~/staging":
 NOTE 2: "Set XDG_DATA_DIRS":
   All of these tests depend of XDG_DATA_DIRS being defined already, as it is
   in X. If you're not in X then you can set it with this command:
-    export XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/
+    export XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/mate:/usr/local/share/:/usr/share/
 
 NOTE 3: "Create a dev profile":
   All of these tests require a compizconfig profile to exist, called "dev".

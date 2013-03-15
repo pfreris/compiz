@@ -90,7 +90,7 @@ static void gwd_mock_settings_set_property (GObject *object,
 	case GWD_MOCK_SETTINGS_PROPERTY_ACTIVE_SHADE_OPACITY:
 	case GWD_MOCK_SETTINGS_PROPERTY_INACTIVE_OPACITY:
 	case GWD_MOCK_SETTINGS_PROPERTY_INACTIVE_SHADE_OPACITY:
-	case GWD_MOCK_SETTINGS_PROPERTY_METACITY_THEME:
+	case GWD_MOCK_SETTINGS_PROPERTY_MARCO_THEME:
 	    break;
 	default:
 	    g_assert_not_reached ();
@@ -137,23 +137,23 @@ static void gwd_mock_settings_class_init (GWDMockSettingsClass *klass)
 				      GWD_MOCK_SETTINGS_PROPERTY_BLUR_CHANGED,
 				      "blur");
     g_object_class_override_property (object_class,
-				      GWD_MOCK_SETTINGS_PROPERTY_METACITY_THEME,
-				      "metacity-theme");
+				      GWD_MOCK_SETTINGS_PROPERTY_MARCO_THEME,
+				      "marco-theme");
     g_object_class_override_property (object_class,
 				      GWD_MOCK_SETTINGS_PROPERTY_ACTIVE_OPACITY,
-				      "metacity-active-opacity");
+				      "marco-active-opacity");
     g_object_class_override_property (object_class,
 				      GWD_MOCK_SETTINGS_PROPERTY_INACTIVE_OPACITY,
-				      "metacity-inactive-opacity");
+				      "marco-inactive-opacity");
     g_object_class_override_property (object_class,
 				      GWD_MOCK_SETTINGS_PROPERTY_ACTIVE_SHADE_OPACITY,
-				      "metacity-active-shade-opacity");
+				      "marco-active-shade-opacity");
     g_object_class_override_property (object_class,
 				      GWD_MOCK_SETTINGS_PROPERTY_INACTIVE_SHADE_OPACITY,
-				      "metacity-inactive-shade-opacity");
+				      "marco-inactive-shade-opacity");
     g_object_class_override_property (object_class,
 				      GWD_MOCK_SETTINGS_PROPERTY_BUTTON_LAYOUT,
-				      "metacity-button-layout");
+				      "marco-button-layout");
     g_object_class_override_property (object_class,
 				      GWD_MOCK_SETTINGS_PROPERTY_TITLEBAR_ACTION_DOUBLE_CLICK,
 				      "titlebar-double-click-action");

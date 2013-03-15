@@ -28,26 +28,26 @@
 #include "gwd-settings-storage-gsettings.h"
 
 const gchar * ORG_COMPIZ_GWD = "org.compiz.gwd";
-const gchar * ORG_GNOME_MUTTER = "org.gnome.mutter";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES = "org.gnome.desktop.wm.preferences";
+const gchar * ORG_MATE_MUTTER = "org.mate.mutter";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES = "org.mate.desktop.wm.preferences";
 
 const gchar * ORG_COMPIZ_GWD_KEY_USE_TOOLTIPS = "use-tooltips";
 const gchar * ORG_COMPIZ_GWD_KEY_BLUR_TYPE = "blur-type";
-const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_OPACITY = "metacity-theme-active-opacity";
-const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_OPACITY = "metacity-theme-inactive-opacity";
-const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_SHADE_OPACITY = "metacity-theme-active-shade-opacity";
-const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_SHADE_OPACITY = "metacity-theme-inactive-shade-opacity";
-const gchar * ORG_COMPIZ_GWD_KEY_USE_METACITY_THEME = "use-metacity-theme";
+const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_OPACITY = "marco-theme-active-opacity";
+const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_OPACITY = "marco-theme-inactive-opacity";
+const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_SHADE_OPACITY = "marco-theme-active-shade-opacity";
+const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_SHADE_OPACITY = "marco-theme-inactive-shade-opacity";
+const gchar * ORG_COMPIZ_GWD_KEY_USE_MARCO_THEME = "use-marco-theme";
 const gchar * ORG_COMPIZ_GWD_KEY_MOUSE_WHEEL_ACTION = "mouse-wheel-action";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR = "action-double-click-titlebar";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR = "action-middle-click-titlebar";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR = "action-right-click-titlebar";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_THEME = "theme";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT = "titlebar-uses-system-font";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT = "titlebar-font";
-const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT = "button-layout";
-const gchar * ORG_GNOME_MUTTER_ATTACH_MODAL_DIALOGS = "attach-modal-dialogs";
-const gchar * ORG_GNOME_MUTTER_DRAGGABLE_BORDER_WIDTH = "draggable-border-width";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR = "action-double-click-titlebar";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR = "action-middle-click-titlebar";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR = "action-right-click-titlebar";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_THEME = "theme";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT = "titlebar-uses-system-font";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT = "titlebar-font";
+const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT = "button-layout";
+const gchar * ORG_MATE_MUTTER_ATTACH_MODAL_DIALOGS = "attach-modal-dialogs";
+const gchar * ORG_MATE_MUTTER_DRAGGABLE_BORDER_WIDTH = "draggable-border-width";
 
 #define GWD_SETTINGS_STORAGE_GSETTINGS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GWD_TYPE_SETTINGS_STORAGE_GSETTINGS, GWDSettingsStorageGSettings));
 #define GWD_SETTINGS_STORAGE_GSETTINGS_CLASS(obj) (G_TYPE_CHECK_CLASS_CAST ((obj), GWD_TYPE_SETTINGS_STORAGE_GSETTINGS, GWDSettingsStorageGSettingsClass));
@@ -116,7 +116,7 @@ gwd_settings_storage_gsettings_update_draggable_border_width (GWDSettingsStorage
 
     return gwd_settings_writable_draggable_border_width_changed (priv->writable,
 								 g_settings_get_int (priv->mutter,
-										     ORG_GNOME_MUTTER_DRAGGABLE_BORDER_WIDTH));
+										     ORG_MATE_MUTTER_DRAGGABLE_BORDER_WIDTH));
 }
 
 static gboolean
@@ -130,7 +130,7 @@ gwd_settings_storage_gsettings_update_attach_modal_dialogs (GWDSettingsStorage *
 
     return gwd_settings_writable_attach_modal_dialogs_changed (priv->writable,
 							       g_settings_get_boolean (priv->mutter,
-										       ORG_GNOME_MUTTER_ATTACH_MODAL_DIALOGS));
+										       ORG_MATE_MUTTER_ATTACH_MODAL_DIALOGS));
 }
 
 static gboolean
@@ -148,7 +148,7 @@ gwd_settings_storage_gsettings_update_blur (GWDSettingsStorage *settings)
 }
 
 static gboolean
-gwd_settings_storage_gsettings_update_metacity_theme (GWDSettingsStorage *settings)
+gwd_settings_storage_gsettings_update_marco_theme (GWDSettingsStorage *settings)
 {
     GWDSettingsStorageGSettings	       *storage = GWD_SETTINGS_STORAGE_GSETTINGS (settings);
     GWDSettingsStorageGSettingsPrivate *priv = GET_PRIVATE (storage);
@@ -159,11 +159,11 @@ gwd_settings_storage_gsettings_update_metacity_theme (GWDSettingsStorage *settin
     if (!priv->desktop)
 	return FALSE;
 
-    return gwd_settings_writable_metacity_theme_changed (priv->writable,
+    return gwd_settings_writable_marco_theme_changed (priv->writable,
 							 g_settings_get_boolean (priv->gwd,
-										 ORG_COMPIZ_GWD_KEY_USE_METACITY_THEME),
+										 ORG_COMPIZ_GWD_KEY_USE_MARCO_THEME),
 							 g_settings_get_string (priv->desktop,
-										ORG_GNOME_DESKTOP_WM_PREFERENCES_THEME));
+										ORG_MATE_DESKTOP_WM_PREFERENCES_THEME));
 }
 
 static gboolean
@@ -177,13 +177,13 @@ gwd_settings_storage_gsettings_update_opacity (GWDSettingsStorage *settings)
 
     return gwd_settings_writable_opacity_changed (priv->writable,
 						  g_settings_get_double (priv->gwd,
-									 ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_OPACITY),
+									 ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_OPACITY),
 						  g_settings_get_double (priv->gwd,
-									 ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_OPACITY),
+									 ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_OPACITY),
 						  g_settings_get_boolean (priv->gwd,
-									  ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_SHADE_OPACITY),
+									  ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_SHADE_OPACITY),
 						  g_settings_get_boolean (priv->gwd,
-									  ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_SHADE_OPACITY));
+									  ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_SHADE_OPACITY));
 }
 
 static gboolean
@@ -197,7 +197,7 @@ gwd_settings_storage_gsettings_update_button_layout (GWDSettingsStorage *setting
 
     return gwd_settings_writable_button_layout_changed (priv->writable,
 							g_settings_get_string (priv->desktop,
-									       ORG_GNOME_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT));
+									       ORG_MATE_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT));
 }
 
 static gboolean
@@ -211,9 +211,9 @@ gwd_settings_storage_gsettings_update_font (GWDSettingsStorage *settings)
 
     return gwd_settings_writable_font_changed (priv->writable,
 					       g_settings_get_boolean (priv->desktop,
-								       ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT),
+								       ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT),
 					       g_settings_get_string (priv->desktop,
-								      ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT));
+								      ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT));
 }
 
 static inline gchar *
@@ -247,11 +247,11 @@ gwd_settings_storage_gsettings_update_titlebar_actions (GWDSettingsStorage *sett
 	return FALSE;
 
     gchar *double_click_action = translate_dashes_to_underscores (g_settings_get_string (priv->desktop,
-											 ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR));
+											 ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR));
     gchar *middle_click_action = translate_dashes_to_underscores (g_settings_get_string (priv->desktop,
-											 ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR));
+											 ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR));
     gchar *right_click_action = translate_dashes_to_underscores (g_settings_get_string (priv->desktop,
-											 ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR));
+											 ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR));
 
     return gwd_settings_writable_titlebar_actions_changed (priv->writable,
 							   double_click_action,
@@ -277,7 +277,7 @@ gwd_settings_storage_gsettings_interface_init (GWDSettingsStorageInterface *inte
     interface->update_draggable_border_width = gwd_settings_storage_gsettings_update_draggable_border_width;
     interface->update_attach_modal_dialogs = gwd_settings_storage_gsettings_update_attach_modal_dialogs;
     interface->update_blur = gwd_settings_storage_gsettings_update_blur;
-    interface->update_metacity_theme = gwd_settings_storage_gsettings_update_metacity_theme;
+    interface->update_marco_theme = gwd_settings_storage_gsettings_update_marco_theme;
     interface->update_opacity = gwd_settings_storage_gsettings_update_opacity;
     interface->update_button_layout = gwd_settings_storage_gsettings_update_button_layout;
     interface->update_font = gwd_settings_storage_gsettings_update_font;
@@ -351,13 +351,13 @@ gwd_settings_storage_gsettings_class_init (GWDSettingsStorageGSettingsClass *kla
     {
 	NULL,
 	g_param_spec_object ("desktop-gsettings",
-			     ORG_GNOME_DESKTOP_WM_PREFERENCES,
-			     "GSettings Object for org.gnome.desktop.wm.preferences",
+			     ORG_MATE_DESKTOP_WM_PREFERENCES,
+			     "GSettings Object for org.mate.desktop.wm.preferences",
 			     G_TYPE_SETTINGS,
 			     G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY),
 	g_param_spec_object ("mutter-gsettings",
-			     ORG_GNOME_MUTTER,
-			     "GSettings Object for org.gnome.mutter",
+			     ORG_MATE_MUTTER,
+			     "GSettings Object for org.mate.mutter",
 			     G_TYPE_SETTINGS,
 			     G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY),
 	g_param_spec_object ("gwd-gsettings",
@@ -471,12 +471,12 @@ org_compiz_gwd_settings_changed (GSettings   *settings,
 	gwd_settings_storage_update_titlebar_actions (storage);
     else if (strcmp (key, ORG_COMPIZ_GWD_KEY_BLUR_TYPE) == 0)
 	gwd_settings_storage_update_blur (storage);
-    else if (strcmp (key, ORG_COMPIZ_GWD_KEY_USE_METACITY_THEME) == 0)
-	gwd_settings_storage_update_metacity_theme (storage);
-    else if (strcmp (key, ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_OPACITY)	     == 0 ||
-	     strcmp (key, ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_SHADE_OPACITY)  == 0 ||
-	     strcmp (key, ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_OPACITY)          == 0 ||
-	     strcmp (key, ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_SHADE_OPACITY)    == 0)
+    else if (strcmp (key, ORG_COMPIZ_GWD_KEY_USE_MARCO_THEME) == 0)
+	gwd_settings_storage_update_marco_theme (storage);
+    else if (strcmp (key, ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_OPACITY)	     == 0 ||
+	     strcmp (key, ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_SHADE_OPACITY)  == 0 ||
+	     strcmp (key, ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_OPACITY)          == 0 ||
+	     strcmp (key, ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_SHADE_OPACITY)    == 0)
 	gwd_settings_storage_update_opacity (storage);
     else if (strcmp (key, ORG_COMPIZ_GWD_KEY_USE_TOOLTIPS) == 0)
 	gwd_settings_storage_update_use_tooltips (storage);
@@ -499,69 +499,69 @@ gwd_get_org_compiz_gwd_settings ()
 }
 
 static void
-org_gnome_mutter_settings_changed (GSettings   *settings,
+org_mate_mutter_settings_changed (GSettings   *settings,
 				   const gchar *key,
 				   gpointer    user_data)
 {
     GWDSettingsStorage *storage = GWD_SETTINGS_STORAGE_INTERFACE (user_data);
 
-    if (strcmp (key, ORG_GNOME_MUTTER_DRAGGABLE_BORDER_WIDTH) == 0)
+    if (strcmp (key, ORG_MATE_MUTTER_DRAGGABLE_BORDER_WIDTH) == 0)
 	gwd_settings_storage_update_draggable_border_width (storage);
-    else if (strcmp (key, ORG_GNOME_MUTTER_ATTACH_MODAL_DIALOGS) == 0)
+    else if (strcmp (key, ORG_MATE_MUTTER_ATTACH_MODAL_DIALOGS) == 0)
 	gwd_settings_storage_update_attach_modal_dialogs (storage);
 }
 
 void
-gwd_connect_org_gnome_mutter_settings (GSettings	  *settings,
+gwd_connect_org_mate_mutter_settings (GSettings	  *settings,
 				       GWDSettingsStorage *storage)
 {
     if (!settings)
 	return;
 
-    g_signal_connect (settings, "changed", (GCallback) org_gnome_mutter_settings_changed, storage);
+    g_signal_connect (settings, "changed", (GCallback) org_mate_mutter_settings_changed, storage);
 }
 
 GSettings *
-gwd_get_org_gnome_mutter_settings ()
+gwd_get_org_mate_mutter_settings ()
 {
-    return get_settings_no_abort (ORG_GNOME_MUTTER);
+    return get_settings_no_abort (ORG_MATE_MUTTER);
 }
 
 static void
-org_gnome_desktop_wm_keybindings_settings_changed (GSettings   *settings,
+org_mate_desktop_wm_keybindings_settings_changed (GSettings   *settings,
 						   const gchar *key,
 						   gpointer    user_data)
 {
     GWDSettingsStorage *storage = GWD_SETTINGS_STORAGE_INTERFACE (user_data);
 
-    if (strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT) == 0 ||
-	strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT) == 0)
+    if (strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT) == 0 ||
+	strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT) == 0)
 	gwd_settings_storage_update_font (storage);
-    else if (strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT) == 0)
+    else if (strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT) == 0)
 	gwd_settings_storage_update_font (storage);
-    else if (strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR) == 0 ||
-	     strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR) == 0 ||
-	     strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR) == 0)
+    else if (strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR) == 0 ||
+	     strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR) == 0 ||
+	     strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR) == 0)
 	gwd_settings_storage_update_titlebar_actions (storage);
-    else if (strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_THEME) == 0)
-	gwd_settings_storage_update_metacity_theme (storage);
-    else if (strcmp (key, ORG_GNOME_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT) == 0)
+    else if (strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_THEME) == 0)
+	gwd_settings_storage_update_marco_theme (storage);
+    else if (strcmp (key, ORG_MATE_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT) == 0)
 	gwd_settings_storage_update_button_layout (storage);
 }
 
 void
-gwd_connect_org_gnome_desktop_wm_preferences_settings (GSettings	  *settings,
+gwd_connect_org_mate_desktop_wm_preferences_settings (GSettings	  *settings,
 						       GWDSettingsStorage *storage)
 {
     if (!settings)
 	return;
 
     g_signal_connect (settings, "changed",
-		      (GCallback) org_gnome_desktop_wm_keybindings_settings_changed, storage);
+		      (GCallback) org_mate_desktop_wm_keybindings_settings_changed, storage);
 }
 
 GSettings *
-gwd_get_org_gnome_desktop_wm_preferences_settings ()
+gwd_get_org_mate_desktop_wm_preferences_settings ()
 {
-    return get_settings_no_abort (ORG_GNOME_DESKTOP_WM_PREFERENCES);
+    return get_settings_no_abort (ORG_MATE_DESKTOP_WM_PREFERENCES);
 }

@@ -1,27 +1,27 @@
-#ifndef _CCS_GNOME_GCONF_INTEGRATED_SETTING_H
-#define _CCS_GNOME_GCONF_INTEGRATED_SETTING_H
+#ifndef _CCS_MATE_MATECONF_INTEGRATED_SETTING_H
+#define _CCS_MATE_MATECONF_INTEGRATED_SETTING_H
 
 #include <ccs-defs.h>
 #include <ccs-fwd.h>
-#include <ccs_gnome_fwd.h>
-#include <gconf/gconf-client.h>
+#include <ccs_mate_fwd.h>
+#include <mateconf/mateconf-client.h>
 
 COMPIZCONFIG_BEGIN_DECLS
 
 /**
- * @brief ccsGConfIntegratedSettingNew
- * @param base a CCSGNOMEIntegratedSetting
- * @param client a GConfClient
+ * @brief ccsMateConfIntegratedSettingNew
+ * @param base a CCSMATEIntegratedSetting
+ * @param client a MateConfClient
  * @param section the preceeding path to the keyname
  * @param ai a CCSObjectAllocationInterface
  * @return
  *
- * Creates the GConf implementation of a CCSIntegratedSetting, which will
- * write to GConf keys when necessary.
+ * Creates the MateConf implementation of a CCSIntegratedSetting, which will
+ * write to MateConf keys when necessary.
  */
 CCSIntegratedSetting *
-ccsGConfIntegratedSettingNew (CCSGNOMEIntegratedSettingInfo *base,
-			      GConfClient		*client,
+ccsMateConfIntegratedSettingNew (CCSMATEIntegratedSettingInfo *base,
+			      MateConfClient		*client,
 			      const char		*section,
 			      CCSObjectAllocationInterface *ai);
 

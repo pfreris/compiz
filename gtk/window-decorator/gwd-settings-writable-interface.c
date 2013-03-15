@@ -101,12 +101,12 @@ gwd_settings_writable_blur_changed (GWDSettingsWritable *settings,
 }
 
 gboolean
-gwd_settings_writable_metacity_theme_changed (GWDSettingsWritable *settings,
-					      gboolean	          use_metacity_theme,
-					      const gchar         *metacity_theme)
+gwd_settings_writable_marco_theme_changed (GWDSettingsWritable *settings,
+					      gboolean	          use_marco_theme,
+					      const gchar         *marco_theme)
 {
     GWDSettingsWritableInterface *iface = GWD_SETTINGS_WRITABLE_GET_INTERFACE (settings);
-    return (*iface->metacity_theme_changed) (settings, use_metacity_theme, metacity_theme);
+    return (*iface->marco_theme_changed) (settings, use_marco_theme, marco_theme);
 }
 
 gboolean

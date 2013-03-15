@@ -10,18 +10,18 @@ link_directories (${CMAKE_INSTALL_PREFIX}/lib)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
-add_library (compizconfig_ccs_mock_gnome_integrated_setting_composition
-	     ${CMAKE_CURRENT_SOURCE_DIR}/compizconfig_ccs_mock_gnome_integrated_setting_composition.c)
+add_library (compizconfig_ccs_mock_mate_integrated_setting_composition
+	     ${CMAKE_CURRENT_SOURCE_DIR}/compizconfig_ccs_mock_mate_integrated_setting_composition.c)
 
-target_link_libraries (compizconfig_ccs_mock_gnome_integrated_setting_composition
+target_link_libraries (compizconfig_ccs_mock_mate_integrated_setting_composition
 		       compizconfig_ccs_integrated_setting_mock
-		       compizconfig_gnome_integrated_setting
+		       compizconfig_mate_integrated_setting
 		       compizconfig)
 
-add_executable (compizconfig_test_ccs_gnome_integration
-		${CMAKE_CURRENT_SOURCE_DIR}/compizconfig_test_ccs_gnome_integration.cpp)
+add_executable (compizconfig_test_ccs_mate_integration
+		${CMAKE_CURRENT_SOURCE_DIR}/compizconfig_test_ccs_mate_integration.cpp)
 
-target_link_libraries (compizconfig_test_ccs_gnome_integration
+target_link_libraries (compizconfig_test_ccs_mate_integration
 		       ${GTEST_BOTH_LIBRARIES}
 		       ${GMOCK_LIBRARY}
 		       ${GMOCK_MAIN_LIBRARY}
@@ -38,10 +38,10 @@ target_link_libraries (compizconfig_test_ccs_gnome_integration
 		       compizconfig_ccs_integrated_setting_mock
 		       compizconfig_ccs_integrated_setting_factory_mock
 		       compizconfig_ccs_integrated_setting_storage_mock
-		       compizconfig_ccs_mock_gnome_integrated_setting_composition
-		       compizconfig_gnome_integration)
+		       compizconfig_ccs_mock_mate_integrated_setting_composition
+		       compizconfig_mate_integration)
 
-compiz_discover_tests (compizconfig_test_ccs_gnome_integration
+compiz_discover_tests (compizconfig_test_ccs_mate_integration
 		       COVERAGE
-		       compizconfig_gnome_integration
-		       compizconfig_gnome_integration_constants)
+		       compizconfig_mate_integration
+		       compizconfig_mate_integration_constants)

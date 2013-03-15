@@ -6,12 +6,12 @@
  *
  * Copyright (c) 2011 Canonical Ltd
  *
- * Based on the original compizconfig-backend-gconf
+ * Based on the original compizconfig-backend-mateconf
  *
  * Copyright (c) 2007 Danny Baumann <maniac@opencompositing.org>
  *
  * Parts of this code are taken from libberylsettings 
- * gconf backend, written by:
+ * mateconf backend, written by:
  *
  * Copyright (c) 2006 Robert Carr <racarr@opencompositing.org>
  * Copyright (c) 2007 Dennis Kasprzyk <onestone@opencompositing.org>
@@ -41,9 +41,9 @@
 #include "ccs_gsettings_interface_wrapper.h"
 #include "ccs_gsettings_wrapper_factory_interface.h"
 #include "ccs_gsettings_wrapper_factory.h"
-#include "ccs_gnome_integration_gsettings_wrapper_factory.h"
-#include "ccs_gnome_integration_gsettings_integrated_setting_factory.h"
-#include "ccs_gnome_integration.h"
+#include "ccs_mate_integration_gsettings_wrapper_factory.h"
+#include "ccs_mate_integration_gsettings_integrated_setting_factory.h"
+#include "ccs_mate_integration.h"
 
 GVariant *
 getVariantForCCSSetting (CCSBackend *backend, CCSSetting *setting)
@@ -472,9 +472,9 @@ initBackend (CCSBackend *backend, CCSContext * context)
     CCSGSettingsWrapper *currentProfileSettings = ccsGSettingsWrapperNewForSchemaWithPath (PROFILE_SCHEMA_ID,
 									    currentProfilePath,
 									    backend->object.object_allocation);
-    CCSGNOMEValueChangeData *valueChangeData = calloc (1, sizeof (CCSGNOMEValueChangeData));
+    CCSMATEValueChangeData *valueChangeData = calloc (1, sizeof (CCSMATEValueChangeData));
     CCSGSettingsWrapperFactory *wrapperFactory = ccsGSettingsWrapperFactoryDefaultImplNew (backend->object.object_allocation);
-    CCSGSettingsWrapperFactory *gnomeWrapperFactory = ccsGNOMEIntegrationGSettingsWrapperFactoryDefaultImplNew (backend->object.object_allocation,
+    CCSGSettingsWrapperFactory *mateWrapperFactory = ccsMATEIntegrationGSettingsWrapperFactoryDefaultImplNew (backend->object.object_allocation,
 														wrapperFactory,
 														ccsGSettingsIntegratedSettingsChangeCallback (),
 														valueChangeData);
@@ -483,13 +483,13 @@ initBackend (CCSBackend *backend, CCSContext * context)
     valueChangeData->storage = storage;
     valueChangeData->context = context;
 
-    CCSIntegratedSettingFactory *factory = ccsGSettingsIntegratedSettingFactoryNew (gnomeWrapperFactory,
+    CCSIntegratedSettingFactory *factory = ccsGSettingsIntegratedSettingFactoryNew (mateWrapperFactory,
 										    valueChangeData,
 										    backend->object.object_allocation);
 
     valueChangeData->factory = factory;
 
-    CCSIntegration *integration = ccsGNOMEIntegrationBackendNew (backend, context, factory, storage, backend->object.object_allocation);
+    CCSIntegration *integration = ccsMATEIntegrationBackendNew (backend, context, factory, storage, backend->object.object_allocation);
 
 
 
@@ -498,7 +498,7 @@ initBackend (CCSBackend *backend, CCSContext * context)
     g_free (currentProfilePath);
 
     /* Drop our reference to the wrapper factory */
-    ccsGSettingsWrapperFactoryUnref (gnomeWrapperFactory);
+    ccsGSettingsWrapperFactoryUnref (mateWrapperFactory);
 
     return ccsGSettingsBackendAttachNewToBackend (backend,
 						  context,

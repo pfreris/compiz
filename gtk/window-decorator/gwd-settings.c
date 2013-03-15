@@ -63,7 +63,7 @@ enum
     GWD_SETTINGS_IMPL_PROPERTY_DRAGGABLE_BORDER_WIDTH = 4,
     GWD_SETTINGS_IMPL_PROPERTY_ATTACH_MODAL_DIALOGS = 5,
     GWD_SETTINGS_IMPL_PROPERTY_BLUR_CHANGED = 6,
-    GWD_SETTINGS_IMPL_PROPERTY_METACITY_THEME = 7,
+    GWD_SETTINGS_IMPL_PROPERTY_MARCO_THEME = 7,
     GWD_SETTINGS_IMPL_PROPERTY_ACTIVE_OPACITY = 8,
     GWD_SETTINGS_IMPL_PROPERTY_INACTIVE_OPACITY = 9,
     GWD_SETTINGS_IMPL_PROPERTY_ACTIVE_SHADE_OPACITY = 10,
@@ -94,12 +94,12 @@ typedef struct _GWDSettingsImplPrivate
     gint		   draggable_border_width;
     gboolean		   attach_modal_dialogs;
     gint		   blur_type;
-    gchar		   *metacity_theme;
-    gdouble		   metacity_active_opacity;
-    gdouble		   metacity_inactive_opacity;
-    gboolean		   metacity_active_shade_opacity;
-    gboolean		   metacity_inactive_shade_opacity;
-    gchar		   *metacity_button_layout;
+    gchar		   *marco_theme;
+    gdouble		   marco_active_opacity;
+    gdouble		   marco_inactive_opacity;
+    gboolean		   marco_active_shade_opacity;
+    gboolean		   marco_inactive_shade_opacity;
+    gchar		   *marco_button_layout;
     gint		   titlebar_double_click_action;
     gint		   titlebar_middle_click_action;
     gint		   titlebar_right_click_action;
@@ -312,22 +312,22 @@ gwd_settings_blur_changed (GWDSettingsWritable *settings,
 }
 
 static void
-free_and_set_metacity_theme (GWDSettingsWritable *settings,
-			     const gchar	 *metacity_theme)
+free_and_set_marco_theme (GWDSettingsWritable *settings,
+			     const gchar	 *marco_theme)
 {
     GWDSettingsImpl        *settings_impl = GWD_SETTINGS_IMPL (settings);
     GWDSettingsImplPrivate *priv = GET_PRIVATE (settings_impl);
 
-    if (priv->metacity_theme)
-	g_free (priv->metacity_theme);
+    if (priv->marco_theme)
+	g_free (priv->marco_theme);
 
-    priv->metacity_theme = g_strdup (metacity_theme);
+    priv->marco_theme = g_strdup (marco_theme);
 }
 
 static gboolean
-gwd_settings_metacity_theme_changed (GWDSettingsWritable *settings,
-				     gboolean	         use_metacity_theme,
-				     const gchar         *metacity_theme)
+gwd_settings_marco_theme_changed (GWDSettingsWritable *settings,
+				     gboolean	         use_marco_theme,
+				     const gchar         *marco_theme)
 {
     GWDSettingsImpl        *settings_impl = GWD_SETTINGS_IMPL (settings);
     GWDSettingsImplPrivate *priv = GET_PRIVATE (settings_impl);
@@ -335,20 +335,20 @@ gwd_settings_metacity_theme_changed (GWDSettingsWritable *settings,
     if (priv->cmdline_opts & CMDLINE_THEME)
 	return FALSE;
 
-    if (!metacity_theme)
+    if (!marco_theme)
 	return FALSE;
 
-    if (use_metacity_theme)
+    if (use_marco_theme)
     {
-	if (g_strcmp0 (metacity_theme, priv->metacity_theme) == 0)
+	if (g_strcmp0 (marco_theme, priv->marco_theme) == 0)
 	    return FALSE;
 
-	free_and_set_metacity_theme (settings, metacity_theme);
+	free_and_set_marco_theme (settings, marco_theme);
     }
     else
-	free_and_set_metacity_theme (settings, "");
+	free_and_set_marco_theme (settings, "");
 
-    append_to_notify_funcs (settings_impl, gwd_settings_notified_update_metacity_theme);
+    append_to_notify_funcs (settings_impl, gwd_settings_notified_update_marco_theme);
     append_to_notify_funcs (settings_impl, gwd_settings_notified_update_decorations);
     release_notify_funcs (settings_impl);
 
@@ -365,16 +365,16 @@ gwd_settings_opacity_changed (GWDSettingsWritable *settings,
     GWDSettingsImpl        *settings_impl = GWD_SETTINGS_IMPL (settings);
     GWDSettingsImplPrivate *priv = GET_PRIVATE (settings_impl);
 
-    if (priv->metacity_active_opacity == active_opacity &&
-	priv->metacity_inactive_opacity == inactive_opacity &&
-	priv->metacity_active_shade_opacity == active_shade_opacity &&
-	priv->metacity_inactive_shade_opacity == inactive_shade_opacity)
+    if (priv->marco_active_opacity == active_opacity &&
+	priv->marco_inactive_opacity == inactive_opacity &&
+	priv->marco_active_shade_opacity == active_shade_opacity &&
+	priv->marco_inactive_shade_opacity == inactive_shade_opacity)
 	return FALSE;
 
-    priv->metacity_active_opacity = active_opacity;
-    priv->metacity_inactive_opacity = inactive_opacity;
-    priv->metacity_active_shade_opacity = active_shade_opacity;
-    priv->metacity_inactive_shade_opacity = inactive_shade_opacity;
+    priv->marco_active_opacity = active_opacity;
+    priv->marco_inactive_opacity = inactive_opacity;
+    priv->marco_active_shade_opacity = active_shade_opacity;
+    priv->marco_inactive_shade_opacity = inactive_shade_opacity;
 
     append_to_notify_funcs (settings_impl, gwd_settings_notified_update_decorations);
     release_notify_funcs (settings_impl);
@@ -392,15 +392,15 @@ gwd_settings_button_layout_changed (GWDSettingsWritable *settings,
     if (!button_layout)
 	return FALSE;
 
-    if (g_strcmp0 (priv->metacity_button_layout, button_layout) == 0)
+    if (g_strcmp0 (priv->marco_button_layout, button_layout) == 0)
 	return FALSE;
 
-    if (priv->metacity_button_layout)
-	g_free (priv->metacity_button_layout);
+    if (priv->marco_button_layout)
+	g_free (priv->marco_button_layout);
 
-    priv->metacity_button_layout = g_strdup (button_layout);
+    priv->marco_button_layout = g_strdup (button_layout);
 
-    append_to_notify_funcs (settings_impl, gwd_settings_notified_metacity_button_layout);
+    append_to_notify_funcs (settings_impl, gwd_settings_notified_marco_button_layout);
     append_to_notify_funcs (settings_impl, gwd_settings_notified_update_decorations);
     release_notify_funcs (settings_impl);
 
@@ -556,7 +556,7 @@ gwd_settings_writable_interface_init (GWDSettingsWritableInterface *interface)
     interface->draggable_border_width_changed = gwd_settings_draggable_border_width_changed;
     interface->attach_modal_dialogs_changed = gwd_settings_attach_modal_dialogs_changed;
     interface->blur_changed = gwd_settings_blur_changed;
-    interface->metacity_theme_changed = gwd_settings_metacity_theme_changed;
+    interface->marco_theme_changed = gwd_settings_marco_theme_changed;
     interface->opacity_changed = gwd_settings_opacity_changed;
     interface->button_layout_changed = gwd_settings_button_layout_changed;
     interface->font_changed = gwd_settings_font_changed;
@@ -582,16 +582,16 @@ gwd_settings_finalize (GObject *object)
     GWDSettingsImplPrivate *priv = GET_PRIVATE (object);
     G_OBJECT_CLASS (gwd_settings_impl_parent_class)->finalize (object);
 
-    if (priv->metacity_theme)
+    if (priv->marco_theme)
     {
-	g_free (priv->metacity_theme);
-	priv->metacity_theme = NULL;
+	g_free (priv->marco_theme);
+	priv->marco_theme = NULL;
     }
 
-    if (priv->metacity_button_layout)
+    if (priv->marco_button_layout)
     {
-	g_free (priv->metacity_button_layout);
-	priv->metacity_button_layout = NULL;
+	g_free (priv->marco_button_layout);
+	priv->marco_button_layout = NULL;
     }
 
     if (priv->titlebar_font)
@@ -623,11 +623,11 @@ gwd_settings_set_property (GObject      *object,
 	case GWD_SETTINGS_IMPL_PROPERTY_BLUR_CHANGED:
 	    priv->blur_type = g_value_get_int (value);
 	    break;
-	case GWD_SETTINGS_IMPL_PROPERTY_METACITY_THEME:
-	    if (priv->metacity_theme)
-		g_free (priv->metacity_theme);
+	case GWD_SETTINGS_IMPL_PROPERTY_MARCO_THEME:
+	    if (priv->marco_theme)
+		g_free (priv->marco_theme);
 
-	    priv->metacity_theme = g_value_dup_string (value);
+	    priv->marco_theme = g_value_dup_string (value);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_SETTINGS_NOTIFIED:
 	    g_return_if_fail (!priv->notified);
@@ -665,23 +665,23 @@ gwd_settings_get_property (GObject    *object,
 	case GWD_SETTINGS_IMPL_PROPERTY_BLUR_CHANGED:
 	    g_value_set_int (value, priv->blur_type);
 	    break;
-	case GWD_SETTINGS_IMPL_PROPERTY_METACITY_THEME:
-	    g_value_set_string (value, priv->metacity_theme);
+	case GWD_SETTINGS_IMPL_PROPERTY_MARCO_THEME:
+	    g_value_set_string (value, priv->marco_theme);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_ACTIVE_OPACITY:
-	    g_value_set_double (value, priv->metacity_active_opacity);
+	    g_value_set_double (value, priv->marco_active_opacity);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_INACTIVE_OPACITY:
-	    g_value_set_double (value, priv->metacity_inactive_opacity);
+	    g_value_set_double (value, priv->marco_inactive_opacity);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_ACTIVE_SHADE_OPACITY:
-	    g_value_set_boolean (value, priv->metacity_active_shade_opacity);
+	    g_value_set_boolean (value, priv->marco_active_shade_opacity);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_INACTIVE_SHADE_OPACITY:
-	    g_value_set_boolean (value, priv->metacity_inactive_shade_opacity);
+	    g_value_set_boolean (value, priv->marco_inactive_shade_opacity);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_BUTTON_LAYOUT:
-	    g_value_set_string (value, priv->metacity_button_layout);
+	    g_value_set_string (value, priv->marco_button_layout);
 	    break;
 	case GWD_SETTINGS_IMPL_PROPERTY_TITLEBAR_ACTION_DOUBLE_CLICK:
 	    g_value_set_int (value, priv->titlebar_double_click_action);
@@ -735,23 +735,23 @@ gwd_settings_impl_class_init (GWDSettingsImplClass *klass)
 				      GWD_SETTINGS_IMPL_PROPERTY_BLUR_CHANGED,
 				      "blur");
     g_object_class_override_property (object_class,
-				      GWD_SETTINGS_IMPL_PROPERTY_METACITY_THEME,
-				      "metacity-theme");
+				      GWD_SETTINGS_IMPL_PROPERTY_MARCO_THEME,
+				      "marco-theme");
     g_object_class_override_property (object_class,
 				      GWD_SETTINGS_IMPL_PROPERTY_ACTIVE_OPACITY,
-				      "metacity-active-opacity");
+				      "marco-active-opacity");
     g_object_class_override_property (object_class,
 				      GWD_SETTINGS_IMPL_PROPERTY_INACTIVE_OPACITY,
-				      "metacity-inactive-opacity");
+				      "marco-inactive-opacity");
     g_object_class_override_property (object_class,
 				      GWD_SETTINGS_IMPL_PROPERTY_ACTIVE_SHADE_OPACITY,
-				      "metacity-active-shade-opacity");
+				      "marco-active-shade-opacity");
     g_object_class_override_property (object_class,
 				      GWD_SETTINGS_IMPL_PROPERTY_INACTIVE_SHADE_OPACITY,
-				      "metacity-inactive-shade-opacity");
+				      "marco-inactive-shade-opacity");
     g_object_class_override_property (object_class,
 				      GWD_SETTINGS_IMPL_PROPERTY_BUTTON_LAYOUT,
-				      "metacity-button-layout");
+				      "marco-button-layout");
     g_object_class_override_property (object_class,
 				      GWD_SETTINGS_IMPL_PROPERTY_TITLEBAR_ACTION_DOUBLE_CLICK,
 				      "titlebar-double-click-action");
@@ -809,12 +809,12 @@ static void gwd_settings_impl_init (GWDSettingsImpl *self)
     priv->draggable_border_width  = DRAGGABLE_BORDER_WIDTH_DEFAULT;
     priv->attach_modal_dialogs = ATTACH_MODAL_DIALOGS_DEFAULT;
     priv->blur_type = BLUR_TYPE_DEFAULT;
-    priv->metacity_theme = g_strdup (METACITY_THEME_DEFAULT);
-    priv->metacity_active_opacity = METACITY_ACTIVE_OPACITY_DEFAULT;
-    priv->metacity_inactive_opacity = METACITY_INACTIVE_OPACITY_DEFAULT;
-    priv->metacity_active_shade_opacity = METACITY_ACTIVE_SHADE_OPACITY_DEFAULT;
-    priv->metacity_inactive_shade_opacity = METACITY_INACTIVE_SHADE_OPACITY_DEFAULT;
-    priv->metacity_button_layout = g_strdup (METACITY_BUTTON_LAYOUT_DEFAULT);
+    priv->marco_theme = g_strdup (MARCO_THEME_DEFAULT);
+    priv->marco_active_opacity = MARCO_ACTIVE_OPACITY_DEFAULT;
+    priv->marco_inactive_opacity = MARCO_INACTIVE_OPACITY_DEFAULT;
+    priv->marco_active_shade_opacity = MARCO_ACTIVE_SHADE_OPACITY_DEFAULT;
+    priv->marco_inactive_shade_opacity = MARCO_INACTIVE_SHADE_OPACITY_DEFAULT;
+    priv->marco_button_layout = g_strdup (MARCO_BUTTON_LAYOUT_DEFAULT);
     priv->titlebar_double_click_action = DOUBLE_CLICK_ACTION_DEFAULT;
     priv->titlebar_middle_click_action = MIDDLE_CLICK_ACTION_DEFAULT;
     priv->titlebar_right_click_action = RIGHT_CLICK_ACTION_DEFAULT;
@@ -826,8 +826,8 @@ static void gwd_settings_impl_init (GWDSettingsImpl *self)
 
     /* Append all notify funcs so that external state can be updated in case
      * the settings backend can't do it itself */
-    append_to_notify_funcs (self, gwd_settings_notified_update_metacity_theme);
-    append_to_notify_funcs (self, gwd_settings_notified_metacity_button_layout);
+    append_to_notify_funcs (self, gwd_settings_notified_update_marco_theme);
+    append_to_notify_funcs (self, gwd_settings_notified_marco_button_layout);
     append_to_notify_funcs (self, gwd_settings_notified_update_frames);
     append_to_notify_funcs (self, gwd_settings_notified_update_decorations);
 }
@@ -851,16 +851,16 @@ set_blur_construction_value (gint	*blur,
 }
 
 static gboolean
-set_metacity_theme_construction_value (const gchar **metacity_theme,
+set_marco_theme_construction_value (const gchar **marco_theme,
 				       GParameter  *params,
-				       GValue	   *metacity_theme_value)
+				       GValue	   *marco_theme_value)
 {
-    if (metacity_theme)
+    if (marco_theme)
     {
-	g_value_set_string (metacity_theme_value, *metacity_theme);
+	g_value_set_string (marco_theme_value, *marco_theme);
 
-	params->name = "metacity-theme";
-	params->value = *metacity_theme_value;
+	params->name = "marco-theme";
+	params->value = *marco_theme_value;
 
 	return TRUE;
     }
@@ -882,7 +882,7 @@ set_flag_and_increment (guint n_param,
 
 GWDSettings *
 gwd_settings_impl_new (gint                *blur,
-		       const gchar         **metacity_theme,
+		       const gchar         **marco_theme,
 		       GWDSettingsNotified *notified)
 {
     /* Always N command line parameters + 2 for command line
@@ -895,19 +895,19 @@ gwd_settings_impl_new (gint                *blur,
     guint    cmdline_opts = 0;
 
     GValue blur_value = G_VALUE_INIT;
-    GValue metacity_theme_value = G_VALUE_INIT;
+    GValue marco_theme_value = G_VALUE_INIT;
     GValue cmdline_opts_value = G_VALUE_INIT;
     GValue settings_notified_value = G_VALUE_INIT;
 
     g_value_init (&blur_value, G_TYPE_INT);
-    g_value_init (&metacity_theme_value, G_TYPE_STRING);
+    g_value_init (&marco_theme_value, G_TYPE_STRING);
     g_value_init (&cmdline_opts_value, G_TYPE_INT);
     g_value_init (&settings_notified_value, G_TYPE_POINTER);
 
     if (set_blur_construction_value (blur, &param[n_param], &blur_value))
 	n_param = set_flag_and_increment (n_param, &cmdline_opts, CMDLINE_BLUR);
 
-    if (set_metacity_theme_construction_value (metacity_theme, &param[n_param], &metacity_theme_value))
+    if (set_marco_theme_construction_value (marco_theme, &param[n_param], &marco_theme_value))
 	n_param = set_flag_and_increment (n_param, &cmdline_opts, CMDLINE_THEME);
 
     g_value_set_int (&cmdline_opts_value, cmdline_opts);
@@ -927,7 +927,7 @@ gwd_settings_impl_new (gint                *blur,
     settings = GWD_SETTINGS_INTERFACE (g_object_newv (GWD_TYPE_SETTINGS_IMPL, n_param, param));
 
     g_value_unset (&blur_value);
-    g_value_unset (&metacity_theme_value);
+    g_value_unset (&marco_theme_value);
     g_value_unset (&cmdline_opts_value);
 
     return settings;

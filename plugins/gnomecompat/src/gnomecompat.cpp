@@ -23,9 +23,9 @@
  * Author: Danny Baumann <dannybaumann@web.de>
  */
 
-#include "gnomecompat.h"
+#include "matecompat.h"
 
-COMPIZ_PLUGIN_20090315 (gnomecompat, GnomeCompatPluginVTable);
+COMPIZ_PLUGIN_20090315 (matecompat, MateCompatPluginVTable);
 
 static bool
 runCommand (CompAction          *action,
@@ -45,7 +45,7 @@ runCommand (CompAction          *action,
 }
 
 void
-GnomeCompatScreen::panelAction (CompOption::Vector& options,
+MateCompatScreen::panelAction (CompOption::Vector& options,
 				Atom                actionAtom)
 {
     Window xid;
@@ -81,7 +81,7 @@ showMainMenu (CompAction          *action,
 	      CompAction::State   state,
 	      CompOption::Vector& options)
 {
-    GNOME_SCREEN (screen);
+    MATE_SCREEN (screen);
 
     gs->panelAction (options, gs->panelMainMenuAtom);
 
@@ -93,36 +93,36 @@ showRunDialog (CompAction          *action,
 	       CompAction::State   state,
 	       CompOption::Vector& options)
 {
-    GNOME_SCREEN (screen);
+    MATE_SCREEN (screen);
 
     gs->panelAction (options, gs->panelRunDialogAtom);
 
     return true;
 }
 
-GnomeCompatScreen::GnomeCompatScreen (CompScreen *s) :
-    PluginClassHandler<GnomeCompatScreen, CompScreen> (s)
+MateCompatScreen::MateCompatScreen (CompScreen *s) :
+    PluginClassHandler<MateCompatScreen, CompScreen> (s)
 {
     panelActionAtom =
-	XInternAtom (screen->dpy (), "_GNOME_PANEL_ACTION", false);
+	XInternAtom (screen->dpy (), "_MATE_PANEL_ACTION", false);
     panelMainMenuAtom =
-	XInternAtom (screen->dpy (), "_GNOME_PANEL_ACTION_MAIN_MENU", false);
+	XInternAtom (screen->dpy (), "_MATE_PANEL_ACTION_MAIN_MENU", false);
     panelRunDialogAtom =
-	XInternAtom (screen->dpy (), "_GNOME_PANEL_ACTION_RUN_DIALOG", false);
+	XInternAtom (screen->dpy (), "_MATE_PANEL_ACTION_RUN_DIALOG", false);
 
 #define COMMAND_BIND(opt) \
     boost::bind (runCommand, _1, _2, _3, &mOptions[opt])
 
     optionSetMainMenuKeyInitiate (showMainMenu);
     optionSetRunKeyInitiate (showRunDialog);
-    optionSetRunCommandScreenshotKeyInitiate (COMMAND_BIND (GnomecompatOptions::CommandScreenshot));
-    optionSetRunCommandWindowScreenshotKeyInitiate (COMMAND_BIND (GnomecompatOptions::CommandWindowScreenshot));
-    optionSetRunCommandTerminalKeyInitiate (COMMAND_BIND (GnomecompatOptions::CommandTerminal));
+    optionSetRunCommandScreenshotKeyInitiate (COMMAND_BIND (MatecompatOptions::CommandScreenshot));
+    optionSetRunCommandWindowScreenshotKeyInitiate (COMMAND_BIND (MatecompatOptions::CommandWindowScreenshot));
+    optionSetRunCommandTerminalKeyInitiate (COMMAND_BIND (MatecompatOptions::CommandTerminal));
 
 }
 
 bool
-GnomeCompatPluginVTable::init ()
+MateCompatPluginVTable::init ()
 {
     if (!CompPlugin::checkPluginABI ("core", CORE_ABIVERSION))
 	return false;

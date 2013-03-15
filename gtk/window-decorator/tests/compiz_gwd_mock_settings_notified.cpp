@@ -74,24 +74,24 @@ gwd_mock_settings_notified_update_frames (GWDSettingsNotified *notified)
 }
 
 gboolean
-gwd_mock_settings_notified_update_metacity_theme (GWDSettingsNotified *notified)
+gwd_mock_settings_notified_update_marco_theme (GWDSettingsNotified *notified)
 {
     GWDMockSettingsNotifiedGMockInterface *notifiedGMock = GET_PRIVATE (notified)->mock;
-    return notifiedGMock->updateMetacityTheme ();
+    return notifiedGMock->updateMarcoTheme ();
 }
 
 gboolean
-gwd_mock_settings_notified_update_metacity_button_layout (GWDSettingsNotified *notified)
+gwd_mock_settings_notified_update_marco_button_layout (GWDSettingsNotified *notified)
 {
     GWDMockSettingsNotifiedGMockInterface *notifiedGMock = GET_PRIVATE (notified)->mock;
-    return notifiedGMock->updateMetacityButtonLayout ();
+    return notifiedGMock->updateMarcoButtonLayout ();
 }
 static void gwd_mock_settings_notified_interface_init (GWDSettingsNotifiedInterface *interface)
 {
     interface->update_decorations = gwd_mock_settings_notified_update_decorations;
     interface->update_frames = gwd_mock_settings_notified_update_frames;
-    interface->update_metacity_theme = gwd_mock_settings_notified_update_metacity_theme;
-    interface->update_metacity_button_layout = gwd_mock_settings_notified_update_metacity_button_layout;
+    interface->update_marco_theme = gwd_mock_settings_notified_update_marco_theme;
+    interface->update_marco_button_layout = gwd_mock_settings_notified_update_marco_button_layout;
 }
 
 static GObject * gwd_mock_settings_notified_constructor (GType	type,

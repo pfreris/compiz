@@ -17,37 +17,37 @@
  *
  * Authored By: Sam Spilsbury <sam.spilsbury@canonical.com>
  */
-#ifndef _COMPIZ_GWD_SETTINGS_STORAGE_GCONF_H
-#define _COMPIZ_GWD_SETTINGS_STORAGE_GCONF_H
+#ifndef _COMPIZ_GWD_SETTINGS_STORAGE_MATECONF_H
+#define _COMPIZ_GWD_SETTINGS_STORAGE_MATECONF_H
 
 #include <glib-object.h>
 #include <gwd-fwd.h>
 
 G_BEGIN_DECLS
 
-#define GWD_TYPE_SETTINGS_STORAGE_GCONF (gwd_settings_storage_gconf_get_type ())
-GType gwd_settings_storage_gconf_get_type ();
+#define GWD_TYPE_SETTINGS_STORAGE_MATECONF (gwd_settings_storage_mateconf_get_type ())
+GType gwd_settings_storage_mateconf_get_type ();
 
 GWDSettingsStorage *
-gwd_settings_storage_gconf_new (GWDSettingsWritable *writableSettings);
+gwd_settings_storage_mateconf_new (GWDSettingsWritable *writableSettings);
 
 extern const gchar * ORG_COMPIZ_GWD_KEY_USE_TOOLTIPS;
 extern const gchar * ORG_COMPIZ_GWD_KEY_BLUR_TYPE;
-extern const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_OPACITY;
-extern const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_OPACITY;
-extern const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_SHADE_OPACITY;
-extern const gchar * ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_SHADE_OPACITY;
-extern const gchar * ORG_COMPIZ_GWD_KEY_USE_METACITY_THEME;
+extern const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_OPACITY;
+extern const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_OPACITY;
+extern const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_SHADE_OPACITY;
+extern const gchar * ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_SHADE_OPACITY;
+extern const gchar * ORG_COMPIZ_GWD_KEY_USE_MARCO_THEME;
 extern const gchar * ORG_COMPIZ_GWD_KEY_MOUSE_WHEEL_ACTION;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_THEME;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT;
-extern const gchar * ORG_GNOME_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT;
-extern const gchar * ORG_GNOME_MUTTER_ATTACH_MODAL_DIALOGS;
-extern const gchar * ORG_GNOME_MUTTER_DRAGGABLE_BORDER_WIDTH;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_THEME;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT;
+extern const gchar * ORG_MATE_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT;
+extern const gchar * ORG_MATE_MUTTER_ATTACH_MODAL_DIALOGS;
+extern const gchar * ORG_MATE_MUTTER_DRAGGABLE_BORDER_WIDTH;
 
 G_END_DECLS
 

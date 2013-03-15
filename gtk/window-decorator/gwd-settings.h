@@ -30,7 +30,7 @@ GType gwd_settings_impl_get_type ();
 
 GWDSettings *
 gwd_settings_impl_new (gint                *blur,
-		       const gchar         **metacity_theme,
+		       const gchar         **marco_theme,
 		       GWDSettingsNotified *notified);
 
 G_END_DECLS

@@ -13,10 +13,10 @@ link_directories (${CMAKE_CURRENT_BINARY_DIR}/../src/)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
-add_executable (compizconfig_test_ccs_gnome_gsettings_integrated_setting
-		${CMAKE_CURRENT_SOURCE_DIR}/compizconfig_test_ccs_gnome_gsettings_integrated_setting.cpp)
+add_executable (compizconfig_test_ccs_mate_gsettings_integrated_setting
+		${CMAKE_CURRENT_SOURCE_DIR}/compizconfig_test_ccs_mate_gsettings_integrated_setting.cpp)
 
-target_link_libraries (compizconfig_test_ccs_gnome_gsettings_integrated_setting
+target_link_libraries (compizconfig_test_ccs_mate_gsettings_integrated_setting
 		       ${GTEST_BOTH_LIBRARIES}
 		       ${GMOCK_LIBRARY}
 		       ${GMOCK_MAIN_LIBRARY}
@@ -25,7 +25,7 @@ target_link_libraries (compizconfig_test_ccs_gnome_gsettings_integrated_setting
 		       compizconfig
 		       compizconfig_gsettings_settings_test_env
 		       compizconfig_ccs_gsettings_wrapper_mock
-                       compizconfig_gnome_integration_gsettings_integrated_setting
+                       compizconfig_mate_integration_gsettings_integrated_setting
                        compizconfig_gsettings_backend_interface)
 
-compiz_discover_tests (compizconfig_test_ccs_gnome_gsettings_integrated_setting COVERAGE compizconfig_gnome_integration_gsettings_integrated_setting)
+compiz_discover_tests (compizconfig_test_ccs_mate_gsettings_integrated_setting COVERAGE compizconfig_mate_integration_gsettings_integrated_setting)

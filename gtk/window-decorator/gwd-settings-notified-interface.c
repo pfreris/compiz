@@ -42,15 +42,15 @@ gwd_settings_notified_update_frames (GWDSettingsNotified *notified)
 }
 
 gboolean
-gwd_settings_notified_update_metacity_theme (GWDSettingsNotified *notified)
+gwd_settings_notified_update_marco_theme (GWDSettingsNotified *notified)
 {
     GWDSettingsNotifiedInterface *iface = GWD_SETTINGS_NOTIFIED_GET_INTERFACE (notified);
-    return (*iface->update_metacity_theme) (notified);
+    return (*iface->update_marco_theme) (notified);
 }
 
 gboolean
-gwd_settings_notified_metacity_button_layout (GWDSettingsNotified *notified)
+gwd_settings_notified_marco_button_layout (GWDSettingsNotified *notified)
 {
     GWDSettingsNotifiedInterface *iface = GWD_SETTINGS_NOTIFIED_GET_INTERFACE (notified);
-    return (*iface->update_metacity_button_layout) (notified);
+    return (*iface->update_marco_button_layout) (notified);
 }

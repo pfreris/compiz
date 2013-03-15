@@ -61,7 +61,7 @@ class GWDMockSettingsWritableGMockInterface
 	virtual gboolean draggableBorderWidthChanged (gint newValue) = 0;
 	virtual gboolean attachModalDialogsChanged (gboolean newValue) = 0;
 	virtual gboolean blurChanged (const gchar *type) = 0;
-	virtual gboolean metacityThemeChanged (gboolean useMetacityTheme, const gchar *metacityTheme) = 0;
+	virtual gboolean marcoThemeChanged (gboolean useMarcoTheme, const gchar *marcoTheme) = 0;
 	virtual gboolean opacityChanged (gdouble inactiveOpacity,
 					 gdouble activeOpacity,
 					 gboolean inactiveShadeOpacity,
@@ -92,7 +92,7 @@ class GWDMockSettingsWritableGMock :
 	MOCK_METHOD1 (draggableBorderWidthChanged, gboolean (gint));
 	MOCK_METHOD1 (attachModalDialogsChanged, gboolean (gboolean));
 	MOCK_METHOD1 (blurChanged, gboolean (const gchar *));
-	MOCK_METHOD2 (metacityThemeChanged, gboolean (gboolean, const gchar *));
+	MOCK_METHOD2 (marcoThemeChanged, gboolean (gboolean, const gchar *));
 	MOCK_METHOD4 (opacityChanged, gboolean (gdouble, gdouble, gboolean, gboolean));
 	MOCK_METHOD1 (buttonLayoutChanged, gboolean (const gchar *));
 	MOCK_METHOD2 (fontChanged, gboolean (gboolean, const gchar *));

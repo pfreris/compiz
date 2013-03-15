@@ -8,8 +8,8 @@ backend = kconfig
 integration = true
 plugin_list_autosort = true
 
-[gnome_session]
-backend = gconf
+[mate_session]
+backend = mateconf
 integration = true
 plugin_list_autosort = true
 

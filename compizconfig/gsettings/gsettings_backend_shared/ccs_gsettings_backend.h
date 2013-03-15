@@ -4,7 +4,7 @@
 #include <ccs-defs.h>
 #include <ccs-backend.h>
 #include <ccs_gsettings_backend_fwd.h>
-#include <ccs_gnome_fwd.h>
+#include <ccs_mate_fwd.h>
 #include <glib.h>
 
 COMPIZCONFIG_BEGIN_DECLS
@@ -16,7 +16,7 @@ ccsGSettingsBackendAttachNewToBackend (CCSBackend                 *backend,
 				       CCSGSettingsWrapper        *currentProfileSettings,
 				       CCSGSettingsWrapperFactory *wrapperFactory,
 				       CCSIntegration             *integration,
-				       CCSGNOMEValueChangeData    *valueChangeData,
+				       CCSMATEValueChangeData    *valueChangeData,
 				       char                       *currentProfile);
 
 void

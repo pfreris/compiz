@@ -1,63 +1,63 @@
-#ifndef _CCS_GNOME_INTEGRATED_SETTING_H
-#define _CCS_GNOME_INTEGRATED_SETTING_H
+#ifndef _CCS_MATE_INTEGRATED_SETTING_H
+#define _CCS_MATE_INTEGRATED_SETTING_H
 
 #include <ccs-defs.h>
 #include <ccs-fwd.h>
-#include <ccs_gnome_fwd.h>
+#include <ccs_mate_fwd.h>
 
-#include "ccs_gnome_integration_types.h"
+#include "ccs_mate_integration_types.h"
 
 COMPIZCONFIG_BEGIN_DECLS
 
-typedef struct _CCSGNOMEIntegratedSettingInfoInterface CCSGNOMEIntegratedSettingInfoInterface;
+typedef struct _CCSMATEIntegratedSettingInfoInterface CCSMATEIntegratedSettingInfoInterface;
 
-typedef SpecialOptionType (*CCSGNOMEIntegratedSettingInfoGetSpecialOptionType) (CCSGNOMEIntegratedSettingInfo *);
-typedef const char * (*CCSGNOMEIntegratedSettingInfoGetGNOMEName) (CCSGNOMEIntegratedSettingInfo *);
-typedef void (*CCSGNOMEIntegratedSettingInfoFree) (CCSGNOMEIntegratedSettingInfo *);
+typedef SpecialOptionType (*CCSMATEIntegratedSettingInfoGetSpecialOptionType) (CCSMATEIntegratedSettingInfo *);
+typedef const char * (*CCSMATEIntegratedSettingInfoGetMATEName) (CCSMATEIntegratedSettingInfo *);
+typedef void (*CCSMATEIntegratedSettingInfoFree) (CCSMATEIntegratedSettingInfo *);
 
-struct _CCSGNOMEIntegratedSettingInfoInterface
+struct _CCSMATEIntegratedSettingInfoInterface
 {
-    CCSGNOMEIntegratedSettingInfoGetSpecialOptionType getSpecialOptionType;
-    CCSGNOMEIntegratedSettingInfoGetGNOMEName         getGNOMEName;
-    CCSGNOMEIntegratedSettingInfoFree                 free;
+    CCSMATEIntegratedSettingInfoGetSpecialOptionType getSpecialOptionType;
+    CCSMATEIntegratedSettingInfoGetMATEName         getMATEName;
+    CCSMATEIntegratedSettingInfoFree                 free;
 };
 
 /**
- * @brief The _CCSGNOMEIntegratedSetting struct
+ * @brief The _CCSMATEIntegratedSetting struct
  *
- * CCSGNOMEIntegratedSetting represents an integrated setting in
- * GNOME - it builds upon CCSSharedIntegratedSetting (which it composes
- * and implements) and also adds the concept of an GNOME side keyname
+ * CCSMATEIntegratedSetting represents an integrated setting in
+ * MATE - it builds upon CCSSharedIntegratedSetting (which it composes
+ * and implements) and also adds the concept of an MATE side keyname
  * and option type for that keyname (as the types do not match 1-1)
  */
-struct _CCSGNOMEIntegratedSettingInfo
+struct _CCSMATEIntegratedSettingInfo
 {
     CCSObject object;
 };
 
-unsigned int ccsCCSGNOMEIntegratedSettingInfoInterfaceGetType ();
+unsigned int ccsCCSMATEIntegratedSettingInfoInterfaceGetType ();
 
 Bool
-ccsGNOMEIntegrationFindSettingsMatchingPredicate (CCSIntegratedSetting *setting,
+ccsMATEIntegrationFindSettingsMatchingPredicate (CCSIntegratedSetting *setting,
 						  void		       *userData);
 
 SpecialOptionType
-ccsGNOMEIntegratedSettingInfoGetSpecialOptionType (CCSGNOMEIntegratedSettingInfo *);
+ccsMATEIntegratedSettingInfoGetSpecialOptionType (CCSMATEIntegratedSettingInfo *);
 
 const char *
-ccsGNOMEIntegratedSettingInfoGetGNOMEName (CCSGNOMEIntegratedSettingInfo *);
+ccsMATEIntegratedSettingInfoGetMATEName (CCSMATEIntegratedSettingInfo *);
 
-CCSGNOMEIntegratedSettingInfo *
-ccsGNOMEIntegratedSettingInfoNew (CCSIntegratedSettingInfo *base,
+CCSMATEIntegratedSettingInfo *
+ccsMATEIntegratedSettingInfoNew (CCSIntegratedSettingInfo *base,
 				  SpecialOptionType    type,
-				  const char	   *gnomeName,
+				  const char	   *mateName,
 				  CCSObjectAllocationInterface *ai);
 
 void
-ccsFreeGNOMEIntegratedSettingInfo (CCSGNOMEIntegratedSettingInfo *);
+ccsFreeMATEIntegratedSettingInfo (CCSMATEIntegratedSettingInfo *);
 
-CCSREF_HDR (GNOMEIntegratedSettingInfo, CCSGNOMEIntegratedSettingInfo);
-CCSLIST_HDR (GNOMEIntegratedSettingInfo, CCSGNOMEIntegratedSettingInfo);
+CCSREF_HDR (MATEIntegratedSettingInfo, CCSMATEIntegratedSettingInfo);
+CCSLIST_HDR (MATEIntegratedSettingInfo, CCSMATEIntegratedSettingInfo);
 
 COMPIZCONFIG_END_DECLS
 

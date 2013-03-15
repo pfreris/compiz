@@ -1,24 +1,24 @@
-#ifndef _CCS_GNOME_GSETTINGS_INTEGRATED_SETTING_FACTORY_H
-#define _CCS_GNOME_GSETTINGS_INTEGRATED_SETTING_FACTORY_H
+#ifndef _CCS_MATE_GSETTINGS_INTEGRATED_SETTING_FACTORY_H
+#define _CCS_MATE_GSETTINGS_INTEGRATED_SETTING_FACTORY_H
 
 #include <ccs-defs.h>
 #include <ccs-fwd.h>
-#include <ccs_gnome_fwd.h>
+#include <ccs_mate_fwd.h>
 #include <ccs_gsettings_backend_fwd.h>
 #include <gio/gio.h>
 
 COMPIZCONFIG_BEGIN_DECLS
 
 /**
- * @brief ccsGSettingsIntegratedSettingsTranslateNewGNOMEKeyForCCS
- * @param key the old style gnome key to translate
+ * @brief ccsGSettingsIntegratedSettingsTranslateNewMATEKeyForCCS
+ * @param key the old style mate key to translate
  * @return new-style key. Caller should free
  *
  * This translates new style keys (eg foo-bar) to old style keys
  * foo_bar and special cases a few keys
  */
 char *
-ccsGSettingsIntegratedSettingsTranslateNewGNOMEKeyForCCS (const char *key);
+ccsGSettingsIntegratedSettingsTranslateNewMATEKeyForCCS (const char *key);
 
 /**
  * @brief ccsGSettingsIntegratedSettingsChangeCallback
@@ -38,7 +38,7 @@ ccsGSettingsIntegratedSettingsChangeCallback ();
 
 CCSIntegratedSettingFactory *
 ccsGSettingsIntegratedSettingFactoryNew (CCSGSettingsWrapperFactory   *wrapperFactory,
-					 CCSGNOMEValueChangeData      *data,
+					 CCSMATEValueChangeData      *data,
 					 CCSObjectAllocationInterface *ai);
 
 COMPIZCONFIG_END_DECLS

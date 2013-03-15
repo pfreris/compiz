@@ -252,7 +252,7 @@ static const std::string globalTestProfileName ("test");
 static const std::string globalGeneralProfileSection ("general");
 static const std::string globalGeneralProfileSectionUnderscore ("general_");
 static const std::string globalTestGeneralProfileSection (globalGeneralProfileSectionUnderscore + globalTestProfileName);
-static const std::string globalGNOMEProfileSection ("gnome_session");
+static const std::string globalMATEProfileSection ("mate_session");
 static const std::string globalKDE4ProfileSection ("kde4_session");
 static const std::string globalKDE3ProfileSection ("kde_session");
 static const std::string four ("4");
@@ -284,7 +284,7 @@ class CCSUtilProfileSelection :
 
 	CCSUtilProfileSelection () :
 	    ccsEnv ("COMPIZ_CONFIG_PROFILE", NULL),
-	    gnomeEnv ("GNOME_DESKTOP_SESSION_ID", NULL),
+	    mateEnv ("MATE_DESKTOP_SESSION_ID", NULL),
 	    kde4Env ("KDE_SESSION_VERSION", NULL),
 	    kdeEnv ("KDE_FULL_SESSION", NULL)
 	{
@@ -293,7 +293,7 @@ class CCSUtilProfileSelection :
     private:
 
 	TmpEnv ccsEnv;
-	TmpEnv gnomeEnv;
+	TmpEnv mateEnv;
 	TmpEnv kde4Env;
 	TmpEnv kdeEnv;
 };
@@ -314,12 +314,12 @@ TEST_F (CCSUtilProfileSelection, OverrideWithNoName)
     EXPECT_EQ (globalGeneralProfileSection, sName);
 }
 
-TEST_F (CCSUtilProfileSelection, NoOverrideInGNOME)
+TEST_F (CCSUtilProfileSelection, NoOverrideInMATE)
 {
-    TmpEnv env ("GNOME_DESKTOP_SESSION_ID", globalTestProfileName.c_str ());
+    TmpEnv env ("MATE_DESKTOP_SESSION_ID", globalTestProfileName.c_str ());
     CharacterWrapper sName (getSectionName ());
 
-    EXPECT_EQ (globalGNOMEProfileSection, sName);
+    EXPECT_EQ (globalMATEProfileSection, sName);
 }
 
 TEST_F (CCSUtilProfileSelection, NoOverrideInKDE4)

@@ -1,4 +1,4 @@
-if (BUILD_GNOME)
+if (BUILD_MATE)
     set (desktop_file ${CMAKE_CURRENT_BINARY_DIR}/compiz.desktop)
     compiz_translate_desktop_file (
         ${CMAKE_CURRENT_SOURCE_DIR}/compiz.desktop.in
@@ -26,13 +26,13 @@ if (BUILD_GNOME)
 	list (APPEND _keybindings_files_translated ${CMAKE_CURRENT_BINARY_DIR}/${_keybinding_file_no_in})
     endforeach (_keybinding_file ${keybinding_files})
 
-    add_custom_target (compiz-gnome-keybindings ALL DEPENDS
+    add_custom_target (compiz-mate-keybindings ALL DEPENDS
 		       ${_keybindings_files_translated})
 
     install (
 	FILES ${_keybinding_files_translated}
-	DESTINATION ${datadir}/gnome-control-center/keybindings
+	DESTINATION ${datadir}/mate-control-center/keybindings
     )
 
     add_custom_target (compiz.desktop-file ALL DEPENDS ${desktop_file})
-endif (BUILD_GNOME)
+endif (BUILD_MATE)

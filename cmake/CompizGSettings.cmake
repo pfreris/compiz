@@ -186,7 +186,7 @@ function (add_gsettings_schema_to_recompilation_list _schema_file_name)
 
 endfunction ()
 
-# generate gconf schema
+# generate mateconf schema
 function (compiz_gsettings_schema _name _src _dst _inst)
     find_program (XSLTPROC_EXECUTABLE xsltproc)
     find_program (GLIB_COMPILE_SCHEMAS glib-compile-schemas)

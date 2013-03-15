@@ -132,12 +132,12 @@ gwd_mock_settings_writable_blur_changed (GWDSettingsWritable *settings,
 }
 
 gboolean
-gwd_mock_settings_writable_metacity_theme_changed (GWDSettingsWritable *settings,
-						   gboolean	 use_metacity_theme,
-						   const gchar *metacity_theme)
+gwd_mock_settings_writable_marco_theme_changed (GWDSettingsWritable *settings,
+						   gboolean	 use_marco_theme,
+						   const gchar *marco_theme)
 {
     GWDMockSettingsWritableGMockInterface *gmockSettingsWritable = GET_PRIVATE (settings)->mock;
-    return gmockSettingsWritable->metacityThemeChanged (use_metacity_theme, metacity_theme);
+    return gmockSettingsWritable->marcoThemeChanged (use_marco_theme, marco_theme);
 }
 
 gboolean
@@ -189,7 +189,7 @@ static void gwd_mock_settings_writable_interface_init (GWDSettingsWritableInterf
     interface->draggable_border_width_changed = gwd_mock_settings_writable_draggable_border_width_changed;
     interface->attach_modal_dialogs_changed = gwd_mock_settings_writable_attach_modal_dialogs_changed;
     interface->blur_changed = gwd_mock_settings_writable_blur_changed;
-    interface->metacity_theme_changed = gwd_mock_settings_writable_metacity_theme_changed;
+    interface->marco_theme_changed = gwd_mock_settings_writable_marco_theme_changed;
     interface->opacity_changed = gwd_mock_settings_writable_opacity_changed;
     interface->button_layout_changed = gwd_mock_settings_writable_button_layout_changed;
     interface->font_changed = gwd_mock_settings_writable_font_changed;

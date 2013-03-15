@@ -1331,7 +1331,7 @@ class AboutDialog (gtk.AboutDialog):
                            "Quinn Storm <quinn@beryl-project.org>"])
         self.set_artists (["Andrew Wedderburn <andrew.wedderburn@gmail.com>",
                            "Patrick Niklaus <marex@opencompositing.org>",
-                           "Gnome Icon Theme Team"])
+                           "Mate Icon Theme Team"])
         if IconTheme.lookup_icon("ccsm", 64, 0):
             icon = IconTheme.load_icon("ccsm", 64, 0)
             self.set_logo (icon)

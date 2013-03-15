@@ -6,12 +6,12 @@
  *
  * Copyright (c) 2011 Canonical Ltd
  *
- * Based on the original compizconfig-backend-gconf
+ * Based on the original compizconfig-backend-mateconf
  *
  * Copyright (c) 2007 Danny Baumann <maniac@opencompositing.org>
  *
  * Parts of this code are taken from libberylsettings 
- * gconf backend, written by:
+ * mateconf backend, written by:
  *
  * Copyright (c) 2006 Robert Carr <racarr@opencompositing.org>
  * Copyright (c) 2007 Dennis Kasprzyk <onestone@opencompositing.org>

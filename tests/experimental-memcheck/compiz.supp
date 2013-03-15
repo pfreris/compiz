@@ -1,7 +1,7 @@
 # -*- tab-width: 3; indent-tabs-mode: nil -*-
 #
-# GNOME supressions base.supp:
-#  git://github.com/dtrebbien/GNOME.supp.git
+# MATE supressions base.supp:
+#  git://github.com/dtrebbien/MATE.supp.git
 #  Copyright (C) 2012  Daniel Trebbien
 #
 #  This program is free software; you can redistribute it and/or

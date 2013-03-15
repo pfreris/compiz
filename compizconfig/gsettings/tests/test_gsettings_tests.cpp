@@ -22,7 +22,7 @@
 #include "ccs_gsettings_wrapper_mock.h"
 #include "ccs_gsettings_wrapper_factory_mock.h"
 #include "ccs_gsettings_wrapper_factory_interface.h"
-#include "ccs_gnome_integration.h"
+#include "ccs_mate_integration.h"
 #include "gtest_shared_characterwrapper.h"
 #include "compizconfig_test_value_combiners.h"
 #include "compizconfig_ccs_mocked_allocator.h"
@@ -2119,7 +2119,7 @@ class CCSGSettingsTestCCSGSettingsBackend :
 	    mockCurrentProfileSettings (ccsMockGSettingsWrapperNew ()),
 	    mockWrapperFactory (ccsMockGSettingsWrapperFactoryNew ()),
 	    mockIntegration (ccsMockIntegrationBackendNew (&ccsDefaultObjectAllocator)),
-	    valueChangeData (reinterpret_cast <CCSGNOMEValueChangeData *> (calloc (1, sizeof (CCSGNOMEValueChangeData)))),
+	    valueChangeData (reinterpret_cast <CCSMATEValueChangeData *> (calloc (1, sizeof (CCSMATEValueChangeData)))),
 	    currentProfile (strdup (MOCK_PROFILE_NAME.c_str ())),
 	    mockMockPluginWrapper (ccsMockGSettingsWrapperNew ()),
 	    gmockWrapperFactory (reinterpret_cast <CCSGSettingsWrapperFactoryGMock *> (ccsObjectGetPrivate (mockWrapperFactory))),
@@ -2156,7 +2156,7 @@ class CCSGSettingsTestCCSGSettingsBackend :
 	CCSGSettingsWrapper *mockCurrentProfileSettings;
 	CCSGSettingsWrapperFactory *mockWrapperFactory;
 	CCSIntegration *mockIntegration;
-	CCSGNOMEValueChangeData           *valueChangeData;
+	CCSMATEValueChangeData           *valueChangeData;
 	char                *currentProfile;
 	CCSGSettingsWrapper *mockMockPluginWrapper;
 

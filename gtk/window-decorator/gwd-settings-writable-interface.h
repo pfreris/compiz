@@ -60,9 +60,9 @@ struct _GWDSettingsWritableInterface
 					      gboolean            new_value);
     gboolean (*blur_changed) (GWDSettingsWritable *settings,
 			      const gchar         *type);
-    gboolean (*metacity_theme_changed) (GWDSettingsWritable *settings,
-					gboolean            use_metacity_theme,
-					const gchar         *metacity_theme);
+    gboolean (*marco_theme_changed) (GWDSettingsWritable *settings,
+					gboolean            use_marco_theme,
+					const gchar         *marco_theme);
     gboolean (*opacity_changed) (GWDSettingsWritable *settings,
 				 gdouble             active_opacity,
 				 gdouble             inactive_opacity,
@@ -116,9 +116,9 @@ gwd_settings_writable_blur_changed (GWDSettingsWritable *settings,
 				    const gchar         *blur_type);
 
 gboolean
-gwd_settings_writable_metacity_theme_changed (GWDSettingsWritable *settings,
-					      gboolean	          use_metacity_theme,
-					      const gchar         *metacity_theme);
+gwd_settings_writable_marco_theme_changed (GWDSettingsWritable *settings,
+					      gboolean	          use_marco_theme,
+					      const gchar         *marco_theme);
 
 gboolean
 gwd_settings_writable_opacity_changed (GWDSettingsWritable *settings,

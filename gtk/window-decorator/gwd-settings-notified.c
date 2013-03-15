@@ -21,7 +21,7 @@
 
 #include "gwd-settings-notified-interface.h"
 #include "gwd-settings-notified.h"
-#include "gwd-metacity-window-decoration-util.h"
+#include "gwd-marco-window-decoration-util.h"
 
 #include "gtk-window-decorator.h"
 
@@ -114,13 +114,13 @@ gwd_settings_notified_impl_update_frames (GWDSettingsNotified *notified)
 }
 
 static gboolean
-gwd_settings_notified_impl_update_metacity_theme (GWDSettingsNotified *notified)
+gwd_settings_notified_impl_update_marco_theme (GWDSettingsNotified *notified)
 {
-#ifdef USE_METACITY
+#ifdef USE_MARCO
     const gchar *meta_theme = NULL;
-    g_object_get (settings, "metacity-theme", &meta_theme, NULL);
+    g_object_get (settings, "marco-theme", &meta_theme, NULL);
 
-    if (gwd_metacity_window_decoration_update_meta_theme (meta_theme,
+    if (gwd_marco_window_decoration_update_meta_theme (meta_theme,
 							  meta_theme_get_current,
 							  meta_theme_set_current))
     {
@@ -159,11 +159,11 @@ gwd_settings_notified_impl_update_metacity_theme (GWDSettingsNotified *notified)
 }
 
 static gboolean
-gwd_settings_notified_impl_update_metacity_button_layout (GWDSettingsNotified *notified)
+gwd_settings_notified_impl_update_marco_button_layout (GWDSettingsNotified *notified)
 {
-#ifdef USE_METACITY
+#ifdef USE_MARCO
     const gchar *button_layout;
-    g_object_get (settings, "metacity-button-layout", &button_layout, NULL);
+    g_object_get (settings, "marco-button-layout", &button_layout, NULL);
 
     if (button_layout)
     {
@@ -188,8 +188,8 @@ static void gwd_settings_notified_impl_interface_init (GWDSettingsNotifiedInterf
 {
     interface->update_decorations = gwd_settings_notified_impl_update_decorations;
     interface->update_frames = gwd_settings_notified_impl_update_frames;
-    interface->update_metacity_button_layout = gwd_settings_notified_impl_update_metacity_button_layout;
-    interface->update_metacity_theme = gwd_settings_notified_impl_update_metacity_theme;
+    interface->update_marco_button_layout = gwd_settings_notified_impl_update_marco_button_layout;
+    interface->update_marco_theme = gwd_settings_notified_impl_update_marco_theme;
 }
 
 static void gwd_settings_notified_impl_dispose (GObject *object)

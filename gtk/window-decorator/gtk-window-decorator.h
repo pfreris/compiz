@@ -65,8 +65,8 @@
 #include <gdk/gdkx.h>
 #include <gdk/gdk.h>
 
-#ifdef USE_GCONF
-#include <gconf/gconf-client.h>
+#ifdef USE_MATECONF
+#include <mateconf/mateconf-client.h>
 #endif
 
 #ifdef USE_DBUS_GLIB
@@ -105,67 +105,67 @@
 #define _(x)  gettext (x)
 #define N_(x) x
 
-#ifdef USE_METACITY
-#include <metacity-private/theme.h>
+#ifdef USE_MARCO
+#include <marco-private/theme.h>
 #endif
 
 #include <gwd-fwd.h>
 
-#define METACITY_GCONF_DIR "/apps/metacity/general"
-#define MUTTER_GCONF_DIR "/apps/mutter/general"
+#define MARCO_MATECONF_DIR "/apps/marco/general"
+#define MUTTER_MATECONF_DIR "/apps/mutter/general"
 
 #define COMPIZ_USE_SYSTEM_FONT_KEY		    \
-METACITY_GCONF_DIR "/titlebar_uses_system_font"
+MARCO_MATECONF_DIR "/titlebar_uses_system_font"
 		    
 #define COMPIZ_TITLEBAR_FONT_KEY	\
-METACITY_GCONF_DIR "/titlebar_font"
+MARCO_MATECONF_DIR "/titlebar_font"
 
 #define COMPIZ_DOUBLE_CLICK_TITLEBAR_KEY	       \
-METACITY_GCONF_DIR "/action_double_click_titlebar"
+MARCO_MATECONF_DIR "/action_double_click_titlebar"
 
 #define COMPIZ_MIDDLE_CLICK_TITLEBAR_KEY	       \
-METACITY_GCONF_DIR "/action_middle_click_titlebar"
+MARCO_MATECONF_DIR "/action_middle_click_titlebar"
 
 #define COMPIZ_RIGHT_CLICK_TITLEBAR_KEY	       \
-METACITY_GCONF_DIR "/action_right_click_titlebar"
+MARCO_MATECONF_DIR "/action_right_click_titlebar"
 
 #define MUTTER_DRAGGABLE_BORDER_WIDTH_KEY \
-MUTTER_GCONF_DIR "/draggable_border_width"
+MUTTER_MATECONF_DIR "/draggable_border_width"
 
 #define MUTTER_ATTACH_MODAL_DIALOGS_KEY \
-MUTTER_GCONF_DIR "/attach_modal_dialogs"
+MUTTER_MATECONF_DIR "/attach_modal_dialogs"
 
 #define META_THEME_KEY		\
-METACITY_GCONF_DIR "/theme"
+MARCO_MATECONF_DIR "/theme"
 
 #define META_BUTTON_LAYOUT_KEY		\
-METACITY_GCONF_DIR "/button_layout"
+MARCO_MATECONF_DIR "/button_layout"
 
-#define GCONF_DIR "/apps/gwd"
+#define MATECONF_DIR "/apps/gwd"
 
 #define USE_META_THEME_KEY	    \
-GCONF_DIR "/use_metacity_theme"
+MATECONF_DIR "/use_marco_theme"
 
 #define META_THEME_OPACITY_KEY	        \
-GCONF_DIR "/metacity_theme_opacity"
+MATECONF_DIR "/marco_theme_opacity"
 
 #define META_THEME_SHADE_OPACITY_KEY	      \
-GCONF_DIR "/metacity_theme_shade_opacity"
+MATECONF_DIR "/marco_theme_shade_opacity"
 
 #define META_THEME_ACTIVE_OPACITY_KEY	       \
-GCONF_DIR "/metacity_theme_active_opacity"
+MATECONF_DIR "/marco_theme_active_opacity"
 
 #define META_THEME_ACTIVE_SHADE_OPACITY_KEY          \
-GCONF_DIR "/metacity_theme_active_shade_opacity"
+MATECONF_DIR "/marco_theme_active_shade_opacity"
 
 #define BLUR_TYPE_KEY	   \
-GCONF_DIR "/blur_type"
+MATECONF_DIR "/blur_type"
 
 #define WHEEL_ACTION_KEY   \
-GCONF_DIR "/mouse_wheel_action"
+MATECONF_DIR "/mouse_wheel_action"
 
 #define USE_TOOLTIPS_KEY \
-GCONF_DIR "/use_tooltips"
+MATECONF_DIR "/use_tooltips"
 
 #define DBUS_DEST       "org.freedesktop.compiz"
 #define DBUS_PATH       "/org/freedesktop/compiz/decor/screen0"
@@ -240,7 +240,7 @@ extern GWDSettings	   *settings;
 extern GWDSettingsWritable *writable;
 
 extern gdouble decoration_alpha;
-#ifdef USE_METACITY
+#ifdef USE_MARCO
 extern MetaButtonLayout   meta_button_layout;
 extern gboolean	          meta_button_layout_set;
 #endif
@@ -803,8 +803,8 @@ create_pixmap (int	 w,
 GdkPixmap *
 pixmap_new_from_pixbuf (GdkPixbuf *pixbuf, GtkWidget *parent);
 
-/* metacity.c */
-#ifdef USE_METACITY
+/* marco.c */
+#ifdef USE_MARCO
 
 MetaFrameType
 meta_get_frame_type_for_decor_type (const gchar *frame_type);

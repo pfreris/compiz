@@ -20,18 +20,18 @@
  * Authored By:
  * Sam Spilsbury <sam.spilsbury@canonical.com>
  */
-#ifndef _COMPIZCONFIG_CCS_MOCK_GNOME_INTEGRATED_SETTING_COMPOSITION_H
-#define _COMPIZCONFIG_CCS_MOCK_GNOME_INTEGRATED_SETTING_COMPOSITION_H
+#ifndef _COMPIZCONFIG_CCS_MOCK_MATE_INTEGRATED_SETTING_COMPOSITION_H
+#define _COMPIZCONFIG_CCS_MOCK_MATE_INTEGRATED_SETTING_COMPOSITION_H
 
 #include <ccs-defs.h>
 #include <ccs-fwd.h>
-#include <ccs_gnome_fwd.h>
+#include <ccs_mate_fwd.h>
 
 COMPIZCONFIG_BEGIN_DECLS
 
 CCSIntegratedSetting *
 ccsMockCompositionIntegratedSettingNew (CCSIntegratedSetting          *integratedSetting,
-					CCSGNOMEIntegratedSettingInfo *gnomeInfo,
+					CCSMATEIntegratedSettingInfo *mateInfo,
 					CCSIntegratedSettingInfo      *settingInfo,
 					CCSObjectAllocationInterface  *allocator);
 

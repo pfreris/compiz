@@ -87,11 +87,11 @@ gboolean gwd_mock_settings_storage_update_blur (GWDSettingsStorage *settings)
     return settingsGMock->updateBlur ();
 }
 
-gboolean gwd_mock_settings_storage_update_metacity_theme (GWDSettingsStorage *settings)
+gboolean gwd_mock_settings_storage_update_marco_theme (GWDSettingsStorage *settings)
 {
     GWDMockSettingsStorage *settingsStorageMock = GWD_MOCK_SETTINGS_STORAGE (settings);
     GWDMockSettingsStorageGMockInterface *settingsGMock = GET_PRIVATE (settingsStorageMock)->mock;
-    return settingsGMock->updateMetacityTheme ();
+    return settingsGMock->updateMarcoTheme ();
 }
 
 gboolean gwd_mock_settings_storage_update_opacity (GWDSettingsStorage *settings)
@@ -128,7 +128,7 @@ static void gwd_mock_settings_storage_interface_init (GWDSettingsStorageInterfac
     interface->update_draggable_border_width = gwd_mock_settings_storage_update_draggable_border_width;
     interface->update_attach_modal_dialogs = gwd_mock_settings_storage_update_attach_modal_dialogs;
     interface->update_blur = gwd_mock_settings_storage_update_blur;
-    interface->update_metacity_theme = gwd_mock_settings_storage_update_metacity_theme;
+    interface->update_marco_theme = gwd_mock_settings_storage_update_marco_theme;
     interface->update_opacity = gwd_mock_settings_storage_update_opacity;
     interface->update_button_layout = gwd_mock_settings_storage_update_button_layout;
     interface->update_font = gwd_mock_settings_storage_update_font;

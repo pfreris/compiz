@@ -1,25 +1,25 @@
-#ifndef _CCS_GNOME_INTEGRATION_CONSTANTS_H
-#define _CCS_GNOME_INTEGRATION_CONSTANTS_H
+#ifndef _CCS_MATE_INTEGRATION_CONSTANTS_H
+#define _CCS_MATE_INTEGRATION_CONSTANTS_H
 
 #include <ccs-defs.h>
 #include <glib.h>
 
 COMPIZCONFIG_BEGIN_DECLS
 
-#include <ccs_gnome_integration_types.h>
+#include <ccs_mate_integration_types.h>
 
-#define METACITY "/apps/metacity"
+#define MARCO "/apps/marco"
 #define NUM_WATCHED_DIRS 3
 
 typedef struct _CCSSettingIntegratedSettingPair CCSSettingIntegratedSettingPair;
 struct _CCSSettingIntegratedSettingPair
 {
     const char *compizName;
-    const char *gnomeName;
+    const char *mateName;
 };
 
-typedef struct _CCSGNOMEIntegratedSettingNames CCSGNOMEIntegratedSettingNames;
-struct _CCSGNOMEIntegratedSettingNames
+typedef struct _CCSMATEIntegratedSettingNames CCSMATEIntegratedSettingNames;
+struct _CCSMATEIntegratedSettingNames
 {
     CCSSettingIntegratedSettingPair CORE_AUDIBLE_BELL;
     CCSSettingIntegratedSettingPair CORE_CLICK_TO_FOCUS;
@@ -27,9 +27,9 @@ struct _CCSGNOMEIntegratedSettingNames
     CCSSettingIntegratedSettingPair CORE_AUTORAISE_DELAY;
     CCSSettingIntegratedSettingPair CORE_AUTORAISE;
     CCSSettingIntegratedSettingPair THUMBNAIL_CURRENT_VIEWPORT;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_COMMAND_TERMINAL;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_COMMAND_WINDOW_SCREENSHOT;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_COMMAND_SCREENSHOT;
+    CCSSettingIntegratedSettingPair MATECOMPAT_COMMAND_TERMINAL;
+    CCSSettingIntegratedSettingPair MATECOMPAT_COMMAND_WINDOW_SCREENSHOT;
+    CCSSettingIntegratedSettingPair MATECOMPAT_COMMAND_SCREENSHOT;
     CCSSettingIntegratedSettingPair ROTATE_ROTATE_RIGHT_WINDOW_KEY;
     CCSSettingIntegratedSettingPair ROTATE_ROTATE_LEFT_WINDOW_KEY;
     CCSSettingIntegratedSettingPair ROTATE_ROTATE_TO_12_WINDOW_KEY;
@@ -135,19 +135,19 @@ struct _CCSGNOMEIntegratedSettingNames
     CCSSettingIntegratedSettingPair CORE_MAXIMIZE_WINDOW_KEY;
     CCSSettingIntegratedSettingPair CORE_MINIMIZE_WINDOW_KEY;
     CCSSettingIntegratedSettingPair CORE_TOGGLE_WINDOW_MAXIMIZED_KEY;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_RUN_COMMAND_TERMINAL_KEY;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_RUN_COMMAND_WINDOW_SCREENSHOT_KEY;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_RUN_COMMAND_SCREENSHOT_KEY;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_MAIN_MENU_KEY;
-    CCSSettingIntegratedSettingPair GNOMECOMPAT_RUN_KEY;
+    CCSSettingIntegratedSettingPair MATECOMPAT_RUN_COMMAND_TERMINAL_KEY;
+    CCSSettingIntegratedSettingPair MATECOMPAT_RUN_COMMAND_WINDOW_SCREENSHOT_KEY;
+    CCSSettingIntegratedSettingPair MATECOMPAT_RUN_COMMAND_SCREENSHOT_KEY;
+    CCSSettingIntegratedSettingPair MATECOMPAT_MAIN_MENU_KEY;
+    CCSSettingIntegratedSettingPair MATECOMPAT_RUN_KEY;
     CCSSettingIntegratedSettingPair UNITYSHELL_SHOW_HUD;
 };
 
-extern const CCSGNOMEIntegratedSettingNames ccsGNOMEIntegratedSettingNames;
+extern const CCSMATEIntegratedSettingNames ccsMATEIntegratedSettingNames;
 
-typedef struct _CCSGConfIntegrationCategoires CCSGConfIntegrationCategories;
+typedef struct _CCSMateConfIntegrationCategoires CCSMateConfIntegrationCategories;
 
-struct _CCSGConfIntegrationCategoires
+struct _CCSMateConfIntegrationCategoires
 {
     const char *GENERAL;
     const char *APPS;
@@ -157,15 +157,15 @@ struct _CCSGConfIntegrationCategoires
     const char *GLOBAL_KEYBINDINGS;
 };
 
-extern const CCSGConfIntegrationCategories ccsGConfIntegrationCategories;
+extern const CCSMateConfIntegrationCategories ccsMateConfIntegrationCategories;
 
-typedef struct _CCSGNOMEIntegratedPluginNames CCSGNOMEIntegratedPluginNames;
+typedef struct _CCSMATEIntegratedPluginNames CCSMATEIntegratedPluginNames;
 
-struct _CCSGNOMEIntegratedPluginNames
+struct _CCSMATEIntegratedPluginNames
 {
     const char *CORE;
     const char *THUMBNAIL;
-    const char *GNOMECOMPAT;
+    const char *MATECOMPAT;
     const char *ROTATE;
     const char *PUT;
     const char *WALL;
@@ -180,39 +180,39 @@ struct _CCSGNOMEIntegratedPluginNames
     const char *SPECIAL;
 };
 
-extern const CCSGNOMEIntegratedPluginNames ccsGNOMEIntegratedPluginNames;
+extern const CCSMATEIntegratedPluginNames ccsMATEIntegratedPluginNames;
 
-extern const char* watchedGConfGnomeDirectories[];
+extern const char* watchedMateConfMateDirectories[];
 
 typedef struct _CCSGSettingsWrapperIntegratedSchemasQuarks
 {
-    GQuark ORG_GNOME_DESKTOP_WM_PREFERENCES;
-    GQuark ORG_GNOME_DESKTOP_WM_KEYBINDINGS;
-    GQuark ORG_GNOME_SETTINGS_DAEMON_PLUGINS_MEDIA_KEYS;
-    GQuark ORG_GNOME_DESKTOP_DEFAULT_APPLICATIONS_TERMINAL;
+    GQuark ORG_MATE_DESKTOP_WM_PREFERENCES;
+    GQuark ORG_MATE_DESKTOP_WM_KEYBINDINGS;
+    GQuark ORG_MATE_SETTINGS_DAEMON_PLUGINS_MEDIA_KEYS;
+    GQuark ORG_MATE_DESKTOP_DEFAULT_APPLICATIONS_TERMINAL;
     GQuark ORG_COMPIZ_INTEGRATED;
 } CCSGSettingsWrapperIntegratedSchemasQuarks;
 
-const CCSGSettingsWrapperIntegratedSchemasQuarks *ccsGNOMEGSettingsWrapperQuarks ();
+const CCSGSettingsWrapperIntegratedSchemasQuarks *ccsMATEGSettingsWrapperQuarks ();
 
-GHashTable * ccsGNOMEIntegrationPopulateCategoriesHashTables ();
-GHashTable * ccsGNOMEIntegrationPopulateSpecialTypesHashTables ();
-GHashTable * ccsGNOMEIntegrationPopulateSettingNameToGNOMENameHashTables ();
-GHashTable * ccsGNOMEGSettingsIntegrationPopulateSettingNameToIntegratedSchemasQuarksHashTable ();
+GHashTable * ccsMATEIntegrationPopulateCategoriesHashTables ();
+GHashTable * ccsMATEIntegrationPopulateSpecialTypesHashTables ();
+GHashTable * ccsMATEIntegrationPopulateSettingNameToMATENameHashTables ();
+GHashTable * ccsMATEGSettingsIntegrationPopulateSettingNameToIntegratedSchemasQuarksHashTable ();
 
 /* We only have to use the #define here because
  * C doesn't have a concept of "constants" setting
  * the array size ...
  */
-#define CCS_GNOME_INTEGRATED_SETTINGS_LIST_SIZE 120
+#define CCS_MATE_INTEGRATED_SETTINGS_LIST_SIZE 120
 
-typedef struct _CCSGNOMEIntegratedSettingsList
+typedef struct _CCSMATEIntegratedSettingsList
 {
     const char *pluginName;
     const char *settingName;
-} CCSGNOMEIntegratedSettingsList;
+} CCSMATEIntegratedSettingsList;
 
-const CCSGNOMEIntegratedSettingsList * ccsGNOMEIntegratedSettingsList ();
+const CCSMATEIntegratedSettingsList * ccsMATEIntegratedSettingsList ();
 
 COMPIZCONFIG_END_DECLS
 

@@ -2,7 +2,7 @@
  *
  * GSettings libcompizconfig backend
  *
- * ccs_gnome_integration_gsettings_wrapper_factory.c
+ * ccs_mate_integration_gsettings_wrapper_factory.c
  *
  * Copyright (c) 2012 Canonical Ltd
  *
@@ -25,25 +25,25 @@
 #include "ccs_gsettings_wrapper_factory_interface.h"
 #include "ccs_gsettings_interface.h"
 #include "ccs_gsettings_interface_wrapper.h"
-#include "ccs_gnome_integration_gsettings_wrapper_factory.h"
+#include "ccs_mate_integration_gsettings_wrapper_factory.h"
 
 /* CCSGSettingsWrapperFactory implementation */
-typedef struct _CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate;
-struct _CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate
+typedef struct _CCSMATEIntegrationGSettingsWrapperFactoryPrivate CCSMATEIntegrationGSettingsWrapperFactoryPrivate;
+struct _CCSMATEIntegrationGSettingsWrapperFactoryPrivate
 {
     CCSGSettingsWrapperFactory *wrapperFactory;
     GCallback                  callback;
 
     /* This is expected to stay alive during the
      * lifetime of this object */
-    CCSGNOMEValueChangeData    *data;
+    CCSMATEValueChangeData    *data;
 };
 
 static void
-ccsGNOMEIntegrationGSettingsWrapperFree (CCSGSettingsWrapperFactory *wrapperFactory)
+ccsMATEIntegrationGSettingsWrapperFree (CCSGSettingsWrapperFactory *wrapperFactory)
 {
-    CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate *priv =
-	    GET_PRIVATE (CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate, wrapperFactory);
+    CCSMATEIntegrationGSettingsWrapperFactoryPrivate *priv =
+	    GET_PRIVATE (CCSMATEIntegrationGSettingsWrapperFactoryPrivate, wrapperFactory);
 
     ccsGSettingsWrapperFactoryUnref (priv->wrapperFactory);
 
@@ -54,18 +54,18 @@ ccsGNOMEIntegrationGSettingsWrapperFree (CCSGSettingsWrapperFactory *wrapperFact
 
 static void
 connectWrapperToChangedSignal (CCSGSettingsWrapper                               *wrapper,
-			       CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate *priv)
+			       CCSMATEIntegrationGSettingsWrapperFactoryPrivate *priv)
 {
     ccsGSettingsWrapperConnectToChangedSignal (wrapper, priv->callback, priv->data);
 }
 
 static CCSGSettingsWrapper *
-ccsGNOMEIntegrationGSettingsWrapperFactoryNewGSettingsWrapper (CCSGSettingsWrapperFactory   *factory,
+ccsMATEIntegrationGSettingsWrapperFactoryNewGSettingsWrapper (CCSGSettingsWrapperFactory   *factory,
 							       const gchar                  *schemaName,
 							       CCSObjectAllocationInterface *ai)
 {
-    CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate *priv =
-	    GET_PRIVATE (CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate, factory);
+    CCSMATEIntegrationGSettingsWrapperFactoryPrivate *priv =
+	    GET_PRIVATE (CCSMATEIntegrationGSettingsWrapperFactoryPrivate, factory);
     CCSGSettingsWrapper *wrapper = ccsGSettingsWrapperFactoryNewGSettingsWrapper (priv->wrapperFactory,
 										  schemaName,
 										  factory->object.object_allocation);
@@ -77,13 +77,13 @@ ccsGNOMEIntegrationGSettingsWrapperFactoryNewGSettingsWrapper (CCSGSettingsWrapp
 }
 
 static CCSGSettingsWrapper *
-ccsGNOMEIntegrationGSettingsWrapperFactoryNewGSettingsWrapperWithPath (CCSGSettingsWrapperFactory   *factory,
+ccsMATEIntegrationGSettingsWrapperFactoryNewGSettingsWrapperWithPath (CCSGSettingsWrapperFactory   *factory,
 								       const gchar                  *schemaName,
 								       const gchar                  *path,
 								       CCSObjectAllocationInterface *ai)
 {
-    CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate *priv =
-	    GET_PRIVATE (CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate, factory);
+    CCSMATEIntegrationGSettingsWrapperFactoryPrivate *priv =
+	    GET_PRIVATE (CCSMATEIntegrationGSettingsWrapperFactoryPrivate, factory);
     CCSGSettingsWrapper *wrapper = ccsGSettingsWrapperFactoryNewGSettingsWrapperWithPath (priv->wrapperFactory,
 											  schemaName,
 											  path,
@@ -94,25 +94,25 @@ ccsGNOMEIntegrationGSettingsWrapperFactoryNewGSettingsWrapperWithPath (CCSGSetti
     return wrapper;
 }
 
-const CCSGSettingsWrapperFactoryInterface ccsGNOMEIntegrationGSettingsWrapperFactoryInterface =
+const CCSGSettingsWrapperFactoryInterface ccsMATEIntegrationGSettingsWrapperFactoryInterface =
 {
-    ccsGNOMEIntegrationGSettingsWrapperFactoryNewGSettingsWrapper,
-    ccsGNOMEIntegrationGSettingsWrapperFactoryNewGSettingsWrapperWithPath,
-    ccsGNOMEIntegrationGSettingsWrapperFree
+    ccsMATEIntegrationGSettingsWrapperFactoryNewGSettingsWrapper,
+    ccsMATEIntegrationGSettingsWrapperFactoryNewGSettingsWrapperWithPath,
+    ccsMATEIntegrationGSettingsWrapperFree
 };
 
 CCSGSettingsWrapperFactory *
-ccsGNOMEIntegrationGSettingsWrapperFactoryDefaultImplNew (CCSObjectAllocationInterface *ai,
+ccsMATEIntegrationGSettingsWrapperFactoryDefaultImplNew (CCSObjectAllocationInterface *ai,
 							  CCSGSettingsWrapperFactory   *factory,
 							  GCallback                    callback,
-							  CCSGNOMEValueChangeData      *data)
+							  CCSMATEValueChangeData      *data)
 {
     CCSGSettingsWrapperFactory *wrapperFactory = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSGSettingsWrapperFactory));
 
     if (!wrapperFactory)
 	return NULL;
 
-    CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSGNOMEIntegrationGSettingsWrapperFactoryPrivate));
+    CCSMATEIntegrationGSettingsWrapperFactoryPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSMATEIntegrationGSettingsWrapperFactoryPrivate));
 
     if (!priv)
     {
@@ -127,7 +127,7 @@ ccsGNOMEIntegrationGSettingsWrapperFactoryDefaultImplNew (CCSObjectAllocationInt
     priv->data = data;
 
     ccsObjectInit (wrapperFactory, ai);
-    ccsObjectAddInterface (wrapperFactory, (const CCSInterface *) &ccsGNOMEIntegrationGSettingsWrapperFactoryInterface, GET_INTERFACE_TYPE (CCSGSettingsWrapperFactoryInterface));
+    ccsObjectAddInterface (wrapperFactory, (const CCSInterface *) &ccsMATEIntegrationGSettingsWrapperFactoryInterface, GET_INTERFACE_TYPE (CCSGSettingsWrapperFactoryInterface));
     ccsObjectSetPrivate (wrapperFactory, (CCSPrivate *) priv);
 
     ccsGSettingsWrapperFactoryRef (wrapperFactory);

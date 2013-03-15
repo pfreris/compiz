@@ -23,15 +23,15 @@
 
 #include <ccs.h>
 #include <ccs-backend.h>
-#include <ccs_gnome_integrated_setting.h>
-#include "compizconfig_ccs_mock_gnome_integrated_setting_composition.h"
+#include <ccs_mate_integrated_setting.h>
+#include "compizconfig_ccs_mock_mate_integrated_setting_composition.h"
 
-typedef struct _CCSMockGNOMEIntegratedSettingCompositionPrivate
+typedef struct _CCSMockMATEIntegratedSettingCompositionPrivate
 {
     CCSIntegratedSetting          *integratedSetting;
-    CCSGNOMEIntegratedSettingInfo *gnomeIntegratedSettingInfo;
+    CCSMATEIntegratedSettingInfo *mateIntegratedSettingInfo;
     CCSIntegratedSettingInfo      *integratedSettingInfo;
-} CCSMockGNOMEIntegratedSettingCompositionPrivate;
+} CCSMockMATEIntegratedSettingCompositionPrivate;
 
 static CCSIntegratedSetting *
 allocateCCSIntegratedSetting (CCSObjectAllocationInterface *allocator)
@@ -46,14 +46,14 @@ allocateCCSIntegratedSetting (CCSObjectAllocationInterface *allocator)
     return setting;
 }
 
-static CCSMockGNOMEIntegratedSettingCompositionPrivate *
+static CCSMockMATEIntegratedSettingCompositionPrivate *
 allocatePrivate (CCSIntegratedSetting         *integratedSetting,
 		 CCSObjectAllocationInterface *allocator)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv =
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv =
 	    (*allocator->calloc_) (allocator->allocator,
 				   1,
-				   sizeof (CCSMockGNOMEIntegratedSettingCompositionPrivate));
+				   sizeof (CCSMockMATEIntegratedSettingCompositionPrivate));
 
     if (!priv)
     {
@@ -66,26 +66,26 @@ allocatePrivate (CCSIntegratedSetting         *integratedSetting,
 }
 
 static SpecialOptionType
-ccsMockCompositionIntegratedSettingGetSpecialOptionType (CCSGNOMEIntegratedSettingInfo *setting)
+ccsMockCompositionIntegratedSettingGetSpecialOptionType (CCSMATEIntegratedSettingInfo *setting)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
-    return ccsGNOMEIntegratedSettingInfoGetSpecialOptionType (priv->gnomeIntegratedSettingInfo);
+    return ccsMATEIntegratedSettingInfoGetSpecialOptionType (priv->mateIntegratedSettingInfo);
 }
 
 static const char *
-ccsMockCompositionIntegratedSettingGetGNOMEName (CCSGNOMEIntegratedSettingInfo *setting)
+ccsMockCompositionIntegratedSettingGetMATEName (CCSMATEIntegratedSettingInfo *setting)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
-    return ccsGNOMEIntegratedSettingInfoGetGNOMEName (priv->gnomeIntegratedSettingInfo);
+    return ccsMATEIntegratedSettingInfoGetMATEName (priv->mateIntegratedSettingInfo);
 }
 
 static CCSSettingValue *
 ccsMockCompositionIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSettingType type)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv =
-	    GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv =
+	    GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
     return ccsIntegratedSettingReadValue (priv->integratedSetting, type);
 }
@@ -93,8 +93,8 @@ ccsMockCompositionIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCS
 static void
 ccsMockCompositionIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CCSSettingValue *v, CCSSettingType type)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv =
-	    GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv =
+	    GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
     ccsIntegratedSettingWriteValue (priv->integratedSetting, v, type);
 }
@@ -102,7 +102,7 @@ ccsMockCompositionIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CC
 static const char *
 ccsMockCompositionIntegratedSettingInfoPluginName (CCSIntegratedSettingInfo *setting)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
     return ccsIntegratedSettingInfoPluginName (priv->integratedSettingInfo);
 }
@@ -110,7 +110,7 @@ ccsMockCompositionIntegratedSettingInfoPluginName (CCSIntegratedSettingInfo *set
 static const char *
 ccsMockCompositionIntegratedSettingInfoSettingName (CCSIntegratedSettingInfo *setting)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
     return ccsIntegratedSettingInfoSettingName (priv->integratedSettingInfo);
 }
@@ -118,7 +118,7 @@ ccsMockCompositionIntegratedSettingInfoSettingName (CCSIntegratedSettingInfo *se
 static CCSSettingType
 ccsMockCompositionIntegratedSettingInfoGetType (CCSIntegratedSettingInfo *setting)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, setting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv = GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, setting);
 
     return ccsIntegratedSettingInfoGetType (priv->integratedSettingInfo);
 }
@@ -126,11 +126,11 @@ ccsMockCompositionIntegratedSettingInfoGetType (CCSIntegratedSettingInfo *settin
 static void
 ccsMockCompositionIntegratedSettingFree (CCSIntegratedSetting        *integratedSetting)
 {
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv =
-	    GET_PRIVATE (CCSMockGNOMEIntegratedSettingCompositionPrivate, integratedSetting);
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv =
+	    GET_PRIVATE (CCSMockMATEIntegratedSettingCompositionPrivate, integratedSetting);
 
     ccsIntegratedSettingUnref (priv->integratedSetting);
-    ccsGNOMEIntegratedSettingInfoUnref (priv->gnomeIntegratedSettingInfo);
+    ccsMATEIntegratedSettingInfoUnref (priv->mateIntegratedSettingInfo);
 
     ccsObjectFinalize (integratedSetting);
     (*integratedSetting->object.object_allocation->free_)
@@ -144,16 +144,16 @@ ccsMockCompositionIntegratedSettingInfoFree (CCSIntegratedSettingInfo *info)
 }
 
 static void
-ccsMockCompositionGNOMEIntegratedSettingInfoFree (CCSGNOMEIntegratedSettingInfo *info)
+ccsMockCompositionMATEIntegratedSettingInfoFree (CCSMATEIntegratedSettingInfo *info)
 {
     return ccsMockCompositionIntegratedSettingFree ((CCSIntegratedSetting *) info);
 }
 
-const CCSGNOMEIntegratedSettingInfoInterface ccsMockCompositionGNOMEIntegratedSettingInfo =
+const CCSMATEIntegratedSettingInfoInterface ccsMockCompositionMATEIntegratedSettingInfo =
 {
     ccsMockCompositionIntegratedSettingGetSpecialOptionType,
-    ccsMockCompositionIntegratedSettingGetGNOMEName,
-    ccsMockCompositionGNOMEIntegratedSettingInfoFree
+    ccsMockCompositionIntegratedSettingGetMATEName,
+    ccsMockCompositionMATEIntegratedSettingInfoFree
 };
 
 const CCSIntegratedSettingInterface ccsMockCompositionIntegratedSetting =
@@ -173,7 +173,7 @@ const CCSIntegratedSettingInfoInterface ccsMockCompositionIntegratedSettingInfo 
 
 CCSIntegratedSetting *
 ccsMockCompositionIntegratedSettingNew (CCSIntegratedSetting          *integratedSetting,
-					CCSGNOMEIntegratedSettingInfo *gnomeInfo,
+					CCSMATEIntegratedSettingInfo *mateInfo,
 					CCSIntegratedSettingInfo      *settingInfo,
 					CCSObjectAllocationInterface  *allocator)
 {
@@ -182,7 +182,7 @@ ccsMockCompositionIntegratedSettingNew (CCSIntegratedSetting          *integrate
     if (!composition)
 	return NULL;
 
-    CCSMockGNOMEIntegratedSettingCompositionPrivate *priv = allocatePrivate (composition,
+    CCSMockMATEIntegratedSettingCompositionPrivate *priv = allocatePrivate (composition,
 									     allocator);
 
     if (!priv)
@@ -192,15 +192,15 @@ ccsMockCompositionIntegratedSettingNew (CCSIntegratedSetting          *integrate
 	    (const CCSInterface *) (&ccsMockCompositionIntegratedSetting);
     const CCSInterface *integratedSettingInfoImpl =
 	    (const CCSInterface *) (&ccsMockCompositionIntegratedSettingInfo);
-    const CCSInterface *gnomeSettingImpl =
-	    (const CCSInterface *) (&ccsMockCompositionGNOMEIntegratedSettingInfo);
+    const CCSInterface *mateSettingImpl =
+	    (const CCSInterface *) (&ccsMockCompositionMATEIntegratedSettingInfo);
 
     priv->integratedSetting          = integratedSetting;
-    priv->gnomeIntegratedSettingInfo = gnomeInfo;
+    priv->mateIntegratedSettingInfo = mateInfo;
     priv->integratedSettingInfo      = settingInfo;
 
     ccsIntegratedSettingRef (priv->integratedSetting);
-    ccsGNOMEIntegratedSettingInfoRef (priv->gnomeIntegratedSettingInfo);
+    ccsMATEIntegratedSettingInfoRef (priv->mateIntegratedSettingInfo);
 
     ccsObjectSetPrivate (composition, (CCSPrivate *) (priv));
     ccsObjectAddInterface (composition,
@@ -210,8 +210,8 @@ ccsMockCompositionIntegratedSettingNew (CCSIntegratedSetting          *integrate
 			   integratedSettingInfoImpl,
 			   GET_INTERFACE_TYPE (CCSIntegratedSettingInfoInterface));
     ccsObjectAddInterface (composition,
-			   gnomeSettingImpl,
-			   GET_INTERFACE_TYPE (CCSGNOMEIntegratedSettingInfoInterface));
+			   mateSettingImpl,
+			   GET_INTERFACE_TYPE (CCSMATEIntegratedSettingInfoInterface));
 
     ccsObjectRef (composition);
 
