@@ -5,11 +5,11 @@ _Name=Compiz
 Exec=compiz
 NoDisplay=true
 # name of loadable control center module
-X-MATE-WMSettingsModule=compiz
+X-GNOME-WMSettingsModule=compiz
 # autostart phase
-X-MATE-Autostart-Phase=WindowManager
-X-MATE-Provides=windowmanager
+X-GNOME-Autostart-Phase=WindowManager
+X-GNOME-Provides=windowmanager
 # name we put on the WM spec check window
-X-MATE-WMName=compiz
+X-GNOME-WMName=compiz
 # back compat only 
-X-MateWMSettingsLibrary=compiz
+X-GnomeWMSettingsLibrary=compiz

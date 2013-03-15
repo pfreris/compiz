@@ -17,11 +17,11 @@
  *
  * Authored By: Sam Spilsbury <sam.spilsbury@canonical.com>
  */
-#ifndef _GWD_MARCO_WINDOW_DECORATION_UTIL_H
-#define _GWD_MARCO_WINDOW_DECORATION_UTIL_H
+#ifndef _GWD_METACITY_WINDOW_DECORATION_UTIL_H
+#define _GWD_METACITY_WINDOW_DECORATION_UTIL_H
 
 #include <glib.h>
-#include <marco-1/marco-private/theme.h>
+#include <metacity-1/metacity-private/theme.h>
 
 G_BEGIN_DECLS
 
@@ -30,7 +30,7 @@ typedef void (*GWDMetaThemeSetProc) (const gchar *theme,
 				     gboolean    force_update);
 
 gboolean
-gwd_marco_window_decoration_update_meta_theme (const gchar		     *theme,
+gwd_metacity_window_decoration_update_meta_theme (const gchar		     *theme,
 						  GWDMetaThemeGetCurrentProc get_current,
 						  GWDMetaThemeSetProc	     set_current);
 

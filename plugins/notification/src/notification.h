@@ -25,7 +25,7 @@
 #include <core/core.h>
 #include <core/pluginclasshandler.h>
 
-#include <libmatenotify/notify.h>
+#include <libnotify/notify.h>
 
 #include "notification_options.h"
 

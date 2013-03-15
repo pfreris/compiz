@@ -333,8 +333,8 @@ CompSession::getClientId (CompSession::ClientIdType type)
 
     return "";
 }
-/* ice connection handling taken and updated from mate-ice.c
- * original mate-ice.c code written by Tom Tromey <tromey@cygnus.com>
+/* ice connection handling taken and updated from gnome-ice.c
+ * original gnome-ice.c code written by Tom Tromey <tromey@cygnus.com>
  */
 
 /* This is called when data is available on an ICE connection. */

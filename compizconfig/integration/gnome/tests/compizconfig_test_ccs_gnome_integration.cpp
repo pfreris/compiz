@@ -36,9 +36,9 @@
 
 #include <ccs.h>
 #include <ccs-backend.h>
-#include <ccs_mate_integrated_setting.h>
-#include <ccs_mate_integration.h>
-#include <ccs_mate_integration_constants.h>
+#include <ccs_gnome_integrated_setting.h>
+#include <ccs_gnome_integration.h>
+#include <ccs_gnome_integration_constants.h>
 #include <compizconfig_ccs_context_mock.h>
 #include <compizconfig_ccs_setting_mock.h>
 #include <compizconfig_ccs_plugin_mock.h>
@@ -46,7 +46,7 @@
 #include <compizconfig_ccs_integrated_setting_factory_mock.h>
 #include <compizconfig_ccs_integrated_setting_storage_mock.h>
 #include <compizconfig_ccs_integrated_setting_mock.h>
-#include "compizconfig_ccs_mock_mate_integrated_setting_composition.h"
+#include "compizconfig_ccs_mock_gnome_integrated_setting_composition.h"
 #include "compizconfig_ccs_setting_value_matcher.h"
 
 namespace cc  = compiz::config;
@@ -73,8 +73,8 @@ namespace
     createIntegratedSettingCompositionFromMock (const std::string            &plugin,
 						const std::string            &setting,
 						CCSSettingType               type,
-						SpecialOptionType            mateType,
-						const std::string            &mateName,
+						SpecialOptionType            gnomeType,
+						const std::string            &gnomeName,
 						CCSObjectAllocationInterface *allocator)
     {
 	CCSIntegratedSettingInfo *integratedSettingInfo =
@@ -83,10 +83,10 @@ namespace
 						   type,
 						   allocator);
 	/* This takes ownership of integratedSettingInfo */
-	CCSMATEIntegratedSettingInfo *mateIntegratedSettingInfo =
-		ccsMATEIntegratedSettingInfoNew (integratedSettingInfo,
-						  mateType,
-						  mateName.c_str (),
+	CCSGNOMEIntegratedSettingInfo *gnomeIntegratedSettingInfo =
+		ccsGNOMEIntegratedSettingInfoNew (integratedSettingInfo,
+						  gnomeType,
+						  gnomeName.c_str (),
 						  allocator);
 	CCSIntegratedSetting          *integratedSetting =
 		ccsMockIntegratedSettingNew (allocator);
@@ -96,14 +96,14 @@ namespace
 
 	boost::shared_ptr <CCSIntegratedSetting> composition =
 		AutoDestroy (ccsMockCompositionIntegratedSettingNew (integratedSetting,
-								     mateIntegratedSettingInfo,
+								     gnomeIntegratedSettingInfo,
 								     integratedSettingInfo,
 								     allocator),
 			     ccsIntegratedSettingUnref);
 
 	/* We want the composition to take ownership here, so unref the
 	 * original members of the composition */
-	ccsMATEIntegratedSettingInfoUnref (mateIntegratedSettingInfo);
+	ccsGNOMEIntegratedSettingInfoUnref (gnomeIntegratedSettingInfo);
 	ccsIntegratedSettingUnref (integratedSetting);
 
 	return boost::make_shared <IntegratedSettingWithMock> (mock, composition);
@@ -129,19 +129,19 @@ namespace
 			     boost::shared_ptr <CCSBackend>     ,
 			     CCSIntegratedSettingsStorage      *,
 			     CCSIntegratedSettingFactory       *,
-			     boost::shared_ptr <CCSIntegration> > CCSMATEIntegrationWithMocks;
+			     boost::shared_ptr <CCSIntegration> > CCSGNOMEIntegrationWithMocks;
 
-    CCSMATEIntegrationWithMocks
+    CCSGNOMEIntegrationWithMocks
     createIntegrationWithMocks (CCSObjectAllocationInterface *ai)
     {
 	boost::shared_ptr <CCSContext>     context (AutoDestroy (ccsMockContextNew (),
 								 ccsFreeContext));
 	boost::shared_ptr <CCSBackend>     backend (AutoDestroy (ccsMockBackendNew (),
 								 ccsFreeMockBackend));
-	/* The MATE Integration backend takes ownership of these two */
+	/* The GNOME Integration backend takes ownership of these two */
 	CCSIntegratedSettingsStorage       *storage (ccsMockIntegratedSettingsStorageNew (ai));
 	CCSIntegratedSettingFactory        *factory (ccsMockIntegratedSettingFactoryNew (ai));
-	boost::shared_ptr <CCSIntegration> integration (AutoDestroy (ccsMATEIntegrationBackendNew (backend.get (),
+	boost::shared_ptr <CCSIntegration> integration (AutoDestroy (ccsGNOMEIntegrationBackendNew (backend.get (),
 												    context.get (),
 												    factory,
 												    storage,
@@ -153,7 +153,7 @@ namespace
 	CCSIntegratedSettingsStorageGMock &gmockStorage = *(reinterpret_cast <CCSIntegratedSettingsStorageGMock *> (ccsObjectGetPrivate (storage)));
 	CCSIntegratedSettingFactoryGMock  &gmockFactory = *(reinterpret_cast <CCSIntegratedSettingFactoryGMock *> (ccsObjectGetPrivate (factory)));
 
-	return CCSMATEIntegrationWithMocks (gmockContext,
+	return CCSGNOMEIntegrationWithMocks (gmockContext,
 					     gmockBackend,
 					     gmockStorage,
 					     gmockFactory,
@@ -165,19 +165,19 @@ namespace
     }
 
     CCSIntegration *
-    Real (CCSMATEIntegrationWithMocks &integrationWithMocks)
+    Real (CCSGNOMEIntegrationWithMocks &integrationWithMocks)
     {
 	return std::tr1::get <8> (integrationWithMocks).get ();
     }
 
     CCSContextGMock &
-    MockContext (CCSMATEIntegrationWithMocks &integrationWithMocks)
+    MockContext (CCSGNOMEIntegrationWithMocks &integrationWithMocks)
     {
 	return std::tr1::get <0> (integrationWithMocks);
     }
 
     CCSIntegratedSettingsStorageGMock &
-    MockStorage (CCSMATEIntegrationWithMocks &integrationWithMocks)
+    MockStorage (CCSGNOMEIntegrationWithMocks &integrationWithMocks)
     {
 	return std::tr1::get <2> (integrationWithMocks);
     }
@@ -245,28 +245,28 @@ namespace
 
     const std::string MOCK_PLUGIN ("mock");
     const std::string MOCK_SETTING ("mock");
-    const std::string MOCK_MATE_NAME ("mock");
+    const std::string MOCK_GNOME_NAME ("mock");
     const CCSSettingType MOCK_SETTING_TYPE = TypeInt;
-    const SpecialOptionType MOCK_MATE_SETTING_TYPE = OptionInt;
+    const SpecialOptionType MOCK_GNOME_SETTING_TYPE = OptionInt;
 }
 
-TEST (CCSMATEIntegrationTest, TestConstructComposition)
+TEST (CCSGNOMEIntegrationTest, TestConstructComposition)
 {
     IntegratedSettingWithMockPtr settingWithMock (
 	createIntegratedSettingCompositionFromMock (MOCK_PLUGIN,
 						    MOCK_SETTING,
 						    MOCK_SETTING_TYPE,
-						    MOCK_MATE_SETTING_TYPE,
-						    MOCK_MATE_NAME,
+						    MOCK_GNOME_SETTING_TYPE,
+						    MOCK_GNOME_NAME,
 						    &ccsDefaultObjectAllocator));
 }
 
-class CCSMATEIntegrationTestWithMocks :
+class CCSGNOMEIntegrationTestWithMocks :
     public ::testing::Test
 {
     public:
 
-	CCSMATEIntegrationTestWithMocks () :
+	CCSGNOMEIntegrationTestWithMocks () :
 	    mIntegration (createIntegrationWithMocks (&ccsDefaultObjectAllocator)),
 	    mSetting (AutoDestroy (ccsMockSettingNew (),
 				   ccsSettingUnref)),
@@ -281,7 +281,7 @@ class CCSMATEIntegrationTestWithMocks :
 
     protected:
 
-	CCSMATEIntegrationWithMocks   mIntegration;
+	CCSGNOMEIntegrationWithMocks   mIntegration;
 	boost::shared_ptr <CCSSetting> mSetting;
 	CCSSettingGMock                &mSettingMock;
 	IntegratedSettingWithMockPtr   mIntegratedSetting;
@@ -289,8 +289,8 @@ class CCSMATEIntegrationTestWithMocks :
 	CCSPluginGMock                 &mPluginMock;
 };
 
-class CCSMATEIntegrationTestReadIntegrated :
-    public CCSMATEIntegrationTestWithMocks
+class CCSGNOMEIntegrationTestReadIntegrated :
+    public CCSGNOMEIntegrationTestWithMocks
 {
     public:
 
@@ -301,8 +301,8 @@ class CCSMATEIntegrationTestReadIntegrated :
 	}
 };
 
-class CCSMATEIntegrationTestWriteIntegrated :
-    public CCSMATEIntegrationTestWithMocks
+class CCSGNOMEIntegrationTestWriteIntegrated :
+    public CCSGNOMEIntegrationTestWithMocks
 {
     public:
 
@@ -313,17 +313,17 @@ class CCSMATEIntegrationTestWriteIntegrated :
 	}
 };
 
-TEST_F (CCSMATEIntegrationTestWithMocks, TestConstructMATEIntegration)
+TEST_F (CCSGNOMEIntegrationTestWithMocks, TestConstructGNOMEIntegration)
 {
 }
 
-TEST_F (CCSMATEIntegrationTestWithMocks, TestGetIntegratedSettingFromStorage)
+TEST_F (CCSGNOMEIntegrationTestWithMocks, TestGetIntegratedSettingFromStorage)
 {
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (MOCK_PLUGIN,
 								     MOCK_SETTING,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
 
     CCSIntegratedSettingList returnIntegratedSettings =
@@ -341,7 +341,7 @@ TEST_F (CCSMATEIntegrationTestWithMocks, TestGetIntegratedSettingFromStorage)
 						   MOCK_SETTING.c_str ()));
 }
 
-TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInKeyOption)
+TEST_F (CCSGNOMEIntegrationTestReadIntegrated, TestReadInKeyOption)
 {
     CCSSettingValue *v = MakeSettingValue ();
     v->value.asString = strdup ("<Control>a");
@@ -350,7 +350,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInKeyOption)
 								     MOCK_SETTING,
 								     TypeKey,
 								     OptionKey,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
 
     CCSSettingKeyValue keyValue;
@@ -364,7 +364,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInKeyOption)
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionCurrentViewport)
+TEST_F (CCSGNOMEIntegrationTestReadIntegrated, TestReadInSpecialOptionCurrentViewport)
 {
     const std::string settingName ("current_viewport");
     CCSSettingValue   *v = MakeSettingValue ();
@@ -374,7 +374,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionCurrentView
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     EXPECT_CALL (Mock (*mIntegratedSetting), readValue (TypeBool)).WillOnce (Return (v));
@@ -386,7 +386,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionCurrentView
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionFullscreenVisualBell)
+TEST_F (CCSGNOMEIntegrationTestReadIntegrated, TestReadInSpecialOptionFullscreenVisualBell)
 {
     const std::string settingName ("fullscreen_visual_bell");
     CCSSettingValue   *v = MakeSettingValue ();
@@ -396,7 +396,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionFullscreenV
 								     settingName,
 								     TypeString,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     EXPECT_CALL (Mock (*mIntegratedSetting), readValue (TypeString)).WillOnce (Return (v));
@@ -408,7 +408,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionFullscreenV
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionClickToFocus)
+TEST_F (CCSGNOMEIntegrationTestReadIntegrated, TestReadInSpecialOptionClickToFocus)
 {
     const std::string settingName ("click_to_focus");
     CCSSettingValue   *v = MakeSettingValue ();
@@ -418,7 +418,7 @@ TEST_F (CCSMATEIntegrationTestReadIntegrated, TestReadInSpecialOptionClickToFocu
 								     settingName,
 								     TypeString,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     EXPECT_CALL (Mock (*mIntegratedSetting), readValue (TypeString)).WillOnce (Return (v));
@@ -467,13 +467,13 @@ namespace
     std::string TERMINAL_BINDING ("<Control><Alt>t");
 }
 
-class CCSMATEIntegrationTestReadIntegratedMediaKeys :
-    public CCSMATEIntegrationTestReadIntegrated,
+class CCSGNOMEIntegrationTestReadIntegratedMediaKeys :
+    public CCSGNOMEIntegrationTestReadIntegrated,
     public WithParamInterface <IntegratedMediaKeysParam>
 {
 };
 
-TEST_P (CCSMATEIntegrationTestReadIntegratedMediaKeys, TestReadIntegratedMediaKey)
+TEST_P (CCSGNOMEIntegrationTestReadIntegratedMediaKeys, TestReadIntegratedMediaKey)
 {
     const std::string settingName (GetParam ().settingName);
     CCSSettingValue   *v = MakeSettingValue ();
@@ -483,7 +483,7 @@ TEST_P (CCSMATEIntegrationTestReadIntegratedMediaKeys, TestReadIntegratedMediaKe
 								     settingName,
 								     TypeString,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     EXPECT_CALL (Mock (*mIntegratedSetting), readValue (TypeString)).WillOnce (Return (v));
@@ -495,7 +495,7 @@ TEST_P (CCSMATEIntegrationTestReadIntegratedMediaKeys, TestReadIntegratedMediaKe
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-INSTANTIATE_TEST_CASE_P (CCSMATEMediaKeys, CCSMATEIntegrationTestReadIntegratedMediaKeys,
+INSTANTIATE_TEST_CASE_P (CCSGNOMEMediaKeys, CCSGNOMEIntegrationTestReadIntegratedMediaKeys,
 			 Values (IntegratedMediaKeysParam (RUN_COMMAND_SCREENSHOT_KEY,
 							   SCREENSHOT,
 							   SCREENSHOT_BINDING),
@@ -509,22 +509,22 @@ INSTANTIATE_TEST_CASE_P (CCSMATEMediaKeys, CCSMATEIntegrationTestReadIntegratedM
 namespace
 {
     const std::string DEFAULT_MOUSE_BUTTON_MODIFIERS_STRING ("<Alt>");
-    const std::string MATE_MOUSE_BUTTON_MODIFIERS_STRING ("<Super>");
+    const std::string GNOME_MOUSE_BUTTON_MODIFIERS_STRING ("<Super>");
     const unsigned int DEFAULT_MOUSE_BUTTON_MODIFIERS =
 	ccsStringToModifiers (DEFAULT_MOUSE_BUTTON_MODIFIERS_STRING.c_str ());
-    const unsigned int MATE_MOUSE_BUTTON_MODIFIERS =
-	ccsStringToModifiers (MATE_MOUSE_BUTTON_MODIFIERS_STRING.c_str ());
+    const unsigned int GNOME_MOUSE_BUTTON_MODIFIERS =
+	ccsStringToModifiers (GNOME_MOUSE_BUTTON_MODIFIERS_STRING.c_str ());
 
     const unsigned int LEFT_BUTTON = 1;
     const unsigned int MIDDLE_BUTTON = 2;
     const unsigned int RIGHT_BUTTON = 3;
 }
 
-class CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers
+class CCSGNOMEIntegrationTestWithMocksIntegratedMouseButtonModifiers
 {
     public:
 
-	CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers () :
+	CCSGNOMEIntegrationTestWithMocksIntegratedMouseButtonModifiers () :
 	    mIntegratedSettingMBM (AutoDestroy (ccsMockIntegratedSettingNew (&ccsDefaultObjectAllocator),
 						ccsIntegratedSettingUnref)),
 	    mIntegratedSettingMBMMock (*(reinterpret_cast <CCSIntegratedSettingGMock *> (ccsObjectGetPrivate (mIntegratedSettingMBM.get ())))),
@@ -539,7 +539,7 @@ class CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers
 	    mButtonValue.edgeMask      = 0;
 	}
 
-	virtual void MateSetUp (CCSMATEIntegrationWithMocks &integration)
+	virtual void GnomeSetUp (CCSGNOMEIntegrationWithMocks &integration)
 	{
 	    /* Create new lists as we expect the caller to free them once it
 	     * has retreived them */
@@ -549,12 +549,12 @@ class CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers
 		ccsIntegratedSettingListAppend (NULL, mIntegratedSettingResizeWithRB.get ());
 
 	    EXPECT_CALL (MockStorage (integration),
-			 findMatchingSettingsByPluginAndSettingName (Eq (std::string (ccsMATEIntegratedPluginNames.SPECIAL)),
-								     Eq (std::string (ccsMATEIntegratedSettingNames.NULL_MOUSE_BUTTON_MODIFIER.compizName))))
+			 findMatchingSettingsByPluginAndSettingName (Eq (std::string (ccsGNOMEIntegratedPluginNames.SPECIAL)),
+								     Eq (std::string (ccsGNOMEIntegratedSettingNames.NULL_MOUSE_BUTTON_MODIFIER.compizName))))
 		.WillOnce (Return (integratedSettingsMBM));
 	    EXPECT_CALL (MockStorage (integration),
-			 findMatchingSettingsByPluginAndSettingName (Eq (std::string (ccsMATEIntegratedPluginNames.SPECIAL)),
-								     Eq (std::string (ccsMATEIntegratedSettingNames.NULL_RESIZE_WITH_RIGHT_BUTTON.compizName))))
+			 findMatchingSettingsByPluginAndSettingName (Eq (std::string (ccsGNOMEIntegratedPluginNames.SPECIAL)),
+								     Eq (std::string (ccsGNOMEIntegratedSettingNames.NULL_RESIZE_WITH_RIGHT_BUTTON.compizName))))
 		.WillOnce (Return (integratedSettingsResizeWithRB));
 	}
 
@@ -568,9 +568,9 @@ class CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers
 	CCSSettingButtonValue                    mButtonValue;
 };
 
-class CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers :
-    public CCSMATEIntegrationTestReadIntegrated,
-    public CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers
+class CCSGNOMEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers :
+    public CCSGNOMEIntegrationTestReadIntegrated,
+    public CCSGNOMEIntegrationTestWithMocksIntegratedMouseButtonModifiers
 {
     public:
 
@@ -579,10 +579,10 @@ class CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers :
 	    CCSSettingValue   *vRB = MakeSettingValue ();
 	    CCSSettingValue   *vMBM = MakeSettingValue ();
 	    vRB->value.asBool = TRUE;
-	    vMBM->value.asString = strdup (MATE_MOUSE_BUTTON_MODIFIERS_STRING.c_str ());
+	    vMBM->value.asString = strdup (GNOME_MOUSE_BUTTON_MODIFIERS_STRING.c_str ());
 
-	    CCSMATEIntegrationTestReadIntegrated::SetUp ();
-	    CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers::MateSetUp (mIntegration);
+	    CCSGNOMEIntegrationTestReadIntegrated::SetUp ();
+	    CCSGNOMEIntegrationTestWithMocksIntegratedMouseButtonModifiers::GnomeSetUp (mIntegration);
 
 	    EXPECT_CALL (mSettingMock, getButton (_))
 		    .WillOnce (DoAll (
@@ -590,19 +590,19 @@ class CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers :
 				  mButtonValue),
 				Return (TRUE)));
 
-	    /* Get the MATE Mouse button modifier */
+	    /* Get the GNOME Mouse button modifier */
 	    EXPECT_CALL (mIntegratedSettingMBMMock, readValue (TypeString)).WillOnce (Return (vMBM));
 	    EXPECT_CALL (mIntegratedSettingResizeWithRBMock, readValue (TypeBool)).WillOnce (Return (vRB));
 	}
 };
 
-class CCSMATEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers :
-    public CCSMATEIntegrationTestWriteIntegrated,
-    public CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers
+class CCSGNOMEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers :
+    public CCSGNOMEIntegrationTestWriteIntegrated,
+    public CCSGNOMEIntegrationTestWithMocksIntegratedMouseButtonModifiers
 {
     public:
 
-	CCSMATEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers () :
+	CCSGNOMEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers () :
 	    corePlugin (AutoDestroy (ccsMockPluginNew (),
 				     ccsPluginUnref)),
 	    corePluginMock (*(reinterpret_cast <CCSPluginGMock *> (ccsObjectGetPrivate (corePlugin.get ())))),
@@ -638,8 +638,8 @@ class CCSMATEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers :
 
 	virtual void SetUp ()
 	{
-	    CCSMATEIntegrationTestWriteIntegrated::SetUp ();
-	    CCSMATEIntegrationTestWithMocksIntegratedMouseButtonModifiers::MateSetUp (mIntegration);
+	    CCSGNOMEIntegrationTestWriteIntegrated::SetUp ();
+	    CCSGNOMEIntegrationTestWithMocksIntegratedMouseButtonModifiers::GnomeSetUp (mIntegration);
 	}
 
     protected:
@@ -663,20 +663,20 @@ class CCSMATEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers :
 	boost::shared_ptr <CCSSettingValue> coreWindowMenuButton;
 };
 
-TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestReadInSpecialOptionMoveInitiateButton)
+TEST_F (CCSGNOMEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestReadInSpecialOptionMoveInitiateButton)
 {
     const std::string settingName ("initiate_button");
     const std::string pluginName ("move");
 
     CCSSettingButtonValue newButtonValue = mButtonValue;
     newButtonValue.button = LEFT_BUTTON;
-    newButtonValue.buttonModMask = MATE_MOUSE_BUTTON_MODIFIERS;
+    newButtonValue.buttonModMask = GNOME_MOUSE_BUTTON_MODIFIERS;
 
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (pluginName,
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, pluginName);
 
@@ -690,20 +690,20 @@ TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestR
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestReadInSpecialOptionResizeInitiateButton)
+TEST_F (CCSGNOMEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestReadInSpecialOptionResizeInitiateButton)
 {
     const std::string settingName ("initiate_button");
     const std::string pluginName ("resize");
 
     CCSSettingButtonValue newButtonValue = mButtonValue;
     newButtonValue.button = RIGHT_BUTTON;
-    newButtonValue.buttonModMask = MATE_MOUSE_BUTTON_MODIFIERS;
+    newButtonValue.buttonModMask = GNOME_MOUSE_BUTTON_MODIFIERS;
 
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (pluginName,
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, pluginName);
 
@@ -717,14 +717,14 @@ TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestR
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestReadInSpecialOptionWhereIntegratedOptionReturnsNull)
+TEST_F (CCSGNOMEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestReadInSpecialOptionWhereIntegratedOptionReturnsNull)
 {
     const std::string settingName ("initiate_button");
     const std::string pluginName ("move");
 
     CCSSettingButtonValue newButtonValue = mButtonValue;
     newButtonValue.button = LEFT_BUTTON;
-    /* Reading the mate mouse button modifiers failed, so default to zero */
+    /* Reading the gnome mouse button modifiers failed, so default to zero */
     newButtonValue.buttonModMask = 0;
 
     /* Clear the old expectation */
@@ -737,7 +737,7 @@ TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestR
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, pluginName);
 
@@ -751,27 +751,27 @@ TEST_F (CCSMATEIntegrationTestWithMocksReadIntegratedMouseButtonModifiers, TestR
 						      Real (*mIntegratedSetting)), IsTrue ());
 }
 
-TEST_F (CCSMATEIntegrationTestWriteIntegrated, TestWriteCurrentViewport)
+TEST_F (CCSGNOMEIntegrationTestWriteIntegrated, TestWriteCurrentViewport)
 {
     const std::string                   settingName ("current_viewport");
     boost::shared_ptr <CCSSettingValue> compizValue (MakeAutoDestroySettingValue (TypeBool));
-    boost::shared_ptr <CCSSettingValue> mateValue (MakeAutoDestroySettingValue (TypeBool));
+    boost::shared_ptr <CCSSettingValue> gnomeValue (MakeAutoDestroySettingValue (TypeBool));
     CCSSettingInfo                      info;
 
     compizValue->value.asBool = TRUE;
-    mateValue->value.asBool = FALSE;
+    gnomeValue->value.asBool = FALSE;
 
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (MOCK_PLUGIN,
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     SetTypeInfo (mSettingMock, TypeBool, &info);
 
     EXPECT_CALL (mSettingMock, getValue ()).WillOnce (Return (compizValue.get ()));
-    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*mateValue,
+    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*gnomeValue,
 										     TypeBool,
 										     &info)),
 							 TypeBool));
@@ -781,27 +781,27 @@ TEST_F (CCSMATEIntegrationTestWriteIntegrated, TestWriteCurrentViewport)
 					  Real (*mIntegratedSetting));
 }
 
-TEST_F (CCSMATEIntegrationTestWriteIntegrated, TestWriteFullscreenVisualBell)
+TEST_F (CCSGNOMEIntegrationTestWriteIntegrated, TestWriteFullscreenVisualBell)
 {
     const std::string                   settingName ("fullscreen_visual_bell");
     boost::shared_ptr <CCSSettingValue> compizValue (MakeAutoDestroySettingValue (TypeBool));
-    boost::shared_ptr <CCSSettingValue> mateValue (MakeAutoDestroySettingValue (TypeString));
+    boost::shared_ptr <CCSSettingValue> gnomeValue (MakeAutoDestroySettingValue (TypeString));
     CCSSettingInfo                      info;
 
     compizValue->value.asBool = TRUE;
-    mateValue->value.asString = strdup ("fullscreen");
+    gnomeValue->value.asString = strdup ("fullscreen");
 
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (MOCK_PLUGIN,
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     SetTypeInfo (mSettingMock, TypeBool, &info);
 
     EXPECT_CALL (mSettingMock, getValue ()).WillOnce (Return (compizValue.get ()));
-    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*mateValue,
+    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*gnomeValue,
 										     TypeString,
 										     &info)),
 							 TypeString));
@@ -811,27 +811,27 @@ TEST_F (CCSMATEIntegrationTestWriteIntegrated, TestWriteFullscreenVisualBell)
 					  Real (*mIntegratedSetting));
 }
 
-TEST_F (CCSMATEIntegrationTestWriteIntegrated, TestWriteClickToFocus)
+TEST_F (CCSGNOMEIntegrationTestWriteIntegrated, TestWriteClickToFocus)
 {
     const std::string                   settingName ("click_to_focus");
     boost::shared_ptr <CCSSettingValue> compizValue (MakeAutoDestroySettingValue (TypeBool));
-    boost::shared_ptr <CCSSettingValue> mateValue (MakeAutoDestroySettingValue (TypeString));
+    boost::shared_ptr <CCSSettingValue> gnomeValue (MakeAutoDestroySettingValue (TypeString));
     CCSSettingInfo                      info;
 
     compizValue->value.asBool = TRUE;
-    mateValue->value.asString = strdup ("click");
+    gnomeValue->value.asString = strdup ("click");
 
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (MOCK_PLUGIN,
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     SetTypeInfo (mSettingMock, TypeBool, &info);
 
     EXPECT_CALL (mSettingMock, getValue ()).WillOnce (Return (compizValue.get ()));
-    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*mateValue,
+    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*gnomeValue,
 										     TypeString,
 										     &info)),
 							 TypeString));
@@ -841,33 +841,33 @@ TEST_F (CCSMATEIntegrationTestWriteIntegrated, TestWriteClickToFocus)
 					  Real (*mIntegratedSetting));
 }
 
-class CCSMATEIntegrationTestWriteIntegratedMediaKeys :
-    public CCSMATEIntegrationTestWriteIntegrated,
+class CCSGNOMEIntegrationTestWriteIntegratedMediaKeys :
+    public CCSGNOMEIntegrationTestWriteIntegrated,
     public WithParamInterface <IntegratedMediaKeysParam>
 {
 };
 
-TEST_P (CCSMATEIntegrationTestWriteIntegratedMediaKeys, TestWriteIntegratedMediaKey)
+TEST_P (CCSGNOMEIntegrationTestWriteIntegratedMediaKeys, TestWriteIntegratedMediaKey)
 {
     const std::string                   settingName (GetParam ().settingName);
     boost::shared_ptr <CCSSettingValue> compizValue (MakeAutoDestroySettingValue (TypeKey));
-    boost::shared_ptr <CCSSettingValue> mateValue (MakeAutoDestroySettingValue (TypeString));
+    boost::shared_ptr <CCSSettingValue> gnomeValue (MakeAutoDestroySettingValue (TypeString));
     CCSSettingInfo                      info;
 
     compizValue->value.asKey = GetParam ().keyValue;
-    mateValue->value.asString = strdup (GetParam ().keyValueString.c_str ());
+    gnomeValue->value.asString = strdup (GetParam ().keyValueString.c_str ());
 
     mIntegratedSetting = createIntegratedSettingCompositionFromMock (MOCK_PLUGIN,
 								     settingName,
 								     TypeString,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, MOCK_PLUGIN);
     SetTypeInfo (mSettingMock, TypeKey, &info);
 
     EXPECT_CALL (mSettingMock, getValue ()).WillOnce (Return (compizValue.get ()));
-    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*mateValue,
+    EXPECT_CALL (Mock (*mIntegratedSetting), writeValue (Pointee (SettingValueMatch (*gnomeValue,
 										     TypeString,
 										     &info)),
 							 TypeString));
@@ -877,7 +877,7 @@ TEST_P (CCSMATEIntegrationTestWriteIntegratedMediaKeys, TestWriteIntegratedMedia
 					  Real (*mIntegratedSetting));
 }
 
-INSTANTIATE_TEST_CASE_P (CCSMATEMediaKeys, CCSMATEIntegrationTestWriteIntegratedMediaKeys,
+INSTANTIATE_TEST_CASE_P (CCSGNOMEMediaKeys, CCSGNOMEIntegrationTestWriteIntegratedMediaKeys,
 			 Values (IntegratedMediaKeysParam (RUN_COMMAND_SCREENSHOT_KEY,
 							   SCREENSHOT,
 							   SCREENSHOT_BINDING),
@@ -891,7 +891,7 @@ INSTANTIATE_TEST_CASE_P (CCSMATEMediaKeys, CCSMATEIntegrationTestWriteIntegrated
 /*
  * TODO: Break up the function that this test covers. Its way too complicated
  */
-TEST_F (CCSMATEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers, TestWriteMouseButtonModifier)
+TEST_F (CCSGNOMEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers, TestWriteMouseButtonModifier)
 {
     const std::string moveSettingName ("initiate_button");
     const std::string movePluginName ("move");
@@ -909,7 +909,7 @@ TEST_F (CCSMATEIntegrationTestWithMocksWriteIntegratedMouseButtonModifiers, Test
 								     settingName,
 								     TypeBool,
 								     OptionSpecial,
-								     MOCK_MATE_NAME,
+								     MOCK_GNOME_NAME,
 								     &ccsDefaultObjectAllocator);
     SetNames (mSettingMock, mPluginMock, settingName, pluginName);
     SetTypeInfo (mSettingMock, TypeButton, &info);

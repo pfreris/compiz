@@ -49,7 +49,7 @@ class GWDMockSettingsStorageGMockInterface
 	virtual gboolean updateDraggableBorderWidth () = 0;
 	virtual gboolean updateAttachModalDialogs () = 0;
 	virtual gboolean updateBlur () = 0;
-	virtual gboolean updateMarcoTheme () = 0;
+	virtual gboolean updateMetacityTheme () = 0;
 	virtual gboolean updateOpacity () = 0;
 	virtual gboolean updateButtonLayout () = 0;
 	virtual gboolean updateFont () = 0;
@@ -68,7 +68,7 @@ class GWDMockSettingsStorageGMock :
 	MOCK_METHOD0 (updateDraggableBorderWidth, gboolean ());
 	MOCK_METHOD0 (updateAttachModalDialogs, gboolean ());
 	MOCK_METHOD0 (updateBlur, gboolean ());
-	MOCK_METHOD0 (updateMarcoTheme, gboolean ());
+	MOCK_METHOD0 (updateMetacityTheme, gboolean ());
 	MOCK_METHOD0 (updateOpacity, gboolean ());
 	MOCK_METHOD0 (updateButtonLayout, gboolean ());
 	MOCK_METHOD0 (updateFont, gboolean ());

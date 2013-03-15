@@ -5,8 +5,8 @@ set (_files
 
 compiz_configure_file (compiz_gsettings_schemas.xslt.in compiz_gsettings_schemas.xslt)
 
-if (USE_MATECONF)
-    list (APPEND _files compiz_mateconf_schemas.xslt)
+if (USE_GCONF)
+    list (APPEND _files compiz_gconf_schemas.xslt)
 endif ()
 
 if (USE_GSETTINGS)

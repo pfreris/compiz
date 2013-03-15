@@ -40,13 +40,13 @@ add_custom_target (core-xml-file ALL
     DEPENDS ${_core_xml_file}
 )
 
-if (USE_MATECONF)
-    compiz_mateconf_schema (
+if (USE_GCONF)
+    compiz_gconf_schema (
 	${_core_xml_file}
 	${CMAKE_BINARY_DIR}/generated/compiz-core.schemas
 	${SCHEMADIR}
     )
-    add_custom_target (core-mateconf-schema ALL
+    add_custom_target (core-gconf-schema ALL
 	DEPENDS ${CMAKE_BINARY_DIR}/generated/compiz-core.schemas
 	        core-xml-file
     )

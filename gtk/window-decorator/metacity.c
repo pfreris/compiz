@@ -25,7 +25,7 @@
 
 #include "gtk-window-decorator.h"
 
-#ifdef USE_MARCO
+#ifdef USE_METACITY
 
 static void
 decor_update_meta_window_property (decor_t	  *d,
@@ -156,7 +156,7 @@ meta_get_corner_radius (const MetaFrameGeometry *fgeom,
 			int			*bottom_right_radius)
 {
 
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     *top_left_radius     = fgeom->top_left_corner_rounded_radius;
     *top_right_radius    = fgeom->top_right_corner_rounded_radius;
     *bottom_left_radius  = fgeom->bottom_left_corner_rounded_radius;
@@ -377,7 +377,7 @@ meta_function_to_type (MetaButtonFunction function)
     case META_BUTTON_FUNCTION_CLOSE:
 	return META_BUTTON_TYPE_CLOSE;
 
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     case META_BUTTON_FUNCTION_SHADE:
 	return META_BUTTON_TYPE_SHADE;
     case META_BUTTON_FUNCTION_ABOVE:
@@ -435,7 +435,7 @@ meta_button_state_for_button_type (decor_t	  *d,
     case META_BUTTON_TYPE_MENU:
 	return meta_button_state (d->button_states[BUTTON_MENU]);
 
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     case META_BUTTON_TYPE_SHADE:
 	return meta_button_state (d->button_states[BUTTON_SHADE]);
     case META_BUTTON_TYPE_ABOVE:
@@ -537,7 +537,7 @@ meta_get_decoration_geometry (decor_t		*d,
     if (d->state & WNCK_WINDOW_STATE_SHADED)
 	*flags |= (MetaFrameFlags ) META_FRAME_SHADED;
 
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     if (d->state & WNCK_WINDOW_STATE_ABOVE)
 	*flags |= (MetaFrameFlags ) META_FRAME_ABOVE;
 #endif
@@ -600,10 +600,10 @@ meta_draw_window_decoration (decor_t *d)
     gdouble	      meta_active_opacity, meta_inactive_opacity;
     gboolean	      meta_active_shade_opacity, meta_inactive_shade_opacity;
 
-    g_object_get (settings, "marco-active-opacity", &meta_active_opacity, NULL);
-    g_object_get (settings, "marco-inactive-opacity", &meta_inactive_opacity, NULL);
-    g_object_get (settings, "marco-active-shade-opacity", &meta_active_shade_opacity, NULL);
-    g_object_get (settings, "marco-inactive-shade-opacity", &meta_inactive_shade_opacity, NULL);
+    g_object_get (settings, "metacity-active-opacity", &meta_active_opacity, NULL);
+    g_object_get (settings, "metacity-inactive-opacity", &meta_inactive_opacity, NULL);
+    g_object_get (settings, "metacity-active-shade-opacity", &meta_active_shade_opacity, NULL);
+    g_object_get (settings, "metacity-inactive-shade-opacity", &meta_inactive_shade_opacity, NULL);
 
     double	      alpha = (d->active) ? meta_active_opacity : meta_inactive_opacity;
     gboolean	      shade_alpha = (d->active) ? meta_active_shade_opacity :
@@ -668,7 +668,7 @@ meta_draw_window_decoration (decor_t *d)
     bg_color = style->bg[GTK_STATE_NORMAL];
     bg_alpha = 1.0;
 
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     if (frame_style->window_background_color)
     {
 	meta_color_spec_render (frame_style->window_background_color,
@@ -1005,7 +1005,7 @@ meta_get_button_position (decor_t	 *d,
 
     GdkRectangle      clip;
 
-#ifdef HAVE_MARCO_2_15_21
+#ifdef HAVE_METACITY_2_15_21
     MetaButtonSpace   *space;
 #else
     GdkRectangle      *space;
@@ -1055,7 +1055,7 @@ meta_get_button_position (decor_t	 *d,
 	space = &fgeom.close_rect;
 	break;
 
-#if defined (HAVE_MARCO_2_17_0) && defined (HAVE_LIBWNCK_2_18_1)
+#if defined (HAVE_METACITY_2_17_0) && defined (HAVE_LIBWNCK_2_18_1)
     case BUTTON_SHADE:
 	if (!meta_button_present (&button_layout, META_BUTTON_FUNCTION_SHADE))
 	    return FALSE;
@@ -1098,7 +1098,7 @@ meta_get_button_position (decor_t	 *d,
 	return FALSE;
     }
 
-#ifdef HAVE_MARCO_2_15_21
+#ifdef HAVE_METACITY_2_15_21
     if (!space->clickable.width && !space->clickable.height)
 	return FALSE;
 
@@ -1498,7 +1498,7 @@ meta_button_function_from_string (const char *str)
     else if (strcmp (str, "close") == 0)
 	return META_BUTTON_FUNCTION_CLOSE;
 
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     else if (strcmp (str, "shade") == 0)
 	return META_BUTTON_FUNCTION_SHADE;
     else if (strcmp (str, "above") == 0)
@@ -1522,7 +1522,7 @@ meta_button_opposite_function (MetaButtonFunction ofwhat)
 {
     switch (ofwhat)
     {
-#ifdef HAVE_MARCO_2_17_0
+#ifdef HAVE_METACITY_2_17_0
     case META_BUTTON_FUNCTION_SHADE:
 	return META_BUTTON_FUNCTION_UNSHADE;
     case META_BUTTON_FUNCTION_UNSHADE:
@@ -1553,7 +1553,7 @@ meta_initialize_button_layout (MetaButtonLayout *layout)
     {
 	layout->left_buttons[i] = META_BUTTON_FUNCTION_LAST;
 	layout->right_buttons[i] = META_BUTTON_FUNCTION_LAST;
-#ifdef HAVE_MARCO_2_23_2
+#ifdef HAVE_METACITY_2_23_2
 	layout->left_buttons_has_spacer[i] = FALSE;
 	layout->right_buttons_has_spacer[i] = FALSE;
 #endif
@@ -1587,7 +1587,7 @@ meta_update_button_layout (const char *value)
 	while (buttons[b] != NULL)
 	{
 	    f = meta_button_function_from_string (buttons[b]);
-#ifdef HAVE_MARCO_2_23_2
+#ifdef HAVE_METACITY_2_23_2
 	    if (i > 0 && strcmp ("spacer", buttons[b]) == 0)
             {
 	       new_layout.left_buttons_has_spacer[i - 1] = TRUE;
@@ -1634,7 +1634,7 @@ meta_update_button_layout (const char *value)
 	    while (buttons[b] != NULL)
 	    {
 	       f = meta_button_function_from_string (buttons[b]);
-#ifdef HAVE_MARCO_2_23_2
+#ifdef HAVE_METACITY_2_23_2
 	       if (i > 0 && strcmp ("spacer", buttons[b]) == 0)
 	       {
 		  new_layout.right_buttons_has_spacer[i - 1] = TRUE;
@@ -1687,7 +1687,7 @@ meta_update_button_layout (const char *value)
 	for (j = 0; j < i; j++)
 	{
 	    rtl_layout.right_buttons[j] = new_layout.left_buttons[i - j - 1];
-#ifdef HAVE_MARCO_2_23_2
+#ifdef HAVE_METACITY_2_23_2
 	    if (j == 0)
 		rtl_layout.right_buttons_has_spacer[i - 1] =
 		    new_layout.left_buttons_has_spacer[i - j - 1];
@@ -1704,7 +1704,7 @@ meta_update_button_layout (const char *value)
 	for (j = 0; j < i; j++)
 	{
 	    rtl_layout.left_buttons[j] = new_layout.right_buttons[i - j - 1];
-#ifdef HAVE_MARCO_2_23_2
+#ifdef HAVE_METACITY_2_23_2
 	    if (j == 0)
 		rtl_layout.left_buttons_has_spacer[i - 1] =
 		    new_layout.right_buttons_has_spacer[i - j - 1];

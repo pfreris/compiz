@@ -23,9 +23,9 @@
 #include <gmock/gmock.h>
 
 #include "gtest_unspecified_bool_type_matcher.h"
-#include "gwd-marco-window-decoration-util.h"
+#include "gwd-metacity-window-decoration-util.h"
 
-class GWDMarcoDecorationUtilTest :
+class GWDMetacityDecorationUtilTest :
     public ::testing::Test
 {
 };
@@ -52,30 +52,30 @@ namespace
     const std::string badTheme ("Clearlooks");
 }
 
-TEST (GWDMarcoDecorationUtilTest, TestNULLDecorationRevertsToCairo)
+TEST (GWDMetacityDecorationUtilTest, TestNULLDecorationRevertsToCairo)
 {
-    EXPECT_THAT (gwd_marco_window_decoration_update_meta_theme (NULL,
+    EXPECT_THAT (gwd_metacity_window_decoration_update_meta_theme (NULL,
 								   get_current_returns_nonnull,
 								   set_current_seam), IsFalse ());
 }
 
-TEST (GWDMarcoDecorationUtilTest, TestEmptyStringDecorationRevertsToCairo)
+TEST (GWDMetacityDecorationUtilTest, TestEmptyStringDecorationRevertsToCairo)
 {
-    EXPECT_THAT (gwd_marco_window_decoration_update_meta_theme (emptyTheme.c_str (),
+    EXPECT_THAT (gwd_metacity_window_decoration_update_meta_theme (emptyTheme.c_str (),
 								   get_current_returns_nonnull,
 								   set_current_seam), IsFalse ());
 }
 
-TEST (GWDMarcoDecorationUtilTest, TestBadThemeStringDecorationRevertsToCairo)
+TEST (GWDMetacityDecorationUtilTest, TestBadThemeStringDecorationRevertsToCairo)
 {
-    EXPECT_THAT (gwd_marco_window_decoration_update_meta_theme (badTheme.c_str (),
+    EXPECT_THAT (gwd_metacity_window_decoration_update_meta_theme (badTheme.c_str (),
 								   get_current_returns_null,
 								   set_current_seam), IsFalse ());
 }
 
-TEST (GWDMarcoDecorationUtilTest, TestGoodThemeStringDecorationUsesMarco)
+TEST (GWDMetacityDecorationUtilTest, TestGoodThemeStringDecorationUsesMetacity)
 {
-    EXPECT_THAT (gwd_marco_window_decoration_update_meta_theme (realTheme.c_str (),
+    EXPECT_THAT (gwd_metacity_window_decoration_update_meta_theme (realTheme.c_str (),
 								   get_current_returns_nonnull,
 								   set_current_seam), IsTrue ());
 }

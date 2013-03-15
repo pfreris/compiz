@@ -16,15 +16,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gtk/mate/50-compiz-desktop-key.xml.in.h:1
+#: ../gtk/gnome/50-compiz-desktop-key.xml.in.h:1
 msgid "Desktop"
 msgstr ""
 
-#: ../gtk/mate/50-compiz-key.xml.in.h:1
+#: ../gtk/gnome/50-compiz-key.xml.in.h:1
 msgid "Window Management"
 msgstr ""
 
-#: ../gtk/mate/compiz.desktop.in.h:1
+#: ../gtk/gnome/compiz.desktop.in.h:1
 msgid "Compiz"
 msgstr ""
 
@@ -37,38 +37,38 @@ msgid "Blur type"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:3
-msgid "Marco theme active window opacity"
+msgid "Metacity theme active window opacity"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:4
-msgid "Marco theme active window opacity shade"
+msgid "Metacity theme active window opacity shade"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:5
-msgid "Marco theme opacity"
+msgid "Metacity theme opacity"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:6
-msgid "Marco theme opacity shade"
+msgid "Metacity theme opacity shade"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:7
-msgid "Opacity to use for active windows with marco theme decorations"
+msgid "Opacity to use for active windows with metacity theme decorations"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:8
-msgid "Opacity to use for marco theme decorations"
+msgid "Opacity to use for metacity theme decorations"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:9
 msgid ""
-"Shade active windows with marco theme decorations from opaque to "
+"Shade active windows with metacity theme decorations from opaque to "
 "translucent"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:10
 msgid ""
-"Shade windows with marco theme decorations from opaque to translucent"
+"Shade windows with metacity theme decorations from opaque to translucent"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:11
@@ -80,11 +80,11 @@ msgid "Type of blur used for window decorations"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:13
-msgid "Use marco theme"
+msgid "Use metacity theme"
 msgstr ""
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:14
-msgid "Use marco theme when drawing window decorations"
+msgid "Use metacity theme when drawing window decorations"
 msgstr ""
 
 #: ../metadata/annotate.xml.in.h:1
@@ -1256,12 +1256,12 @@ msgstr ""
 msgid "Userspace file system"
 msgstr ""
 
-#: ../metadata/mateconf.xml.in.h:1
-msgid "MateConf"
+#: ../metadata/gconf.xml.in.h:1
+msgid "GConf"
 msgstr ""
 
-#: ../metadata/mateconf.xml.in.h:2
-msgid "MateConf Control Backend"
+#: ../metadata/gconf.xml.in.h:2
+msgid "GConf Control Backend"
 msgstr ""
 
 #: ../metadata/glib.xml.in.h:1

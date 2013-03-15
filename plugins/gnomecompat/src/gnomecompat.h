@@ -26,14 +26,14 @@
 #include <core/screen.h>
 #include <core/pluginclasshandler.h>
 
-#include "matecompat_options.h"
+#include "gnomecompat_options.h"
 
-class MateCompatScreen :
-    public PluginClassHandler<MateCompatScreen, CompScreen>,
-    public MatecompatOptions
+class GnomeCompatScreen :
+    public PluginClassHandler<GnomeCompatScreen, CompScreen>,
+    public GnomecompatOptions
 {
     public:
-	MateCompatScreen (CompScreen *s);
+	GnomeCompatScreen (CompScreen *s);
 
 	void panelAction (CompOption::Vector& options, Atom action);
 
@@ -42,11 +42,11 @@ class MateCompatScreen :
 	Atom panelRunDialogAtom;
 };
 
-#define MATE_SCREEN(s)                                \
-    MateCompatScreen *gs = MateCompatScreen::get (s)
+#define GNOME_SCREEN(s)                                \
+    GnomeCompatScreen *gs = GnomeCompatScreen::get (s)
 
-class MateCompatPluginVTable :
-    public CompPlugin::VTableForScreen<MateCompatScreen>
+class GnomeCompatPluginVTable :
+    public CompPlugin::VTableForScreen<GnomeCompatScreen>
 {
     public:
 	bool init ();

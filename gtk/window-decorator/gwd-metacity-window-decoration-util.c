@@ -19,10 +19,10 @@
  */
 #include <string.h>
 #include <glib.h>
-#include "gwd-marco-window-decoration-util.h"
+#include "gwd-metacity-window-decoration-util.h"
 
 gboolean
-gwd_marco_window_decoration_update_meta_theme (const gchar		     *theme,
+gwd_metacity_window_decoration_update_meta_theme (const gchar		     *theme,
 						  GWDMetaThemeGetCurrentProc get_current,
 						  GWDMetaThemeSetProc	     set_current)
 {
@@ -32,7 +32,7 @@ gwd_marco_window_decoration_update_meta_theme (const gchar		     *theme,
     /* meta_theme_get_current seems to return the last
      * good theme now, so if one was already set this function
      * will be ineffectual, so we need to check if the theme
-     * is obviously bad as the user intended to disable marco
+     * is obviously bad as the user intended to disable metacity
      * themes */
     if (!strlen (theme))
 	return FALSE;

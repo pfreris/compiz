@@ -47,8 +47,8 @@ class GWDMockSettingsNotifiedGMockInterface
 
 	virtual gboolean updateDecorations () = 0;
 	virtual gboolean updateFrames () = 0;
-	virtual gboolean updateMarcoTheme () = 0;
-	virtual gboolean updateMarcoButtonLayout () = 0;
+	virtual gboolean updateMetacityTheme () = 0;
+	virtual gboolean updateMetacityButtonLayout () = 0;
 
 	virtual void dispose () = 0;
 	virtual void finalize () = 0;
@@ -61,8 +61,8 @@ class GWDMockSettingsNotifiedGMock :
 
 	MOCK_METHOD0 (updateDecorations, gboolean ());
 	MOCK_METHOD0 (updateFrames, gboolean ());
-	MOCK_METHOD0 (updateMarcoTheme, gboolean ());
-	MOCK_METHOD0 (updateMarcoButtonLayout, gboolean ());
+	MOCK_METHOD0 (updateMetacityTheme, gboolean ());
+	MOCK_METHOD0 (updateMetacityButtonLayout, gboolean ());
 
 	MOCK_METHOD0 (dispose, void ());
 	MOCK_METHOD0 (finalize, void ());

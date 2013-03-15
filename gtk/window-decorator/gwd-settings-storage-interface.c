@@ -51,10 +51,10 @@ gboolean gwd_settings_storage_update_blur (GWDSettingsStorage *settings)
     return (*interface->update_blur) (settings);
 }
 
-gboolean gwd_settings_storage_update_marco_theme (GWDSettingsStorage *settings)
+gboolean gwd_settings_storage_update_metacity_theme (GWDSettingsStorage *settings)
 {
     GWDSettingsStorageInterface *interface = GWD_SETTINGS_STORAGE_GET_INTERFACE (settings);
-    return (*interface->update_marco_theme) (settings);
+    return (*interface->update_metacity_theme) (settings);
 }
 
 gboolean gwd_settings_storage_update_opacity (GWDSettingsStorage *settings)

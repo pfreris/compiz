@@ -1,46 +1,46 @@
 include (FindPkgConfig)
 
-if (USE_MATECONF)
+if (USE_GCONF)
 
     set (_deps
 	glib-2.0>=2.20.0
 	gio-2.0>=2.25.0
-	mateconf-2.0>=2.31.1)
+	gconf-2.0>=2.31.1)
 
-    compiz_pkg_check_modules (COMPIZCONFIG_MATE_MATECONF_INTEGRATION ${_deps})
+    compiz_pkg_check_modules (COMPIZCONFIG_GNOME_GCONF_INTEGRATION ${_deps})
 
-    if (COMPIZCONFIG_MATE_MATECONF_INTEGRATION_FOUND)
+    if (COMPIZCONFIG_GNOME_GCONF_INTEGRATION_FOUND)
 
-	add_definitions (-DUSE_MATECONF)
+	add_definitions (-DUSE_GCONF)
 
 	include_directories (${CMAKE_SOURCE_DIR}/compizconfig/libcompizconfig/include
-			     ${CMAKE_SOURCE_DIR}/compizconfig/integration/mate/include
-			     ${CMAKE_SOURCE_DIR}/compizconfig/integration/mate/mateconf/include
-			     ${COMPIZCONFIG_MATE_MATECONF_INTEGRATION_INCLUDE_DIRS})
+			     ${CMAKE_SOURCE_DIR}/compizconfig/integration/gnome/include
+			     ${CMAKE_SOURCE_DIR}/compizconfig/integration/gnome/gconf/include
+			     ${COMPIZCONFIG_GNOME_GCONF_INTEGRATION_INCLUDE_DIRS})
 
 	link_directories (${CMAKE_BINARY_DIR}/compizconfig/libcompizconfig
-			  ${CMAKE_BINARY_DIR}/compizconfig/integration/mate
-			  ${COMPIZCONFIG_MATE_MATECONF_INTEGRATION_LIBRARY_DIRS})
+			  ${CMAKE_BINARY_DIR}/compizconfig/integration/gnome
+			  ${COMPIZCONFIG_GNOME_GCONF_INTEGRATION_LIBRARY_DIRS})
 
-	add_library (compizconfig_mate_integration_mateconf_integrated_setting STATIC
-		     ${CMAKE_CURRENT_SOURCE_DIR}/src/ccs_mate_integration_mateconf_integrated_setting.c)
+	add_library (compizconfig_gnome_integration_gconf_integrated_setting STATIC
+		     ${CMAKE_CURRENT_SOURCE_DIR}/src/ccs_gnome_integration_gconf_integrated_setting.c)
 
-	target_link_libraries (compizconfig_mate_integration_mateconf_integrated_setting
-			       compizconfig_mate_integrated_setting
-			       compizconfig_mate_integration_constants
+	target_link_libraries (compizconfig_gnome_integration_gconf_integrated_setting
+			       compizconfig_gnome_integrated_setting
+			       compizconfig_gnome_integration_constants
 			       compizconfig
-			       ${COMPIZCONFIG_MATE_MATECONF_INTEGRATION_LIBRARIES})
+			       ${COMPIZCONFIG_GNOME_GCONF_INTEGRATION_LIBRARIES})
 
-	add_library (compizconfig_mate_integration_mateconf_setting_factory STATIC
-		     ${CMAKE_CURRENT_SOURCE_DIR}/src/ccs_mate_integration_mateconf_integrated_setting_factory.c)
+	add_library (compizconfig_gnome_integration_gconf_setting_factory STATIC
+		     ${CMAKE_CURRENT_SOURCE_DIR}/src/ccs_gnome_integration_gconf_integrated_setting_factory.c)
 
-	target_link_libraries (compizconfig_mate_integration_mateconf_setting_factory
-			       compizconfig_mate_integration_constants
-			       compizconfig_mate_integrated_setting
-			       compizconfig_mate_integration_mateconf_integrated_setting
+	target_link_libraries (compizconfig_gnome_integration_gconf_setting_factory
+			       compizconfig_gnome_integration_constants
+			       compizconfig_gnome_integrated_setting
+			       compizconfig_gnome_integration_gconf_integrated_setting
 			       compizconfig
-			       ${COMPIZCONFIG_MATE_MATECONF_INTEGRATION_LIBRARIES})
+			       ${COMPIZCONFIG_GNOME_GCONF_INTEGRATION_LIBRARIES})
 
-    endif (COMPIZCONFIG_MATE_MATECONF_INTEGRATION_FOUND)
+    endif (COMPIZCONFIG_GNOME_GCONF_INTEGRATION_FOUND)
 
-endif (USE_MATECONF)
+endif (USE_GCONF)

@@ -49,8 +49,8 @@
 #
 # COMPIZ_I18N_DIR      = Translation file directory
 #
-# COMPIZ_DISABLE_SCHEMAS_INSTALL  = Disables mateconf schema installation with mateconftool
-# COMPIZ_INSTALL_MATECONF_SCHEMA_DIR = Installation path of the mateconf schema file
+# COMPIZ_DISABLE_SCHEMAS_INSTALL  = Disables gconf schema installation with gconftool
+# COMPIZ_INSTALL_GCONF_SCHEMA_DIR = Installation path of the gconf schema file
 #
 # VERSION = package version that is added to a plugin pkg-version file
 #

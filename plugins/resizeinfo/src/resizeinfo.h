@@ -1,6 +1,6 @@
 /**
  *
- * Compiz marco like info during resize
+ * Compiz metacity like info during resize
  *
  * resizeinfo.c
  *

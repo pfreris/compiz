@@ -2633,7 +2633,7 @@ PrivateAnimScreen::PrivateAnimScreen (CompScreen *s, AnimScreen *as) :
     // Never animate screen-dimming layer of logout window and gksu.
     mNeverAnimateMatch |= "title=gksu";
     mNeverAnimateMatch |= "title=x-session-manager";
-    mNeverAnimateMatch |= "title=mate-session";
+    mNeverAnimateMatch |= "title=gnome-session";
     mNeverAnimateMatch.update ();
 
     // Set-up option notifiers

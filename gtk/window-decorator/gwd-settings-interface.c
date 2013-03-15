@@ -37,13 +37,13 @@ const guint   DRAGGABLE_BORDER_WIDTH_DEFAULT = 7;
 const gboolean ATTACH_MODAL_DIALOGS_DEFAULT = FALSE;
 const gint    BLUR_TYPE_DEFAULT = BLUR_TYPE_NONE;
 
-const gchar   *MARCO_THEME_DEFAULT = "Adwaita";
-const gdouble MARCO_ACTIVE_OPACITY_DEFAULT = 1.0;
-const gdouble MARCO_INACTIVE_OPACITY_DEFAULT = 0.75;
-const gboolean MARCO_ACTIVE_SHADE_OPACITY_DEFAULT = TRUE;
-const gboolean MARCO_INACTIVE_SHADE_OPACITY_DEFAULT = TRUE;
+const gchar   *METACITY_THEME_DEFAULT = "Adwaita";
+const gdouble METACITY_ACTIVE_OPACITY_DEFAULT = 1.0;
+const gdouble METACITY_INACTIVE_OPACITY_DEFAULT = 0.75;
+const gboolean METACITY_ACTIVE_SHADE_OPACITY_DEFAULT = TRUE;
+const gboolean METACITY_INACTIVE_SHADE_OPACITY_DEFAULT = TRUE;
 
-const gchar *  MARCO_BUTTON_LAYOUT_DEFAULT = ":minimize,maximize,close";
+const gchar *  METACITY_BUTTON_LAYOUT_DEFAULT = ":minimize,maximize,close";
 
 const guint DOUBLE_CLICK_ACTION_DEFAULT = CLICK_ACTION_MAXIMIZE;
 const guint MIDDLE_CLICK_ACTION_DEFAULT = CLICK_ACTION_LOWER;
@@ -99,46 +99,46 @@ static void gwd_settings_interface_default_init (GWDSettingsInterface *settings_
 							   G_PARAM_WRITABLE |
 							   G_PARAM_CONSTRUCT_ONLY));
     g_object_interface_install_property (settings_interface,
-					 g_param_spec_string ("marco-theme",
-							      "Marco Theme",
-							      "Marco Theme Setting",
-							      MARCO_THEME_DEFAULT,
+					 g_param_spec_string ("metacity-theme",
+							      "Metacity Theme",
+							      "Metacity Theme Setting",
+							      METACITY_THEME_DEFAULT,
 							      G_PARAM_READABLE |
 							      G_PARAM_WRITABLE |
 							      G_PARAM_CONSTRUCT_ONLY));
     g_object_interface_install_property (settings_interface,
-					 g_param_spec_double ("marco-active-opacity",
-							      "Marco Active Opacity",
-							      "Marco Active Opacity",
+					 g_param_spec_double ("metacity-active-opacity",
+							      "Metacity Active Opacity",
+							      "Metacity Active Opacity",
 							      0.0,
 							      1.0,
-							      MARCO_ACTIVE_OPACITY_DEFAULT,
+							      METACITY_ACTIVE_OPACITY_DEFAULT,
 							      G_PARAM_READABLE));
     g_object_interface_install_property (settings_interface,
-					 g_param_spec_double ("marco-inactive-opacity",
-							      "Marco Inactive Opacity",
-							      "Marco Inactive Opacity",
+					 g_param_spec_double ("metacity-inactive-opacity",
+							      "Metacity Inactive Opacity",
+							      "Metacity Inactive Opacity",
 							      0.0,
 							      1.0,
-							      MARCO_INACTIVE_OPACITY_DEFAULT,
+							      METACITY_INACTIVE_OPACITY_DEFAULT,
 							      G_PARAM_READABLE));
     g_object_interface_install_property (settings_interface,
-					 g_param_spec_boolean ("marco-active-shade-opacity",
-							      "Marco Active Shade Opacity",
-							      "Marco Active Shade Opacity",
-							      MARCO_ACTIVE_SHADE_OPACITY_DEFAULT,
+					 g_param_spec_boolean ("metacity-active-shade-opacity",
+							      "Metacity Active Shade Opacity",
+							      "Metacity Active Shade Opacity",
+							      METACITY_ACTIVE_SHADE_OPACITY_DEFAULT,
 							      G_PARAM_READABLE));
     g_object_interface_install_property (settings_interface,
-					 g_param_spec_boolean ("marco-inactive-shade-opacity",
-							      "Marco Inactive Shade Opacity",
-							      "Marco Inactive Shade Opacity",
-							      MARCO_INACTIVE_SHADE_OPACITY_DEFAULT,
+					 g_param_spec_boolean ("metacity-inactive-shade-opacity",
+							      "Metacity Inactive Shade Opacity",
+							      "Metacity Inactive Shade Opacity",
+							      METACITY_INACTIVE_SHADE_OPACITY_DEFAULT,
 							      G_PARAM_READABLE));
     g_object_interface_install_property (settings_interface,
-					 g_param_spec_string ("marco-button-layout",
-							      "Marco Button Layout",
-							      "Marco Button Layout",
-							      MARCO_BUTTON_LAYOUT_DEFAULT,
+					 g_param_spec_string ("metacity-button-layout",
+							      "Metacity Button Layout",
+							      "Metacity Button Layout",
+							      METACITY_BUTTON_LAYOUT_DEFAULT,
 							      G_PARAM_READABLE));
     g_object_interface_install_property (settings_interface,
 					 g_param_spec_int ("titlebar-double-click-action",

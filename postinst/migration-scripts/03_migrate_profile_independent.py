@@ -19,7 +19,7 @@
 # this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-import mateconf
+import gconf
 import glib
 import subprocess
 import os.path
@@ -30,15 +30,15 @@ CONVERT_PATH = "/usr/lib/compiz/migration/"
 def migrate_file(convert_file):
     subprocess.Popen(["gsettings-data-convert", "--file={}{}".format(CONVERT_PATH, convert_file)]).communicate()
 
-def migrate_mateconf_to_gsettings():
-    client = mateconf.client_get_default()
+def migrate_gconf_to_gsettings():
+    client = gconf.client_get_default()
 
     if not client:
-        print "WARNING: no mateconf client found. No transitionning will be done"
+        print "WARNING: no gconf client found. No transitionning will be done"
         sys.exit(1)
 
     print "Will migrate profile independent keys"
     migrate_file('compiz-profile-independent-keys.convert')
 
 if __name__ == '__main__':
-    migrate_mateconf_to_gsettings ()
+    migrate_gconf_to_gsettings ()

@@ -1,68 +1,68 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <mateconf/mateconf.h>
-#include <mateconf/mateconf-client.h>
-#include <mateconf/mateconf-value.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+#include <gconf/gconf-value.h>
 
 #include <ccs.h>
 #include <ccs-backend.h>
 #include <ccs-object.h>
 
-#include "ccs_mate_integration_mateconf_integrated_setting.h"
-#include "ccs_mate_integrated_setting.h"
-#include "ccs_mate_integration_constants.h"
+#include "ccs_gnome_integration_gconf_integrated_setting.h"
+#include "ccs_gnome_integrated_setting.h"
+#include "ccs_gnome_integration_constants.h"
 
 
-/* CCSMateConfIntegratedSetting implementation */
-typedef struct _CCSMateConfIntegratedSettingPrivate CCSMateConfIntegratedSettingPrivate;
+/* CCSGConfIntegratedSetting implementation */
+typedef struct _CCSGConfIntegratedSettingPrivate CCSGConfIntegratedSettingPrivate;
 
-struct _CCSMateConfIntegratedSettingPrivate
+struct _CCSGConfIntegratedSettingPrivate
 {
-    CCSMATEIntegratedSettingInfo *mateIntegratedSettingInfo;
-    MateConfClient		      *client;
+    CCSGNOMEIntegratedSettingInfo *gnomeIntegratedSettingInfo;
+    GConfClient		      *client;
     const char		      *sectionName;
 };
 
 SpecialOptionType
-ccsMateConfIntegratedSettingGetSpecialOptionType (CCSMATEIntegratedSettingInfo *setting)
+ccsGConfIntegratedSettingGetSpecialOptionType (CCSGNOMEIntegratedSettingInfo *setting)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
 
-    return ccsMATEIntegratedSettingInfoGetSpecialOptionType (priv->mateIntegratedSettingInfo);
+    return ccsGNOMEIntegratedSettingInfoGetSpecialOptionType (priv->gnomeIntegratedSettingInfo);
 }
 
 const char *
-ccsMateConfIntegratedSettingGetMATEName (CCSMATEIntegratedSettingInfo *setting)
+ccsGConfIntegratedSettingGetGNOMEName (CCSGNOMEIntegratedSettingInfo *setting)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
 
-    return ccsMATEIntegratedSettingInfoGetMATEName (priv->mateIntegratedSettingInfo);
+    return ccsGNOMEIntegratedSettingInfoGetGNOMEName (priv->gnomeIntegratedSettingInfo);
 }
 
 CCSSettingValue *
-ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSettingType type)
+ccsGConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSettingType type)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
     CCSSettingValue		     *v = calloc (1, sizeof (CCSSettingValue));
-    const char			     *mateKeyName = ccsMATEIntegratedSettingInfoGetMATEName ((CCSMATEIntegratedSettingInfo *) setting);
-    char			     *mateKeyPath = g_strconcat (priv->sectionName, mateKeyName, NULL);
+    const char			     *gnomeKeyName = ccsGNOMEIntegratedSettingInfoGetGNOMEName ((CCSGNOMEIntegratedSettingInfo *) setting);
+    char			     *gnomeKeyPath = g_strconcat (priv->sectionName, gnomeKeyName, NULL);
 
     v->isListChild = FALSE;
     v->parent = NULL;
     v->refCount = 1;
 
-    MateConfValue *mateconfValue;
+    GConfValue *gconfValue;
     GError     *err = NULL;
 
-    mateconfValue = mateconf_client_get (priv->client,
-				   mateKeyPath,
+    gconfValue = gconf_client_get (priv->client,
+				   gnomeKeyPath,
 				   &err);
 
-    if (!mateconfValue)
+    if (!gconfValue)
     {
-	ccsError ("NULL encountered while reading MateConf setting");
-	free (mateKeyPath);
+	ccsError ("NULL encountered while reading GConf setting");
+	free (gnomeKeyPath);
 	free (v);
 	return NULL;
     }
@@ -71,7 +71,7 @@ ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSetting
     {
 	ccsError ("%s", err->message);
 	g_error_free (err);
-	free (mateKeyPath);
+	free (gnomeKeyPath);
 	free (v);
 	return NULL;
     }
@@ -79,7 +79,7 @@ ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSetting
     switch (type)
     {
 	case TypeInt:
-	    if (mateconfValue->type != MATECONF_VALUE_INT)
+	    if (gconfValue->type != GCONF_VALUE_INT)
 	    {
 		ccsError ("Expected integer value");
 		free (v);
@@ -87,10 +87,10 @@ ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSetting
 		break;
 	    }
 
-	    v->value.asInt = mateconf_value_get_int (mateconfValue);
+	    v->value.asInt = gconf_value_get_int (gconfValue);
 	    break;
 	case TypeBool:
-	    if (mateconfValue->type != MATECONF_VALUE_BOOL)
+	    if (gconfValue->type != GCONF_VALUE_BOOL)
 	    {
 		ccsError ("Expected boolean value");
 		free (v);
@@ -98,11 +98,11 @@ ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSetting
 		break;
 	    }
 
-	    v->value.asBool = mateconf_value_get_bool (mateconfValue) ? TRUE : FALSE;
+	    v->value.asBool = gconf_value_get_bool (gconfValue) ? TRUE : FALSE;
 	    break;
 	case TypeString:
 	case TypeKey:
-	    if (mateconfValue->type != MATECONF_VALUE_STRING)
+	    if (gconfValue->type != GCONF_VALUE_STRING)
 	    {
 		ccsError ("Expected string value");
 		free (v);
@@ -110,7 +110,7 @@ ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSetting
 		break;
 	    }
 
-	    const char *str = mateconf_value_get_string (mateconfValue);
+	    const char *str = gconf_value_get_string (gconfValue);
 
 	    v->value.asString = strdup (str ? str : "");
 	    break;
@@ -118,28 +118,28 @@ ccsMateConfIntegratedSettingReadValue (CCSIntegratedSetting *setting, CCSSetting
 	    g_assert_not_reached ();
     }
 
-    mateconf_value_free (mateconfValue);
-    free (mateKeyPath);
+    gconf_value_free (gconfValue);
+    free (gnomeKeyPath);
 
     return v;
 }
 
 void
-ccsMateConfIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CCSSettingValue *v, CCSSettingType type)
+ccsGConfIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CCSSettingValue *v, CCSSettingType type)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
-    const char			     *mateKeyName = ccsMATEIntegratedSettingInfoGetMATEName ((CCSMATEIntegratedSettingInfo *) setting);
-    char			     *mateKeyPath = g_strconcat (priv->sectionName, mateKeyName, NULL);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
+    const char			     *gnomeKeyName = ccsGNOMEIntegratedSettingInfoGetGNOMEName ((CCSGNOMEIntegratedSettingInfo *) setting);
+    char			     *gnomeKeyPath = g_strconcat (priv->sectionName, gnomeKeyName, NULL);
     GError			     *err = NULL;
 
     switch (type)
     {
 	case TypeInt:
 	    {
-		int currentValue = mateconf_client_get_int (priv->client, mateKeyPath, &err);
+		int currentValue = gconf_client_get_int (priv->client, gnomeKeyPath, &err);
 
 		if (!err && (currentValue != v->value.asInt))
-		    mateconf_client_set_int(priv->client, mateKeyPath,
+		    gconf_client_set_int(priv->client, gnomeKeyPath,
 					 v->value.asInt, NULL);
 	    }
 	    break;
@@ -148,11 +148,11 @@ ccsMateConfIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CCSSettin
 		Bool     newValue = v->value.asBool;
 		gboolean currentValue;
 
-		currentValue = mateconf_client_get_bool (priv->client, mateKeyPath, &err);
+		currentValue = gconf_client_get_bool (priv->client, gnomeKeyPath, &err);
 
 		if (!err && ((currentValue && !newValue) ||
 			     (!currentValue && newValue)))
-		    mateconf_client_set_bool (priv->client, mateKeyPath,
+		    gconf_client_set_bool (priv->client, gnomeKeyPath,
 					   newValue, NULL);
 	    }
 	    break;
@@ -162,12 +162,12 @@ ccsMateConfIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CCSSettin
 		char  *newValue = v->value.asString;
 		gchar *currentValue;
 
-		currentValue = mateconf_client_get_string (priv->client, mateKeyPath, &err);
+		currentValue = gconf_client_get_string (priv->client, gnomeKeyPath, &err);
 
 		if (!err && currentValue)
 		{
 		    if (strcmp (currentValue, newValue) != 0)
-			mateconf_client_set_string (priv->client, mateKeyPath,
+			gconf_client_set_string (priv->client, gnomeKeyPath,
 						 newValue, NULL);
 		    g_free (currentValue);
 		}
@@ -184,81 +184,81 @@ ccsMateConfIntegratedSettingWriteValue (CCSIntegratedSetting *setting, CCSSettin
 	g_error_free (err);
     }
 
-    free (mateKeyPath);
+    free (gnomeKeyPath);
 }
 
 const char *
-ccsMateConfIntegratedSettingInfoPluginName (CCSIntegratedSettingInfo *info)
+ccsGConfIntegratedSettingInfoPluginName (CCSIntegratedSettingInfo *info)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (info);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (info);
 
-    return ccsIntegratedSettingInfoPluginName ((CCSIntegratedSettingInfo *) priv->mateIntegratedSettingInfo);
+    return ccsIntegratedSettingInfoPluginName ((CCSIntegratedSettingInfo *) priv->gnomeIntegratedSettingInfo);
 }
 
 const char *
-ccsMateConfIntegratedSettingInfoSettingName (CCSIntegratedSettingInfo *info)
+ccsGConfIntegratedSettingInfoSettingName (CCSIntegratedSettingInfo *info)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (info);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (info);
 
-    return ccsIntegratedSettingInfoSettingName ((CCSIntegratedSettingInfo *) priv->mateIntegratedSettingInfo);
+    return ccsIntegratedSettingInfoSettingName ((CCSIntegratedSettingInfo *) priv->gnomeIntegratedSettingInfo);
 }
 
 CCSSettingType
-ccsMateConfIntegratedSettingInfoGetType (CCSIntegratedSettingInfo *info)
+ccsGConfIntegratedSettingInfoGetType (CCSIntegratedSettingInfo *info)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (info);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (info);
 
-    return ccsIntegratedSettingInfoGetType ((CCSIntegratedSettingInfo *) priv->mateIntegratedSettingInfo);
+    return ccsIntegratedSettingInfoGetType ((CCSIntegratedSettingInfo *) priv->gnomeIntegratedSettingInfo);
 }
 
 void
-ccsMateConfIntegratedSettingFree (CCSIntegratedSetting *setting)
+ccsGConfIntegratedSettingFree (CCSIntegratedSetting *setting)
 {
-    CCSMateConfIntegratedSettingPrivate *priv = (CCSMateConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
+    CCSGConfIntegratedSettingPrivate *priv = (CCSGConfIntegratedSettingPrivate *) ccsObjectGetPrivate (setting);
 
-    ccsIntegratedSettingInfoUnref ((CCSIntegratedSettingInfo *) priv->mateIntegratedSettingInfo);
+    ccsIntegratedSettingInfoUnref ((CCSIntegratedSettingInfo *) priv->gnomeIntegratedSettingInfo);
     ccsObjectFinalize (setting);
 
     (*setting->object.object_allocation->free_) (setting->object.object_allocation->allocator, setting);
 }
 
 void
-ccsMateConfIntegratedSettingInfoFree (CCSIntegratedSettingInfo *info)
+ccsGConfIntegratedSettingInfoFree (CCSIntegratedSettingInfo *info)
 {
-    ccsMateConfIntegratedSettingFree ((CCSIntegratedSetting *) info);
+    ccsGConfIntegratedSettingFree ((CCSIntegratedSetting *) info);
 }
 
 void
-ccsMateConfMATEIntegratedSettingInfoFree (CCSMATEIntegratedSettingInfo *info)
+ccsGConfGNOMEIntegratedSettingInfoFree (CCSGNOMEIntegratedSettingInfo *info)
 {
-    ccsMateConfIntegratedSettingFree ((CCSIntegratedSetting *) info);
+    ccsGConfIntegratedSettingFree ((CCSIntegratedSetting *) info);
 }
 
-const CCSMATEIntegratedSettingInfoInterface ccsMateConfMATEIntegratedSettingInfoInterface =
+const CCSGNOMEIntegratedSettingInfoInterface ccsGConfGNOMEIntegratedSettingInfoInterface =
 {
-    ccsMateConfIntegratedSettingGetSpecialOptionType,
-    ccsMateConfIntegratedSettingGetMATEName,
-    ccsMateConfMATEIntegratedSettingInfoFree
+    ccsGConfIntegratedSettingGetSpecialOptionType,
+    ccsGConfIntegratedSettingGetGNOMEName,
+    ccsGConfGNOMEIntegratedSettingInfoFree
 };
 
-const CCSIntegratedSettingInterface ccsMateConfIntegratedSettingInterface =
+const CCSIntegratedSettingInterface ccsGConfIntegratedSettingInterface =
 {
-    ccsMateConfIntegratedSettingReadValue,
-    ccsMateConfIntegratedSettingWriteValue,
-    ccsMateConfIntegratedSettingFree
+    ccsGConfIntegratedSettingReadValue,
+    ccsGConfIntegratedSettingWriteValue,
+    ccsGConfIntegratedSettingFree
 };
 
-const CCSIntegratedSettingInfoInterface ccsMateConfIntegratedSettingInfoInterface =
+const CCSIntegratedSettingInfoInterface ccsGConfIntegratedSettingInfoInterface =
 {
-    ccsMateConfIntegratedSettingInfoPluginName,
-    ccsMateConfIntegratedSettingInfoSettingName,
-    ccsMateConfIntegratedSettingInfoGetType,
-    ccsMateConfIntegratedSettingInfoFree
+    ccsGConfIntegratedSettingInfoPluginName,
+    ccsGConfIntegratedSettingInfoSettingName,
+    ccsGConfIntegratedSettingInfoGetType,
+    ccsGConfIntegratedSettingInfoFree
 };
 
 CCSIntegratedSetting *
-ccsMateConfIntegratedSettingNew (CCSMATEIntegratedSettingInfo *base,
-			      MateConfClient		*client,
+ccsGConfIntegratedSettingNew (CCSGNOMEIntegratedSettingInfo *base,
+			      GConfClient		*client,
 			      const char		*section,
 			      CCSObjectAllocationInterface *ai)
 {
@@ -267,7 +267,7 @@ ccsMateConfIntegratedSettingNew (CCSMATEIntegratedSettingInfo *base,
     if (!setting)
 	return NULL;
 
-    CCSMateConfIntegratedSettingPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSMateConfIntegratedSettingPrivate));
+    CCSGConfIntegratedSettingPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSGConfIntegratedSettingPrivate));
 
     if (!priv)
     {
@@ -275,15 +275,15 @@ ccsMateConfIntegratedSettingNew (CCSMATEIntegratedSettingInfo *base,
 	return NULL;
     }
 
-    priv->mateIntegratedSettingInfo = base;
+    priv->gnomeIntegratedSettingInfo = base;
     priv->client = client;
     priv->sectionName = section;
 
     ccsObjectInit (setting, ai);
     ccsObjectSetPrivate (setting, (CCSPrivate *) priv);
-    ccsObjectAddInterface (setting, (const CCSInterface *) &ccsMateConfIntegratedSettingInfoInterface, GET_INTERFACE_TYPE (CCSIntegratedSettingInfoInterface));
-    ccsObjectAddInterface (setting, (const CCSInterface *) &ccsMateConfIntegratedSettingInterface, GET_INTERFACE_TYPE (CCSIntegratedSettingInterface));
-    ccsObjectAddInterface (setting, (const CCSInterface *) &ccsMateConfMATEIntegratedSettingInfoInterface, GET_INTERFACE_TYPE (CCSMATEIntegratedSettingInfoInterface));
+    ccsObjectAddInterface (setting, (const CCSInterface *) &ccsGConfIntegratedSettingInfoInterface, GET_INTERFACE_TYPE (CCSIntegratedSettingInfoInterface));
+    ccsObjectAddInterface (setting, (const CCSInterface *) &ccsGConfIntegratedSettingInterface, GET_INTERFACE_TYPE (CCSIntegratedSettingInterface));
+    ccsObjectAddInterface (setting, (const CCSInterface *) &ccsGConfGNOMEIntegratedSettingInfoInterface, GET_INTERFACE_TYPE (CCSGNOMEIntegratedSettingInfoInterface));
     ccsIntegratedSettingRef (setting);
 
     return setting;

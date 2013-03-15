@@ -60,7 +60,7 @@ if (COMPIZ_TEST_GTK_WINDOW_DECORATOR_FOUND)
 
     if (USE_GSETTINGS)
 	add_definitions (-DUSE_GSETTINGS)
-	set (_desktop_gschema_name org.mate.desktop.wm.preferences)
+	set (_desktop_gschema_name org.gnome.desktop.wm.preferences)
 	set (_desktop_gschema_filename ${_desktop_gschema_name}.gschema.xml)
 	set (_desktop_gschema_filepath ${CMAKE_CURRENT_SOURCE_DIR}/${_desktop_gschema_filename})
 	set (_desktop_gschema_generated_location ${CMAKE_BINARY_DIR}/generated/glib-2.0/schemas/${_desktop_gschema_filename})
@@ -70,12 +70,12 @@ if (COMPIZ_TEST_GTK_WINDOW_DECORATOR_FOUND)
 			    DEPENDS ${_desktop_gschema_filepath}
 			    VERBATIM)
 
-	add_custom_target (compiz_gwd_gsettings_org_mate_desktop_wm_preferences_schema ALL
+	add_custom_target (compiz_gwd_gsettings_org_gnome_desktop_wm_preferences_schema ALL
 			   DEPENDS ${_desktop_gschema_generated_location})
 
-	add_gsettings_schema_to_recompilation_list (compiz_gwd_gsettings_org_mate_desktop_wm_preferences_schema)
+	add_gsettings_schema_to_recompilation_list (compiz_gwd_gsettings_org_gnome_desktop_wm_preferences_schema)
 
-	set (_mutter_gschema_name org.mate.mutter)
+	set (_mutter_gschema_name org.gnome.mutter)
 	set (_mutter_gschema_filename ${_mutter_gschema_name}.gschema.xml)
 	set (_mutter_gschema_filepath ${CMAKE_CURRENT_SOURCE_DIR}/${_mutter_gschema_filename})
 	set (_mutter_gschema_generated_location ${CMAKE_BINARY_DIR}/generated/glib-2.0/schemas/${_mutter_gschema_filename})
@@ -85,10 +85,10 @@ if (COMPIZ_TEST_GTK_WINDOW_DECORATOR_FOUND)
 			    DEPENDS ${_mutter_gschema_filepath}
 			    VERBATIM)
 
-	add_custom_target (compiz_gwd_gsettings_org_mate_mutter_schema ALL
+	add_custom_target (compiz_gwd_gsettings_org_gnome_mutter_schema ALL
 			   DEPENDS ${_mutter_gschema_generated_location})
 
-	add_gsettings_schema_to_recompilation_list (compiz_gwd_gsettings_org_mate_mutter_schema)
+	add_gsettings_schema_to_recompilation_list (compiz_gwd_gsettings_org_gnome_mutter_schema)
 
 	set (COMPIZ_TEST_GWD_SETTINGS_ADDITIONAL_LIBRARIES
 	     ${COMPIZ_TEST_GWD_SETTINGS_ADDITIONAL_LIBRARIES}
@@ -128,11 +128,11 @@ if (COMPIZ_TEST_GTK_WINDOW_DECORATOR_FOUND)
     compiz_discover_tests (compiz_test_gwd_cairo_decorations COVERAGE
 			   gtk_window_decorator_cairo_window_decoration_util)
 
-    add_executable (compiz_test_gwd_marco_decorations
-		    ${CMAKE_CURRENT_SOURCE_DIR}/test_gwd_marco_decorations.cpp)
+    add_executable (compiz_test_gwd_metacity_decorations
+		    ${CMAKE_CURRENT_SOURCE_DIR}/test_gwd_metacity_decorations.cpp)
 
-    target_link_libraries (compiz_test_gwd_marco_decorations
-			   gtk_window_decorator_marco_window_decoration_util
+    target_link_libraries (compiz_test_gwd_metacity_decorations
+			   gtk_window_decorator_metacity_window_decoration_util
 			   ${COMPIZ_TEST_GTK_WINDOW_DECORATOR_LIBRARIES}
 			   ${CMAKE_THREAD_LIBS_INIT} # Link in pthread.
 			   ${GTEST_BOTH_LIBRARIES}
@@ -140,7 +140,7 @@ if (COMPIZ_TEST_GTK_WINDOW_DECORATOR_FOUND)
 		       	   ${GMOCK_MAIN_LIBRARY}
 			   decoration)
 
-    compiz_discover_tests (compiz_test_gwd_marco_decorations COVERAGE
-			   gtk_window_decorator_marco_window_decoration_util)
+    compiz_discover_tests (compiz_test_gwd_metacity_decorations COVERAGE
+			   gtk_window_decorator_metacity_window_decoration_util)
 
 endif (COMPIZ_TEST_GTK_WINDOW_DECORATOR_FOUND)

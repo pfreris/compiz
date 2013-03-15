@@ -1,39 +1,39 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <mateconf/mateconf.h>
-#include <mateconf/mateconf-client.h>
-#include <mateconf/mateconf-value.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+#include <gconf/gconf-value.h>
 
 #include <ccs.h>
 #include <ccs-backend.h>
 #include <ccs-object.h>
 
-#include "ccs_mate_integration.h"
-#include "ccs_mate_integrated_setting.h"
-#include "ccs_mate_integration_constants.h"
-#include "ccs_mate_integration_mateconf_integrated_setting.h"
+#include "ccs_gnome_integration.h"
+#include "ccs_gnome_integrated_setting.h"
+#include "ccs_gnome_integration_constants.h"
+#include "ccs_gnome_integration_gconf_integrated_setting.h"
 
-typedef struct _CCSMateConfIntegratedSettingFactoryPrivate CCSMateConfIntegratedSettingFactoryPrivate;
+typedef struct _CCSGConfIntegratedSettingFactoryPrivate CCSGConfIntegratedSettingFactoryPrivate;
 
-struct _CCSMateConfIntegratedSettingFactoryPrivate
+struct _CCSGConfIntegratedSettingFactoryPrivate
 {
-    MateConfClient *client;
-    guint       mateMateConfNotifyIds[NUM_WATCHED_DIRS];
+    GConfClient *client;
+    guint       gnomeGConfNotifyIds[NUM_WATCHED_DIRS];
     GHashTable  *pluginsToSettingsSectionsHashTable;
     GHashTable  *pluginsToSettingsSpecialTypesHashTable;
-    GHashTable  *pluginsToSettingNameMATENameHashTable;
-    CCSMATEValueChangeData *valueChangedData;
+    GHashTable  *pluginsToSettingNameGNOMENameHashTable;
+    CCSGNOMEValueChangeData *valueChangedData;
 };
 
 static void
-mateMateConfValueChanged (MateConfClient *client,
+gnomeGConfValueChanged (GConfClient *client,
 			guint       cnxn_id,
-			MateConfEntry  *entry,
+			GConfEntry  *entry,
 			gpointer    user_data)
 {
-    CCSMATEValueChangeData *data = (CCSMATEValueChangeData *) user_data;
-    const gchar *keyName = mateconf_entry_get_key (entry);
+    CCSGNOMEValueChangeData *data = (CCSGNOMEValueChangeData *) user_data;
+    const gchar *keyName = gconf_entry_get_key (entry);
     gchar       *baseName = g_path_get_basename (keyName);
 
     /* We don't care if integration is not enabled */
@@ -41,7 +41,7 @@ mateMateConfValueChanged (MateConfClient *client,
 	return;
 
     CCSIntegratedSettingList settingList = ccsIntegratedSettingsStorageFindMatchingSettingsByPredicate (data->storage,
-													ccsMATEIntegrationFindSettingsMatchingPredicate,
+													ccsGNOMEIntegrationFindSettingsMatchingPredicate,
 													baseName);
 
     ccsIntegrationUpdateIntegratedSettings (data->integration,
@@ -52,9 +52,9 @@ mateMateConfValueChanged (MateConfClient *client,
 }
 
 static CCSIntegratedSetting *
-createNewMateConfIntegratedSetting (MateConfClient *client,
+createNewGConfIntegratedSetting (GConfClient *client,
 				 const char  *sectionName,
-				 const char  *mateName,
+				 const char  *gnomeName,
 				 const char  *pluginName,
 				 const char  *settingName,
 				 CCSSettingType type,
@@ -66,101 +66,101 @@ createNewMateConfIntegratedSetting (MateConfClient *client,
     if (!sharedIntegratedSettingInfo)
 	return NULL;
 
-    CCSMATEIntegratedSettingInfo *mateIntegratedSettingInfo = ccsMATEIntegratedSettingInfoNew (sharedIntegratedSettingInfo, specialOptionType, mateName, ai);
+    CCSGNOMEIntegratedSettingInfo *gnomeIntegratedSettingInfo = ccsGNOMEIntegratedSettingInfoNew (sharedIntegratedSettingInfo, specialOptionType, gnomeName, ai);
 
-    if (!mateIntegratedSettingInfo)
+    if (!gnomeIntegratedSettingInfo)
     {
 	ccsIntegratedSettingInfoUnref (sharedIntegratedSettingInfo);
 	return NULL;
     }
 
-    CCSIntegratedSetting *mateconfIntegratedSetting = ccsMateConfIntegratedSettingNew (mateIntegratedSettingInfo, client, sectionName, ai);
+    CCSIntegratedSetting *gconfIntegratedSetting = ccsGConfIntegratedSettingNew (gnomeIntegratedSettingInfo, client, sectionName, ai);
 
-    if (!mateconfIntegratedSetting)
+    if (!gconfIntegratedSetting)
     {
-	ccsIntegratedSettingInfoUnref ((CCSIntegratedSettingInfo *) mateIntegratedSettingInfo);
+	ccsIntegratedSettingInfoUnref ((CCSIntegratedSettingInfo *) gnomeIntegratedSettingInfo);
 	return NULL;
     }
 
-    return mateconfIntegratedSetting;
+    return gconfIntegratedSetting;
 }
 
 static void
-finiMateConfClient (MateConfClient    *client,
-		 guint		*mateMateConfNotifyIds)
+finiGConfClient (GConfClient    *client,
+		 guint		*gnomeGConfNotifyIds)
 {
     int i;
 
-    mateconf_client_clear_cache (client);
+    gconf_client_clear_cache (client);
 
     for (i = 0; i < NUM_WATCHED_DIRS; i++)
     {
-	if (mateMateConfNotifyIds[i])
+	if (gnomeGConfNotifyIds[i])
 	{
-	    mateconf_client_notify_remove (client, mateMateConfNotifyIds[0]);
-	    mateMateConfNotifyIds[i] = 0;
+	    gconf_client_notify_remove (client, gnomeGConfNotifyIds[0]);
+	    gnomeGConfNotifyIds[i] = 0;
 	}
-	mateconf_client_remove_dir (client, watchedMateConfMateDirectories[i], NULL);
+	gconf_client_remove_dir (client, watchedGConfGnomeDirectories[i], NULL);
     }
-    mateconf_client_suggest_sync (client, NULL);
+    gconf_client_suggest_sync (client, NULL);
 
     g_object_unref (client);
 }
 
 static void
-registerMateConfClient (MateConfClient    *client,
-		     guint	    *mateMateConfNotifyIds,
-		     CCSMATEValueChangeData *data,
-		     MateConfClientNotifyFunc func)
+registerGConfClient (GConfClient    *client,
+		     guint	    *gnomeGConfNotifyIds,
+		     CCSGNOMEValueChangeData *data,
+		     GConfClientNotifyFunc func)
 {
     int i;
 
     for (i = 0; i < NUM_WATCHED_DIRS; i++)
-	mateMateConfNotifyIds[i] = mateconf_client_notify_add (client,
-							  watchedMateConfMateDirectories[i],
+	gnomeGConfNotifyIds[i] = gconf_client_notify_add (client,
+							  watchedGConfGnomeDirectories[i],
 							  func, (gpointer) data,
 							  NULL, NULL);
 }
 
 static void
-initMateConfClient (CCSIntegratedSettingFactory *factory)
+initGConfClient (CCSIntegratedSettingFactory *factory)
 {
     int i;
-    CCSMateConfIntegratedSettingFactoryPrivate *priv = (CCSMateConfIntegratedSettingFactoryPrivate *) ccsObjectGetPrivate (factory);
-    priv->client = mateconf_client_get_default ();
+    CCSGConfIntegratedSettingFactoryPrivate *priv = (CCSGConfIntegratedSettingFactoryPrivate *) ccsObjectGetPrivate (factory);
+    priv->client = gconf_client_get_default ();
 
     for (i = 0; i < NUM_WATCHED_DIRS; i++)
-	mateconf_client_add_dir (priv->client, watchedMateConfMateDirectories[i],
-			      MATECONF_CLIENT_PRELOAD_NONE, NULL);
+	gconf_client_add_dir (priv->client, watchedGConfGnomeDirectories[i],
+			      GCONF_CLIENT_PRELOAD_NONE, NULL);
 }
 
 CCSIntegratedSetting *
-ccsMateConfIntegratedSettingFactoryCreateIntegratedSettingForCCSSettingNameAndType (CCSIntegratedSettingFactory *factory,
+ccsGConfIntegratedSettingFactoryCreateIntegratedSettingForCCSSettingNameAndType (CCSIntegratedSettingFactory *factory,
 										 CCSIntegration		     *integration,
 										 const char		     *pluginName,
 										 const char		     *settingName,
 										 CCSSettingType		     type)
 {
-    CCSMateConfIntegratedSettingFactoryPrivate *priv = (CCSMateConfIntegratedSettingFactoryPrivate *) ccsObjectGetPrivate (factory);
+    CCSGConfIntegratedSettingFactoryPrivate *priv = (CCSGConfIntegratedSettingFactoryPrivate *) ccsObjectGetPrivate (factory);
     GHashTable                              *settingsSectionsHashTable = g_hash_table_lookup (priv->pluginsToSettingsSectionsHashTable, pluginName);
     GHashTable                              *settingsSpecialTypesHashTable = g_hash_table_lookup (priv->pluginsToSettingsSpecialTypesHashTable, pluginName);
-    GHashTable				    *settingsSettingNameMATENameHashTable = g_hash_table_lookup (priv->pluginsToSettingNameMATENameHashTable, pluginName);
+    GHashTable				    *settingsSettingNameGNOMENameHashTable = g_hash_table_lookup (priv->pluginsToSettingNameGNOMENameHashTable, pluginName);
 
     if (!priv->client)
-	initMateConfClient (factory);
+	initGConfClient (factory);
 
-    if (!priv->mateMateConfNotifyIds[0])
-	registerMateConfClient (priv->client, priv->mateMateConfNotifyIds, priv->valueChangedData, mateMateConfValueChanged);
+    if (!priv->gnomeGConfNotifyIds[0])
+	registerGConfClient (priv->client, priv->gnomeGConfNotifyIds, priv->valueChangedData, gnomeGConfValueChanged);
 
     if (settingsSectionsHashTable &&
 	settingsSpecialTypesHashTable &&
-	settingsSettingNameMATENameHashTable)
+	settingsSettingNameGNOMENameHashTable)
     {
 	const gchar *sectionName = g_hash_table_lookup (settingsSectionsHashTable, settingName);
 	SpecialOptionType specialType = (SpecialOptionType) GPOINTER_TO_INT (g_hash_table_lookup (settingsSpecialTypesHashTable, settingName));
-	const gchar *integratedName = g_hash_table_lookup (settingsSettingNameMATENameHashTable, settingName);
+	const gchar *integratedName = g_hash_table_lookup (settingsSettingNameGNOMENameHashTable, settingName);
 
-	return createNewMateConfIntegratedSetting (priv->client,
+	return createNewGConfIntegratedSetting (priv->client,
 						sectionName,
 						integratedName,
 						pluginName,
@@ -175,12 +175,12 @@ ccsMateConfIntegratedSettingFactoryCreateIntegratedSettingForCCSSettingNameAndTy
 }
 
 void
-ccsMateConfIntegratedSettingFactoryFree (CCSIntegratedSettingFactory *factory)
+ccsGConfIntegratedSettingFactoryFree (CCSIntegratedSettingFactory *factory)
 {
-    CCSMateConfIntegratedSettingFactoryPrivate *priv = (CCSMateConfIntegratedSettingFactoryPrivate *) ccsObjectGetPrivate (factory);
+    CCSGConfIntegratedSettingFactoryPrivate *priv = (CCSGConfIntegratedSettingFactoryPrivate *) ccsObjectGetPrivate (factory);
 
     if (priv->client)
-	finiMateConfClient (priv->client, priv->mateMateConfNotifyIds);
+	finiGConfClient (priv->client, priv->gnomeGConfNotifyIds);
 
     if (priv->pluginsToSettingsSectionsHashTable)
 	g_hash_table_unref (priv->pluginsToSettingsSectionsHashTable);
@@ -188,23 +188,23 @@ ccsMateConfIntegratedSettingFactoryFree (CCSIntegratedSettingFactory *factory)
     if (priv->pluginsToSettingsSpecialTypesHashTable)
 	g_hash_table_unref (priv->pluginsToSettingsSpecialTypesHashTable);
 
-    if (priv->pluginsToSettingNameMATENameHashTable)
-	g_hash_table_unref (priv->pluginsToSettingNameMATENameHashTable);
+    if (priv->pluginsToSettingNameGNOMENameHashTable)
+	g_hash_table_unref (priv->pluginsToSettingNameGNOMENameHashTable);
 
     ccsObjectFinalize (factory);
     (*factory->object.object_allocation->free_) (factory->object.object_allocation->allocator, factory);
 }
 
 
-const CCSIntegratedSettingFactoryInterface ccsMateConfIntegratedSettingFactoryInterface =
+const CCSIntegratedSettingFactoryInterface ccsGConfIntegratedSettingFactoryInterface =
 {
-    ccsMateConfIntegratedSettingFactoryCreateIntegratedSettingForCCSSettingNameAndType,
-    ccsMateConfIntegratedSettingFactoryFree
+    ccsGConfIntegratedSettingFactoryCreateIntegratedSettingForCCSSettingNameAndType,
+    ccsGConfIntegratedSettingFactoryFree
 };
 
 CCSIntegratedSettingFactory *
-ccsMateConfIntegratedSettingFactoryNew (MateConfClient		  *client,
-				     CCSMATEValueChangeData	  *valueChangedData,
+ccsGConfIntegratedSettingFactoryNew (GConfClient		  *client,
+				     CCSGNOMEValueChangeData	  *valueChangedData,
 				     CCSObjectAllocationInterface *ai)
 {
     CCSIntegratedSettingFactory *factory = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSIntegratedSettingFactory));
@@ -212,7 +212,7 @@ ccsMateConfIntegratedSettingFactoryNew (MateConfClient		  *client,
     if (!factory)
 	return NULL;
 
-    CCSMateConfIntegratedSettingFactoryPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSMateConfIntegratedSettingFactoryPrivate));
+    CCSGConfIntegratedSettingFactoryPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCSGConfIntegratedSettingFactoryPrivate));
 
     if (!priv)
     {
@@ -223,22 +223,22 @@ ccsMateConfIntegratedSettingFactoryNew (MateConfClient		  *client,
     if (client)
     {
 	int i;
-	priv->client = (MateConfClient *) g_object_ref (client);
+	priv->client = (GConfClient *) g_object_ref (client);
 	for (i = 0; i < NUM_WATCHED_DIRS; i++)
-	    mateconf_client_add_dir (priv->client, watchedMateConfMateDirectories[i],
-				  MATECONF_CLIENT_PRELOAD_NONE, NULL);
+	    gconf_client_add_dir (priv->client, watchedGConfGnomeDirectories[i],
+				  GCONF_CLIENT_PRELOAD_NONE, NULL);
     }
     else
 	priv->client = NULL;
 
-    priv->pluginsToSettingsSectionsHashTable = ccsMATEIntegrationPopulateCategoriesHashTables ();
-    priv->pluginsToSettingsSpecialTypesHashTable = ccsMATEIntegrationPopulateSpecialTypesHashTables ();
-    priv->pluginsToSettingNameMATENameHashTable = ccsMATEIntegrationPopulateSettingNameToMATENameHashTables ();
+    priv->pluginsToSettingsSectionsHashTable = ccsGNOMEIntegrationPopulateCategoriesHashTables ();
+    priv->pluginsToSettingsSpecialTypesHashTable = ccsGNOMEIntegrationPopulateSpecialTypesHashTables ();
+    priv->pluginsToSettingNameGNOMENameHashTable = ccsGNOMEIntegrationPopulateSettingNameToGNOMENameHashTables ();
     priv->valueChangedData = valueChangedData;
 
     ccsObjectInit (factory, ai);
     ccsObjectSetPrivate (factory, (CCSPrivate *) priv);
-    ccsObjectAddInterface (factory, (const CCSInterface *) &ccsMateConfIntegratedSettingFactoryInterface, GET_INTERFACE_TYPE (CCSIntegratedSettingFactoryInterface));
+    ccsObjectAddInterface (factory, (const CCSInterface *) &ccsGConfIntegratedSettingFactoryInterface, GET_INTERFACE_TYPE (CCSIntegratedSettingFactoryInterface));
 
     ccsIntegratedSettingFactoryRef (factory);
 

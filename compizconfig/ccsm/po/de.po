@@ -493,7 +493,7 @@ msgstr ""
 "Von Compiz Configuration System verwendetes Backend, Profil und andere "
 "interne Einstellungen konfigurieren."
 
-# Info == official German translation in MATE
+# Info == official German translation in GNOME
 msgid "About"
 msgstr "Info"
 

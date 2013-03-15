@@ -20,10 +20,10 @@ list (APPEND _PluginExtensionFiles
 list (APPEND _PluginExtensionFiles
       plugin_extensions/CompizOpenGLFixups.cmake)
 
-if (USE_MATECONF)
+if (USE_GCONF)
     list (APPEND _files CompizGconf.cmake)
     list (APPEND _PluginExtensionFiles plugin_extensions/CompizGenGconf.cmake)
-endif (USE_MATECONF)
+endif (USE_GCONF)
 
 if (USE_GSETTINGS)
     list (APPEND _files CompizGSettings.cmake)

@@ -41,8 +41,8 @@ struct _GWDSettingsNotifiedInterface
 
     gboolean (*update_decorations) (GWDSettingsNotified *notified);
     gboolean (*update_frames) (GWDSettingsNotified *notified);
-    gboolean (*update_marco_theme) (GWDSettingsNotified *notified);
-    gboolean (*update_marco_button_layout) (GWDSettingsNotified *notified);
+    gboolean (*update_metacity_theme) (GWDSettingsNotified *notified);
+    gboolean (*update_metacity_button_layout) (GWDSettingsNotified *notified);
 };
 
 gboolean
@@ -52,10 +52,10 @@ gboolean
 gwd_settings_notified_update_frames (GWDSettingsNotified *notified);
 
 gboolean
-gwd_settings_notified_update_marco_theme (GWDSettingsNotified *notified);
+gwd_settings_notified_update_metacity_theme (GWDSettingsNotified *notified);
 
 gboolean
-gwd_settings_notified_marco_button_layout (GWDSettingsNotified *notified);
+gwd_settings_notified_metacity_button_layout (GWDSettingsNotified *notified);
 
 GType gwd_settings_notified_interface_get_type (void);
 

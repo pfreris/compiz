@@ -8,11 +8,11 @@ include (CompizGSettings)
 set (_deps glib-2.0>=2.20.0
 	   gio-2.0>=2.25.0)
 
-if (USE_MATECONF)
-    list (APPEND _deps mateconf-2.0>=2.31.1)
+if (USE_GCONF)
+    list (APPEND _deps gconf-2.0>=2.31.1)
 
-    add_definitions (-DUSE_MATECONF)
-endif (USE_MATECONF)
+    add_definitions (-DUSE_GCONF)
+endif (USE_GCONF)
 
 if (COMPIZ_BUILD_TESTING)
     add_subdirectory (mocks)
@@ -21,8 +21,8 @@ endif (COMPIZ_BUILD_TESTING)
 add_subdirectory (gsettings_backend_shared)
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/gsettings_backend_shared
-                     ${CMAKE_SOURCE_DIR}/compizconfig/integration/mate/gsettings/include
-                     ${CMAKE_SOURCE_DIR}/compizconfig/integration/mate/include)
+                     ${CMAKE_SOURCE_DIR}/compizconfig/integration/gnome/gsettings/include
+                     ${CMAKE_SOURCE_DIR}/compizconfig/integration/gnome/include)
 
 set (COMPIZCONFIG_GSETTINGS_BACKEND_LIBRARIES
      compizconfig_gsettings_backend)

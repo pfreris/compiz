@@ -19,53 +19,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Pootle 1.1.0\n"
 
-#: ../gtk/mate/50-compiz-desktop-key.xml.in.h:1
+#: ../gtk/gnome/50-compiz-desktop-key.xml.in.h:1
 msgid "Desktop"
 msgstr "Επιφάνεια εργασίας"
 
-#: ../gtk/mate/50-compiz-key.xml.in.h:1
+#: ../gtk/gnome/50-compiz-key.xml.in.h:1
 msgid "Window Management"
 msgstr "Διαχείρηση Παραθύρου"
 
-#: ../gtk/mate/compiz.desktop.in.h:1
+#: ../gtk/gnome/compiz.desktop.in.h:1
 msgid "Compiz"
 msgstr "Compiz"
 
-#: ../gtk/mate/compiz-window-manager.c:426 ../metadata/scale.xml.in.h:25
+#: ../gtk/gnome/compiz-window-manager.c:426 ../metadata/scale.xml.in.h:25
 #: ../metadata/wobbly.xml.in.h:16
 msgid "None"
 msgstr "Κανένα"
 
-#: ../gtk/mate/compiz-window-manager.c:427
+#: ../gtk/gnome/compiz-window-manager.c:427
 #: ../gtk/window-decorator/gtk-window-decorator.c:4625
 msgid "Shade"
 msgstr "Σκίαση"
 
-#: ../gtk/mate/compiz-window-manager.c:428 ../metadata/place.xml.in.h:9
+#: ../gtk/gnome/compiz-window-manager.c:428 ../metadata/place.xml.in.h:9
 msgid "Maximize"
 msgstr "Μεγιστοποίησε"
 
-#: ../gtk/mate/compiz-window-manager.c:429
+#: ../gtk/gnome/compiz-window-manager.c:429
 msgid "Maximize Horizontally"
 msgstr "Μεγιστοποίηση Οριζόντια"
 
-#: ../gtk/mate/compiz-window-manager.c:430
+#: ../gtk/gnome/compiz-window-manager.c:430
 msgid "Maximize Vertically"
 msgstr "Μεγιστοποίηση Κάθετα"
 
-#: ../gtk/mate/compiz-window-manager.c:431
+#: ../gtk/gnome/compiz-window-manager.c:431
 msgid "Minimize"
 msgstr "Ελαχιστοποίηση"
 
-#: ../gtk/mate/compiz-window-manager.c:432
+#: ../gtk/gnome/compiz-window-manager.c:432
 msgid "Raise"
 msgstr "Ανύψωση"
 
-#: ../gtk/mate/compiz-window-manager.c:433
+#: ../gtk/gnome/compiz-window-manager.c:433
 msgid "Lower"
 msgstr "Χαμηλότερο"
 
-#: ../gtk/mate/compiz-window-manager.c:434
+#: ../gtk/gnome/compiz-window-manager.c:434
 #: ../gtk/window-decorator/gtk-window-decorator.c:4606
 #: ../metadata/core.xml.in.in.h:100
 msgid "Window Menu"
@@ -82,43 +82,43 @@ msgid "Blur type"
 msgstr "Είδος θολώματος"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:3
-msgid "Marco theme active window opacity"
-msgstr "Αδιαφάνεια θέματος ενεργού παραθύρου του Marco"
+msgid "Metacity theme active window opacity"
+msgstr "Αδιαφάνεια θέματος ενεργού παραθύρου του Metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:4
-msgid "Marco theme active window opacity shade"
-msgstr "Σκίαση αδιαφάνειας θέματος ενεργού παραθύρου του Marco"
+msgid "Metacity theme active window opacity shade"
+msgstr "Σκίαση αδιαφάνειας θέματος ενεργού παραθύρου του Metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:5
-msgid "Marco theme opacity"
-msgstr "Αδιαφάνεια θέματος του Marco"
+msgid "Metacity theme opacity"
+msgstr "Αδιαφάνεια θέματος του Metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:6
-msgid "Marco theme opacity shade"
-msgstr "Σκίαση αδιαφάνειας θέματος του Marco"
+msgid "Metacity theme opacity shade"
+msgstr "Σκίαση αδιαφάνειας θέματος του Metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:7
-msgid "Opacity to use for active windows with marco theme decorations"
+msgid "Opacity to use for active windows with metacity theme decorations"
 msgstr ""
-"Αδιαφάνεια για χρήση στα ενεργά παράθυρα με θέματα διακοσμήσεων του marco"
+"Αδιαφάνεια για χρήση στα ενεργά παράθυρα με θέματα διακοσμήσεων του metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:8
-msgid "Opacity to use for marco theme decorations"
-msgstr "Αδιαφάνεια για χρήση στα θέματα διακοσμήσεων του marco"
+msgid "Opacity to use for metacity theme decorations"
+msgstr "Αδιαφάνεια για χρήση στα θέματα διακοσμήσεων του metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:9
 msgid ""
-"Shade active windows with marco theme decorations from opaque to "
+"Shade active windows with metacity theme decorations from opaque to "
 "translucent"
 msgstr ""
-"Σκίαση ενεργών παραθύρων με θέματα διακοσμήσεων του marco από αδιαφανές "
+"Σκίαση ενεργών παραθύρων με θέματα διακοσμήσεων του metacity από αδιαφανές "
 "σε διάφανο"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:10
 msgid ""
-"Shade windows with marco theme decorations from opaque to translucent"
+"Shade windows with metacity theme decorations from opaque to translucent"
 msgstr ""
-"Σκίαση παραθύρων με θέματα διακοσμήσεων του marco από αδιαφανές σε διάφανο"
+"Σκίαση παραθύρων με θέματα διακοσμήσεων του metacity από αδιαφανές σε διάφανο"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:11
 msgid "Title bar mouse wheel action"
@@ -129,13 +129,13 @@ msgid "Type of blur used for window decorations"
 msgstr "Είδος θολώματος για χρήση στις διακοσμήσεις παραθύρων"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:13
-msgid "Use marco theme"
-msgstr "Χρήση θέματος του marco"
+msgid "Use metacity theme"
+msgstr "Χρήση θέματος του metacity"
 
 #: ../gtk/window-decorator/gwd.schemas.in.h:14
-msgid "Use marco theme when drawing window decorations"
+msgid "Use metacity theme when drawing window decorations"
 msgstr ""
-"Χρήση θέματος του marco όταν ζωγραφίζονται οι διακοσμήσεις παραθύρων"
+"Χρήση θέματος του metacity όταν ζωγραφίζονται οι διακοσμήσεις παραθύρων"
 
 #: ../gtk/window-decorator/gtk-window-decorator.c:4414
 #: ../metadata/core.xml.in.in.h:12
@@ -809,7 +809,7 @@ msgid "Command line to be executed in shell when run_command9 is invoked"
 msgstr ""
 "Γραμμή εντολών για εκτέλεση σε κέλυφος όταν επικαλεσθεί το τρέξιμο_εντολής9"
 
-#: ../metadata/commands.xml.in.h:63 ../metadata/matecompat.xml.in.h:1
+#: ../metadata/commands.xml.in.h:63 ../metadata/gnomecompat.xml.in.h:1
 msgid "Commands"
 msgstr "Εντολές"
 
@@ -1692,13 +1692,13 @@ msgstr "Σύστημα Αρχείων Userspace"
 msgid "Userspace file system"
 msgstr "Σύστημα αρχείων χρήστη"
 
-#: ../metadata/mateconf.xml.in.h:1
-msgid "MateConf"
-msgstr "MateConf"
+#: ../metadata/gconf.xml.in.h:1
+msgid "GConf"
+msgstr "GConf"
 
-#: ../metadata/mateconf.xml.in.h:2
-msgid "MateConf Control Backend"
-msgstr "Κύρια Εφαρμογή Ελέγχου του MateConf"
+#: ../metadata/gconf.xml.in.h:2
+msgid "GConf Control Backend"
+msgstr "Κύρια Εφαρμογή Ελέγχου του GConf"
 
 #: ../metadata/glib.xml.in.h:1
 msgid "GLib"
@@ -1708,57 +1708,57 @@ msgstr "GLib"
 msgid "GLib main loop support"
 msgstr "Κύριος βρόγχος υποστήριξης GLib"
 
-#: ../metadata/matecompat.xml.in.h:2
-msgid "Mate Compatibility"
-msgstr "Συμβατότητα με Mate"
+#: ../metadata/gnomecompat.xml.in.h:2
+msgid "Gnome Compatibility"
+msgstr "Συμβατότητα με Gnome"
 
-#: ../metadata/matecompat.xml.in.h:3
+#: ../metadata/gnomecompat.xml.in.h:3
 msgid "Open a terminal"
 msgstr "Ανοιγμα ενός τερματικού"
 
-#: ../metadata/matecompat.xml.in.h:4
-msgid "Options that keep Compiz compatible to the Mate desktop environment"
+#: ../metadata/gnomecompat.xml.in.h:4
+msgid "Options that keep Compiz compatible to the Gnome desktop environment"
 msgstr ""
 "Επιλογές που διατηρούν το Compiz συμβατό με το περιβάλλον επιφάνειας "
-"εργασίας Mate"
+"εργασίας Gnome"
 
-#: ../metadata/matecompat.xml.in.h:5
+#: ../metadata/gnomecompat.xml.in.h:5
 msgid "Run Dialog"
 msgstr "Τρέξιμο Διαλόγου"
 
-#: ../metadata/matecompat.xml.in.h:6
+#: ../metadata/gnomecompat.xml.in.h:6
 msgid "Run terminal command"
 msgstr "Τρέξε εντολή τερματικού"
 
-#: ../metadata/matecompat.xml.in.h:7
+#: ../metadata/gnomecompat.xml.in.h:7
 msgid "Screenshot command line"
 msgstr "Γραμμή εντολών αρπαγής οθόνης"
 
-#: ../metadata/matecompat.xml.in.h:8
+#: ../metadata/gnomecompat.xml.in.h:8
 msgid "Show Main Menu"
 msgstr "Εμφάνιση Κύριου Μενού"
 
-#: ../metadata/matecompat.xml.in.h:9
+#: ../metadata/gnomecompat.xml.in.h:9
 msgid "Show Run Application dialog"
 msgstr "Εμφάνιση διαλόγου Τρεξίματος Εφαρμογής"
 
-#: ../metadata/matecompat.xml.in.h:10
+#: ../metadata/gnomecompat.xml.in.h:10
 msgid "Show the main menu"
 msgstr "Εμφάνιση του κύριου μενού"
 
-#: ../metadata/matecompat.xml.in.h:11
+#: ../metadata/gnomecompat.xml.in.h:11
 msgid "Take a screenshot"
 msgstr "Τράβα μια αρπαγή οθόνης"
 
-#: ../metadata/matecompat.xml.in.h:12
+#: ../metadata/gnomecompat.xml.in.h:12
 msgid "Take a screenshot of a window"
 msgstr "Τράβα μια αρπαγή οθόνης ενός παραθύρου"
 
-#: ../metadata/matecompat.xml.in.h:13
+#: ../metadata/gnomecompat.xml.in.h:13
 msgid "Terminal command line"
 msgstr "Γραμμή εντολών τερματικού"
 
-#: ../metadata/matecompat.xml.in.h:14
+#: ../metadata/gnomecompat.xml.in.h:14
 msgid "Window screenshot command line"
 msgstr "Γραμμή εντολών αρπαγής οθόνης παραθύρου"
 

@@ -2,4 +2,4 @@ find_package (Compiz REQUIRED)
 
 include (CompizPlugin)
 
-compiz_plugin(matecompat PLUGINDEPS composite opengl)
+compiz_plugin(gnomecompat PLUGINDEPS composite opengl)

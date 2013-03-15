@@ -874,7 +874,7 @@ addPluginFromPB (CCSContext * context,
     if (ccsFindPlugin (context, name))
 	return;
 
-    if (!strcmp (name, "ini") || !strcmp (name, "mateconf") ||
+    if (!strcmp (name, "ini") || !strcmp (name, "gconf") ||
 	!strcmp (name, "ccp") || !strcmp (name, "kconfig"))
 	return;
 
@@ -2536,7 +2536,7 @@ addPluginFromXMLNode (CCSContext * context,
 	return FALSE;
     }
 
-    if (!strcmp (name, "ini") || !strcmp (name, "mateconf") ||
+    if (!strcmp (name, "ini") || !strcmp (name, "gconf") ||
 	!strcmp (name, "ccp") || !strcmp (name, "kconfig"))
     {
 	free (name);
@@ -2979,7 +2979,7 @@ addPluginNamed (CCSContext * context, char *name)
     if (ccsFindPlugin (context, name))
 	return;
 
-    if (!strcmp (name, "ini") || !strcmp (name, "mateconf") ||
+    if (!strcmp (name, "ini") || !strcmp (name, "gconf") ||
 	!strcmp (name, "ccp") || !strcmp (name, "kconfig"))
 	return;
 

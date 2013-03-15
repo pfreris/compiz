@@ -1,1 +1,1 @@
-add_subdirectory (mate)
+add_subdirectory (gnome)

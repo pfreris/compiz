@@ -33,8 +33,8 @@
 
 #include <ccs.h>
 #include <ccs-backend.h>
-#include <ccs_mate_integrated_setting.h>
-#include <ccs_mate_integration_gsettings_integrated_setting.h>
+#include <ccs_gnome_integrated_setting.h>
+#include <ccs_gnome_integration_gsettings_integrated_setting.h>
 #include <ccs_gsettings_wrapper_mock.h>
 
 using ::testing::Combine;
@@ -369,11 +369,11 @@ TEST_P (CCSGSettingsIntegratedSettingTest, MatchedTypesReturnValueMismatchedType
 										     integratedSettingInfo.settingType,
 										     &ccsDefaultObjectAllocator);
     SpecialOptionType             specialType = ccsTypeToSpecialType ()[integratedSettingInfo.settingType];
-    CCSMATEIntegratedSettingInfo *mateIntegratedSetting = ccsMATEIntegratedSettingInfoNew (integratedSetting,
+    CCSGNOMEIntegratedSettingInfo *gnomeIntegratedSetting = ccsGNOMEIntegratedSettingInfoNew (integratedSetting,
 											      specialType,
 											      keyName.c_str (),
 											      &ccsDefaultObjectAllocator);
-    boost::shared_ptr <CCSIntegratedSetting> gsettingsIntegrated (AutoDestroy (ccsGSettingsIntegratedSettingNew (mateIntegratedSetting,
+    boost::shared_ptr <CCSIntegratedSetting> gsettingsIntegrated (AutoDestroy (ccsGSettingsIntegratedSettingNew (gnomeIntegratedSetting,
 														 mWrapper.get (),
 														 &ccsDefaultObjectAllocator),
 									       ccsIntegratedSettingUnref));
@@ -410,11 +410,11 @@ TEST_P (CCSGSettingsIntegratedSettingTest, MatchedTypesReturnValueMismatchedType
 										     integratedSettingInfo.settingType,
 										     &ccsDefaultObjectAllocator);
     SpecialOptionType             specialType = ccsTypeToSpecialType ()[integratedSettingInfo.settingType];
-    CCSMATEIntegratedSettingInfo *mateIntegratedSetting = ccsMATEIntegratedSettingInfoNew (integratedSetting,
+    CCSGNOMEIntegratedSettingInfo *gnomeIntegratedSetting = ccsGNOMEIntegratedSettingInfoNew (integratedSetting,
 											      specialType,
 											      keyName.c_str (),
 											      &ccsDefaultObjectAllocator);
-    boost::shared_ptr <CCSIntegratedSetting> gsettingsIntegrated (AutoDestroy (ccsGSettingsIntegratedSettingNew (mateIntegratedSetting,
+    boost::shared_ptr <CCSIntegratedSetting> gsettingsIntegrated (AutoDestroy (ccsGSettingsIntegratedSettingNew (gnomeIntegratedSetting,
 														 mWrapper.get (),
 														 &ccsDefaultObjectAllocator),
 									       ccsIntegratedSettingUnref));

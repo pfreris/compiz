@@ -26,7 +26,7 @@ if [ -z "$COMPIZ_BIN_PATH" ]; then
     COMPIZ_BIN_PATH="/usr/bin/"
 fi
 KWIN=`which kwin`
-MARCO="/usr/bin/marco"
+METACITY="/usr/bin/metacity"
 
 #
 # Default to gtk/kde4-window-decorator
@@ -38,7 +38,7 @@ DECORATOR=""
 if [ "$DESKTOP_SESSION" = "kde" ]; then
     FALLBACKWM="${KWIN}"
 else
-    FALLBACKWM="${MARCO}"
+    FALLBACKWM="${METACITY}"
 fi
 FALLBACKWM_OPTIONS=" --replace"
 
@@ -73,7 +73,7 @@ fi
 # start a decorator
 if [ -x ${COMPIZ_BIN_PATH}emerald ] && [ "$USE_EMERALD" = "yes" ]; then
     DECORATOR=emerald
-elif [ -x ${COMPIZ_BIN_PATH}gtk-window-decorator ] && [ -n "$MATE_DESKTOP_SESSION_ID" ]; then
+elif [ -x ${COMPIZ_BIN_PATH}gtk-window-decorator ] && [ -n "$GNOME_DESKTOP_SESSION_ID" ]; then
     DECORATOR=gtk-window-decorator
 elif [ -x ${COMPIZ_BIN_PATH}kde4-window-decorator ] && [ x$KDE_SESSION_VERSION = x"4" ]; then
     DECORATOR=kde4-window-decorator

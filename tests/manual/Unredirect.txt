@@ -67,14 +67,14 @@ Setup:
  
 Actions:
 #. Open a Chrome/Chromium window.
-#. Open a mate-terminal window (Ctrl+Alt+T)
-#. Move the mate-terminal to the centre of the screen, above the Chrome
+#. Open a gnome-terminal window (Ctrl+Alt+T)
+#. Move the gnome-terminal to the centre of the screen, above the Chrome
    window.
 #. Click on the Chrome window and make it fullscreen (F11).
-#. Alt+Tab to the mate-terminal window.
+#. Alt+Tab to the gnome-terminal window.
 
 Expected Result:
-  The mate-terminal window should be visible on top.
+  The gnome-terminal window should be visible on top.
 
 
 Unredirect cancelation by transformed windows (LP: #1047168)
@@ -86,8 +86,8 @@ Setup:
  
 Actions:
 #. Open a Chrome/Chromium window.
-#. Open a mate-terminal window (Ctrl+Alt+T)
-#. Move the mate-terminal to the centre of the screen, above the Chrome
+#. Open a gnome-terminal window (Ctrl+Alt+T)
+#. Move the gnome-terminal to the centre of the screen, above the Chrome
    window.
 #. Click on the Chrome window and make it fullscreen (F11).
 #. Hold Shift+Alt and tap Up to engage scale mode. Keep holding Shift+Alt

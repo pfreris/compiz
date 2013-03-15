@@ -210,7 +210,7 @@ decorations_changed (WnckScreen *screen)
 	if (d->decorated)
 	{
 
-#ifdef USE_MARCO
+#ifdef USE_METACITY
 	    if (d->draw == draw_window_decoration ||
 		d->draw == meta_draw_window_decoration)
 		d->draw = theme_draw_window_decoration;

@@ -1,17 +1,17 @@
 /**
  *
- * compizconfig mate integration backend
+ * compizconfig gnome integration backend
  *
- * mate-integration.c
+ * gnome-integration.c
  *
  * Copyright (c) 2011 Canonical Ltd
  *
- * Based on the original compizconfig-backend-mateconf
+ * Based on the original compizconfig-backend-gconf
  *
  * Copyright (c) 2007 Danny Baumann <maniac@opencompositing.org>
  *
  * Parts of this code are taken from libberylsettings 
- * mateconf backend, written by:
+ * gconf backend, written by:
  *
  * Copyright (c) 2006 Robert Carr <racarr@opencompositing.org>
  * Copyright (c) 2007 Dennis Kasprzyk <onestone@opencompositing.org>
@@ -36,13 +36,13 @@
 #include <ccs-backend.h>
 #include <ccs-object.h>
 #include <gio/gio.h>
-#include "ccs_mate_integration.h"
-#include "ccs_mate_integration_constants.h"
-#include "ccs_mate_integrated_setting.h"
+#include "ccs_gnome_integration.h"
+#include "ccs_gnome_integration_constants.h"
+#include "ccs_gnome_integrated_setting.h"
 
-typedef struct _CCSMATEIntegrationBackendPrivate CCMATEIntegrationBackendPrivate;
+typedef struct _CCSGNOMEIntegrationBackendPrivate CCGNOMEIntegrationBackendPrivate;
 
-struct _CCSMATEIntegrationBackendPrivate
+struct _CCSGNOMEIntegrationBackendPrivate
 {
     CCSBackend *backend;
     CCSContext *context;
@@ -73,7 +73,7 @@ findDisplaySettingForPlugin (CCSContext *context,
 static void
 unregisterAllIntegratedOptions (CCSIntegration *integration)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
 
     if (priv->storage)
 	ccsIntegratedSettingsStorageUnref (priv->storage);
@@ -88,12 +88,12 @@ unregisterAllIntegratedOptions (CCSIntegration *integration)
 static void
 registerAllIntegratedOptions (CCSIntegration *integration)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
 
     unsigned int i = 0;
-    const CCSMATEIntegratedSettingsList *array = ccsMATEIntegratedSettingsList ();
+    const CCSGNOMEIntegratedSettingsList *array = ccsGNOMEIntegratedSettingsList ();
 
-    for (; i < CCS_MATE_INTEGRATED_SETTINGS_LIST_SIZE; i++)
+    for (; i < CCS_GNOME_INTEGRATED_SETTINGS_LIST_SIZE; i++)
     {
 	CCSIntegratedSetting *setting = ccsIntegratedSettingFactoryCreateIntegratedSettingForCCSSettingNameAndType (priv->factory,
 														    integration,
@@ -106,11 +106,11 @@ registerAllIntegratedOptions (CCSIntegration *integration)
 }
 
 static CCSIntegratedSetting *
-ccsMATEIntegrationBackendGetIntegratedSetting (CCSIntegration *integration,
+ccsGNOMEIntegrationBackendGetIntegratedSetting (CCSIntegration *integration,
 						const char		  *pluginName,
 						const char		  *settingName)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
 
     if (ccsIntegratedSettingsStorageEmpty (priv->storage))
 	registerAllIntegratedOptions (integration);
@@ -135,7 +135,7 @@ ccsMATEIntegrationBackendGetIntegratedSetting (CCSIntegration *integration,
 }
 
 static unsigned int
-getMateMouseButtonModifier (CCSIntegratedSetting *mouseButtonModifierSetting)
+getGnomeMouseButtonModifier (CCSIntegratedSetting *mouseButtonModifierSetting)
 {
     unsigned int modMask = 0;
     CCSSettingType type = TypeString;
@@ -169,7 +169,7 @@ getButtonBindingForSetting (CCSContext   *context,
 }
 
 static Bool
-ccsMATEIntegrationBackendReadISAndSetSettingForType (CCSIntegratedSetting *integratedSetting,
+ccsGNOMEIntegrationBackendReadISAndSetSettingForType (CCSIntegratedSetting *integratedSetting,
 						      CCSSetting           *setting,
 						      CCSSettingValue      **v,
 						      CCSSettingType       sourceType,
@@ -210,7 +210,7 @@ ccsMATEIntegrationBackendReadISAndSetSettingForType (CCSIntegratedSetting *integ
 }
 
 static Bool
-ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
+ccsGNOMEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
 						 CCSContext	       *context,
 						 CCSSetting	       *setting,
 						 CCSIntegratedSetting   *integratedSetting)
@@ -219,7 +219,7 @@ ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
     CCSSettingValue *v = NULL;
     CCSSettingType  type = TypeNum;
 
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
     
     if (ccsIntegratedSettingsStorageEmpty (priv->storage))
 	registerAllIntegratedOptions (integration);
@@ -227,7 +227,7 @@ ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
     if (!ccsSettingIsReadableByBackend (setting))
 	return FALSE;
 
-    switch (ccsMATEIntegratedSettingInfoGetSpecialOptionType ((CCSMATEIntegratedSettingInfo *) integratedSetting)) {
+    switch (ccsGNOMEIntegratedSettingInfoGetSpecialOptionType ((CCSGNOMEIntegratedSettingInfo *) integratedSetting)) {
     case OptionInt:
 	{
 	    type = TypeInt;
@@ -265,7 +265,7 @@ ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
 	    /* Some backends store keys differently so we need to let the backend know
 	     * that we really intend to read a key and let it handle the conversion */
 	    type = TypeKey;
-	    if (ccsMATEIntegrationBackendReadISAndSetSettingForType (integratedSetting,
+	    if (ccsGNOMEIntegrationBackendReadISAndSetSettingForType (integratedSetting,
 								      setting,
 								      &v,
 								      TypeKey,
@@ -330,7 +330,7 @@ ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
 		/* These are always stored as strings, no matter what the backend is
 		 * so the source type should be string */
 		type = TypeKey;
-		if (ccsMATEIntegrationBackendReadISAndSetSettingForType (integratedSetting,
+		if (ccsGNOMEIntegrationBackendReadISAndSetSettingForType (integratedSetting,
 									  setting,
 									  &v,
 									  TypeString,
@@ -351,15 +351,15 @@ ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
 
 		CCSIntegratedSettingList mouseModifierSetting =
 		    ccsIntegratedSettingsStorageFindMatchingSettingsByPluginAndSettingName (priv->storage,
-											    ccsMATEIntegratedPluginNames.SPECIAL,
-											    ccsMATEIntegratedSettingNames.NULL_MOUSE_BUTTON_MODIFIER.compizName);
+											    ccsGNOMEIntegratedPluginNames.SPECIAL,
+											    ccsGNOMEIntegratedSettingNames.NULL_MOUSE_BUTTON_MODIFIER.compizName);
 
-		button.buttonModMask = getMateMouseButtonModifier (mouseModifierSetting->data);
+		button.buttonModMask = getGnomeMouseButtonModifier (mouseModifierSetting->data);
 
 		CCSIntegratedSettingList resizeButtonSetting =
 		    ccsIntegratedSettingsStorageFindMatchingSettingsByPluginAndSettingName (priv->storage,
-											    ccsMATEIntegratedPluginNames.SPECIAL,
-											    ccsMATEIntegratedSettingNames.NULL_RESIZE_WITH_RIGHT_BUTTON.compizName);
+											    ccsGNOMEIntegratedPluginNames.SPECIAL,
+											    ccsGNOMEIntegratedSettingNames.NULL_RESIZE_WITH_RIGHT_BUTTON.compizName);
 
 		type = TypeBool;
 		v = ccsIntegratedSettingReadValue (resizeButtonSetting->data, type);
@@ -395,7 +395,7 @@ ccsMATEIntegrationBackendReadOptionIntoSetting (CCSIntegration *integration,
 }
 
 static Bool
-setMateMouseButtonModifier (CCSIntegratedSetting *setting,
+setGnomeMouseButtonModifier (CCSIntegratedSetting *setting,
 			     unsigned int modMask)
 {
     char   *modifiers;
@@ -448,7 +448,7 @@ setButtonBindingForSetting (CCSContext   *context,
 }
 
 static Bool
-ccsMATEIntegrationBackendKeyValueToStringValue (CCSSettingValue *keyValue,
+ccsGNOMEIntegrationBackendKeyValueToStringValue (CCSSettingValue *keyValue,
 						 CCSSettingValue *stringValue)
 {
     char  *newValue;
@@ -458,7 +458,7 @@ ccsMATEIntegrationBackendKeyValueToStringValue (CCSSettingValue *keyValue,
     {
 	if (strcmp (newValue, "Disabled") == 0)
 	{
-	    /* Marco doesn't like "Disabled", it wants "disabled" */
+	    /* Metacity doesn't like "Disabled", it wants "disabled" */
 	    newValue[0] = 'd';
 	}
 
@@ -471,7 +471,7 @@ ccsMATEIntegrationBackendKeyValueToStringValue (CCSSettingValue *keyValue,
 }
 
 static void
-ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
+ccsGNOMEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
 						  CCSContext		 *context,
 						  CCSSetting		 *setting,
 						  CCSIntegratedSetting   *integratedSetting)
@@ -479,7 +479,7 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
     GError     *err = NULL;
     CCSSettingType type = TypeNum;
 
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
 
     if (ccsIntegratedSettingsStorageEmpty (priv->storage))
 	registerAllIntegratedOptions (integration);
@@ -499,7 +499,7 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
     if (!v)
 	return;
 
-    switch (ccsMATEIntegratedSettingInfoGetSpecialOptionType ((CCSMATEIntegratedSettingInfo *) integratedSetting))
+    switch (ccsGNOMEIntegratedSettingInfoGetSpecialOptionType ((CCSGNOMEIntegratedSettingInfo *) integratedSetting))
     {
     case OptionInt:
 	ccsIntegratedSettingWriteValue (integratedSetting, v, TypeInt);
@@ -518,7 +518,7 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
 	    newValue->parent = NULL;
 	    newValue->refCount = 1;
 
-	    if (ccsMATEIntegrationBackendKeyValueToStringValue (v, newValue))
+	    if (ccsGNOMEIntegrationBackendKeyValueToStringValue (v, newValue))
 	    {
 		/* Really this is a lie - the writer expects a string
 		 * but it needs to know if its a key or a string */
@@ -567,7 +567,7 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
 		      strcmp (settingName, "run_command_window_screenshot_key") == 0 ||
 		      strcmp (settingName, "run_command_terminal_key") == 0))
 	    {
-		if (ccsMATEIntegrationBackendKeyValueToStringValue (v, newValue))
+		if (ccsGNOMEIntegrationBackendKeyValueToStringValue (v, newValue))
 		{
 		    /* These are actually stored as strings in the schemas */
 		    type = TypeString;
@@ -594,8 +594,8 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
 
 		CCSIntegratedSettingList resizeButtonSetting =
 		    ccsIntegratedSettingsStorageFindMatchingSettingsByPluginAndSettingName (priv->storage,
-											    ccsMATEIntegratedPluginNames.SPECIAL,
-											    ccsMATEIntegratedSettingNames.NULL_RESIZE_WITH_RIGHT_BUTTON.compizName);
+											    ccsGNOMEIntegratedPluginNames.SPECIAL,
+											    ccsGNOMEIntegratedSettingNames.NULL_RESIZE_WITH_RIGHT_BUTTON.compizName);
 
 		newValue->value.asBool = resizeWithRightButton;
 		type = TypeBool;
@@ -604,11 +604,11 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
 
 		CCSIntegratedSettingList mouseModifierSetting =
 		    ccsIntegratedSettingsStorageFindMatchingSettingsByPluginAndSettingName (priv->storage,
-											    ccsMATEIntegratedPluginNames.SPECIAL,
-											    ccsMATEIntegratedSettingNames.NULL_MOUSE_BUTTON_MODIFIER.compizName);
+											    ccsGNOMEIntegratedPluginNames.SPECIAL,
+											    ccsGNOMEIntegratedSettingNames.NULL_MOUSE_BUTTON_MODIFIER.compizName);
 
 		modMask = v->value.asButton.buttonModMask;
-		if (setMateMouseButtonModifier (mouseModifierSetting->data, modMask))
+		if (setGnomeMouseButtonModifier (mouseModifierSetting->data, modMask))
 		{
 		    setButtonBindingForSetting (priv->context, "move",
 						"initiate_button", 1, modMask);
@@ -648,11 +648,11 @@ ccsMATEIntegrationBackendWriteOptionFromSetting (CCSIntegration *integration,
 }
 
 static void
-ccsMATEIntegrationBackendUpdateIntegratedSettings (CCSIntegration *integration,
+ccsGNOMEIntegrationBackendUpdateIntegratedSettings (CCSIntegration *integration,
 						    CCSContext	 *context,
 						    CCSIntegratedSettingList integratedSettings)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
     Bool needInit = TRUE;
 
     CCSIntegratedSettingList iter = integratedSettings;
@@ -720,23 +720,23 @@ ccsMATEIntegrationBackendUpdateIntegratedSettings (CCSIntegration *integration,
 }
 
 static void
-ccsMATEIntegrationDisallowIntegratedWrites (CCSIntegration *integration)
+ccsGNOMEIntegrationDisallowIntegratedWrites (CCSIntegration *integration)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
     priv->noWrites = TRUE;
 }
 
 static void
-ccsMATEIntegrationAllowIntegratedWrites (CCSIntegration *integration)
+ccsGNOMEIntegrationAllowIntegratedWrites (CCSIntegration *integration)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
     priv->noWrites = FALSE;
 }
 
 static void
-ccsMATEIntegrationBackendFree (CCSIntegration *integration)
+ccsGNOMEIntegrationBackendFree (CCSIntegration *integration)
 {
-    CCMATEIntegrationBackendPrivate *priv = (CCMATEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
+    CCGNOMEIntegrationBackendPrivate *priv = (CCGNOMEIntegrationBackendPrivate *) ccsObjectGetPrivate (integration);
 
     unregisterAllIntegratedOptions (integration);
 
@@ -746,22 +746,22 @@ ccsMATEIntegrationBackendFree (CCSIntegration *integration)
     free (integration);
 }
 
-const CCSIntegrationInterface ccsMATEIntegrationBackendInterface =
+const CCSIntegrationInterface ccsGNOMEIntegrationBackendInterface =
 {
-    ccsMATEIntegrationBackendGetIntegratedSetting,
-    ccsMATEIntegrationBackendReadOptionIntoSetting,
-    ccsMATEIntegrationBackendWriteOptionFromSetting,
-    ccsMATEIntegrationBackendUpdateIntegratedSettings,
-    ccsMATEIntegrationDisallowIntegratedWrites,
-    ccsMATEIntegrationAllowIntegratedWrites,
-    ccsMATEIntegrationBackendFree
+    ccsGNOMEIntegrationBackendGetIntegratedSetting,
+    ccsGNOMEIntegrationBackendReadOptionIntoSetting,
+    ccsGNOMEIntegrationBackendWriteOptionFromSetting,
+    ccsGNOMEIntegrationBackendUpdateIntegratedSettings,
+    ccsGNOMEIntegrationDisallowIntegratedWrites,
+    ccsGNOMEIntegrationAllowIntegratedWrites,
+    ccsGNOMEIntegrationBackendFree
 };
 
-static CCMATEIntegrationBackendPrivate *
+static CCGNOMEIntegrationBackendPrivate *
 addPrivate (CCSIntegration *backend,
 	    CCSObjectAllocationInterface *ai)
 {
-    CCMATEIntegrationBackendPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCMATEIntegrationBackendPrivate));
+    CCGNOMEIntegrationBackendPrivate *priv = (*ai->calloc_) (ai->allocator, 1, sizeof (CCGNOMEIntegrationBackendPrivate));
 
     if (!priv)
     {
@@ -775,7 +775,7 @@ addPrivate (CCSIntegration *backend,
 }
 
 static CCSIntegration *
-ccsMATEIntegrationBackendNewCommon (CCSBackend *backend,
+ccsGNOMEIntegrationBackendNewCommon (CCSBackend *backend,
 				     CCSContext *context,
 				     CCSIntegratedSettingFactory *factory,
 				     CCSIntegratedSettingsStorage *storage,
@@ -788,7 +788,7 @@ ccsMATEIntegrationBackendNewCommon (CCSBackend *backend,
 
     ccsObjectInit (integration, ai);
 
-    CCMATEIntegrationBackendPrivate *priv = addPrivate (integration, ai);
+    CCGNOMEIntegrationBackendPrivate *priv = addPrivate (integration, ai);
     priv->backend = backend;
     priv->context = context;
     priv->factory = factory;
@@ -796,7 +796,7 @@ ccsMATEIntegrationBackendNewCommon (CCSBackend *backend,
     priv->noWrites = FALSE;
 
     ccsObjectAddInterface (integration,
-			   (const CCSInterface *) &ccsMATEIntegrationBackendInterface,
+			   (const CCSInterface *) &ccsGNOMEIntegrationBackendInterface,
 			   GET_INTERFACE_TYPE (CCSIntegrationInterface));
 
     ccsIntegrationRef (integration);
@@ -805,11 +805,11 @@ ccsMATEIntegrationBackendNewCommon (CCSBackend *backend,
 }
 
 CCSIntegration *
-ccsMATEIntegrationBackendNew (CCSBackend *backend,
+ccsGNOMEIntegrationBackendNew (CCSBackend *backend,
 			       CCSContext *context,
 			       CCSIntegratedSettingFactory *factory,
 			       CCSIntegratedSettingsStorage *storage,
 			       CCSObjectAllocationInterface *ai)
 {
-    return ccsMATEIntegrationBackendNewCommon (backend, context, factory, storage, ai);
+    return ccsGNOMEIntegrationBackendNewCommon (backend, context, factory, storage, ai);
 }

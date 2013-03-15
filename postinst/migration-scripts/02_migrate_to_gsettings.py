@@ -19,7 +19,7 @@
 # this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
-import mateconf
+import gconf
 import glib
 import subprocess
 import os.path
@@ -30,11 +30,11 @@ CONVERT_PATH = "/usr/lib/compiz/migration/"
 def migrate_file(convert_file):
     subprocess.Popen(["gsettings-data-convert", "--file={}{}".format(CONVERT_PATH, convert_file)]).communicate()
 
-def migrate_mateconf_to_gsettings():
-    client = mateconf.client_get_default()
+def migrate_gconf_to_gsettings():
+    client = gconf.client_get_default()
 
     if not client:
-        print "WARNING: no mateconf client found. No transitionning will be done"
+        print "WARNING: no gconf client found. No transitionning will be done"
         return
 
     # get current compiz profile to know if we need to switch or not
@@ -48,8 +48,8 @@ def migrate_mateconf_to_gsettings():
         return
 
     if current_profile_schema:
-        current_profile_mateconfvalue = current_profile_schema.get_default_value()
-        current_profile_str = current_profile_mateconfvalue.get_string()
+        current_profile_gconfvalue = current_profile_schema.get_default_value()
+        current_profile_str = current_profile_gconfvalue.get_string()
     else:
         print "No current profile set, no migration needed"
         return
@@ -66,4 +66,4 @@ def migrate_mateconf_to_gsettings():
             migrate_file('compiz-profile-unity.convert')
 
 if __name__ == '__main__':
-    migrate_mateconf_to_gsettings ()
+    migrate_gconf_to_gsettings ()

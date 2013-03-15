@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema path="/org/mate/mutter/" id="org.mate.mutter" gettext-domain="@GETTEXT_DOMAIN">
+  <schema path="/org/gnome/mutter/" id="org.gnome.mutter" gettext-domain="@GETTEXT_DOMAIN">
 
     <key type="b" name="attach-modal-dialogs">
       <default>false</default>

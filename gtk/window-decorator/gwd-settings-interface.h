@@ -81,13 +81,13 @@ extern const guint   DRAGGABLE_BORDER_WIDTH_DEFAULT;
 extern const gboolean ATTACH_MODAL_DIALOGS_DEFAULT;
 extern const gint    BLUR_TYPE_DEFAULT;
 
-extern const gchar   *MARCO_THEME_DEFAULT;
-extern const gdouble MARCO_ACTIVE_OPACITY_DEFAULT;
-extern const gdouble MARCO_INACTIVE_OPACITY_DEFAULT;
-extern const gboolean MARCO_ACTIVE_SHADE_OPACITY_DEFAULT;
-extern const gboolean MARCO_INACTIVE_SHADE_OPACITY_DEFAULT;
+extern const gchar   *METACITY_THEME_DEFAULT;
+extern const gdouble METACITY_ACTIVE_OPACITY_DEFAULT;
+extern const gdouble METACITY_INACTIVE_OPACITY_DEFAULT;
+extern const gboolean METACITY_ACTIVE_SHADE_OPACITY_DEFAULT;
+extern const gboolean METACITY_INACTIVE_SHADE_OPACITY_DEFAULT;
 
-extern const gchar *  MARCO_BUTTON_LAYOUT_DEFAULT;
+extern const gchar *  METACITY_BUTTON_LAYOUT_DEFAULT;
 
 extern const guint DOUBLE_CLICK_ACTION_DEFAULT;
 extern const guint MIDDLE_CLICK_ACTION_DEFAULT;

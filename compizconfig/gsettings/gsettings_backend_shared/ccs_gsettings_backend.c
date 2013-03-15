@@ -9,8 +9,8 @@
 #include "ccs_gsettings_interface.h"
 #include "ccs_gsettings_interface_wrapper.h"
 #include "ccs_gsettings_wrapper_factory_interface.h"
-#include "ccs_mate_integration.h"
-#include "ccs_mate_integration_gsettings_integrated_setting_factory.h"
+#include "ccs_gnome_integration.h"
+#include "ccs_gnome_integration_gsettings_integrated_setting_factory.h"
 #include "gsettings_shared.h"
 
 struct _CCSGSettingsBackendPrivate
@@ -25,7 +25,7 @@ struct _CCSGSettingsBackendPrivate
 
     CCSIntegration *integration;
 
-    CCSMATEValueChangeData *valueChangeData;
+    CCSGNOMEValueChangeData *valueChangeData;
 };
 
 void
@@ -417,7 +417,7 @@ ccsGSettingsBackendAttachNewToBackend (CCSBackend                 *backend,
 				       CCSGSettingsWrapper        *currentProfileSettings,
 				       CCSGSettingsWrapperFactory *wrapperFactory,
 				       CCSIntegration             *integration,
-				       CCSMATEValueChangeData    *valueChangeData,
+				       CCSGNOMEValueChangeData    *valueChangeData,
 				       char                       *currentProfile)
 {
     ccsObjectAddInterface (backend, (CCSInterface *) &gsettingsAdditionalDefaultInterface, GET_INTERFACE_TYPE (CCSGSettingsBackendInterface));

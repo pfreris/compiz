@@ -9,8 +9,8 @@ if (USE_GTK)
 	${compiz_SOURCE_DIR}/include
 	${CMAKE_BINARY_DIR}/gtk
 	${GTK_WINDOW_DECORATOR_INCLUDE_DIRS}
-	${MARCO_INCLUDE_DIRS}
-	${MATECONF_INCLUDE_DIRS}
+	${METACITY_INCLUDE_DIRS}
+	${GCONF_INCLUDE_DIRS}
 	${DBUS_GLIB_INCLUDE_DIRS}
     )
 
@@ -24,8 +24,8 @@ if (USE_GTK)
 	${COMPIZ_LINK_DIRS}
     )
 
-    add_library (gtk_window_decorator_marco_window_decoration_util
-		 ${CMAKE_CURRENT_SOURCE_DIR}/gwd-marco-window-decoration-util.c)
+    add_library (gtk_window_decorator_metacity_window_decoration_util
+		 ${CMAKE_CURRENT_SOURCE_DIR}/gwd-metacity-window-decoration-util.c)
 
     add_library (gtk_window_decorator_cairo_window_decoration_util
 		 ${CMAKE_CURRENT_SOURCE_DIR}/gwd-cairo-window-decoration-util.c)
@@ -55,21 +55,21 @@ if (USE_GTK)
 	 gtk_window_decorator_settings
 	 gtk_window_decorator_settings_storage_interface
 	 gtk_window_decorator_settings_storage_xproperty_interface
-	 gtk_window_decorator_marco_window_decoration_util
+	 gtk_window_decorator_metacity_window_decoration_util
 	 gtk_window_decorator_cairo_window_decoration_util)
 
-    if (USE_MATECONF)
+    if (USE_GCONF)
 	set (gwd_schema ${CMAKE_CURRENT_BINARY_DIR}/gwd.schemas)
 	compiz_translate_xml (
 	    ${CMAKE_CURRENT_SOURCE_DIR}/gwd.schemas.in
 	    ${gwd_schema}
 	)
-	compiz_install_mateconf_schema (${CMAKE_CURRENT_BINARY_DIR}/gwd.schemas ${SCHEMADIR})
-	add_library (gtk_window_decorator_settings_storage_mateconf STATIC
-		     ${CMAKE_CURRENT_SOURCE_DIR}/gwd-settings-storage-mateconf.c)
+	compiz_install_gconf_schema (${CMAKE_CURRENT_BINARY_DIR}/gwd.schemas ${SCHEMADIR})
+	add_library (gtk_window_decorator_settings_storage_gconf STATIC
+		     ${CMAKE_CURRENT_SOURCE_DIR}/gwd-settings-storage-gconf.c)
 	list (APPEND GTK_WINDOW_DECORATOR_ADDITIONAL_LIBRARIES
-	      gtk_window_decorator_settings_storage_mateconf)
-    endif (USE_MATECONF)
+	      gtk_window_decorator_settings_storage_gconf)
+    endif (USE_GCONF)
 
     if (USE_GSETTINGS)
 	add_definitions (-DUSE_GSETTINGS)
@@ -112,7 +112,7 @@ if (USE_GTK)
 		    frames.c
 		    gdk.c
 		    switcher.c
-		    marco.c
+		    metacity.c
 		    events.c
 		    forcequit.c
 		    tooltip.c
@@ -129,18 +129,18 @@ if (USE_GTK)
 
     add_dependencies (gtk-window-decorator decoration)
 
-    if (USE_MARCO)
-	set (marcolibs ${MARCO_LIBRARIES})
-    endif (USE_MARCO)
+    if (USE_METACITY)
+	set (metacitylibs ${METACITY_LIBRARIES})
+    endif (USE_METACITY)
 
 
     target_link_libraries (
 	gtk-window-decorator
 	decoration
 	${GTK_WINDOW_DECORATOR_LIBRARIES}
-	${MATECONF_LIBRARIES}
+	${GCONF_LIBRARIES}
 	${DBUS_GLIB_LIBRARIES}
-	${marcolibs}
+	${metacitylibs}
 	${GTK_WINDOW_DECORATOR_ADDITIONAL_LIBRARIES}
     )
 

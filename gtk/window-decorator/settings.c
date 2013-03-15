@@ -26,8 +26,8 @@
 #ifdef USE_GSETTINGS
 #include "gwd-settings-storage-gsettings.h"
 #else
-#ifdef USE_MATECONF
-#include "gwd-settings-storage-mateconf.h"
+#ifdef USE_GCONF
+#include "gwd-settings-storage-gconf.h"
 #endif
 #endif
 
@@ -49,17 +49,17 @@ init_settings (GWDSettingsWritable *writable,
 #ifdef USE_GSETTINGS
 #define STORAGE_USED
     GSettings *compiz = gwd_get_org_compiz_gwd_settings ();
-    GSettings *mutter = gwd_get_org_mate_mutter_settings ();
-    GSettings *mate  = gwd_get_org_mate_desktop_wm_preferences_settings ();
-    storage = gwd_settings_storage_gsettings_new (mate, mutter, compiz, writable);
+    GSettings *mutter = gwd_get_org_gnome_mutter_settings ();
+    GSettings *gnome  = gwd_get_org_gnome_desktop_wm_preferences_settings ();
+    storage = gwd_settings_storage_gsettings_new (gnome, mutter, compiz, writable);
 
     gwd_connect_org_compiz_gwd_settings (compiz, storage);
-    gwd_connect_org_mate_mutter_settings (mutter, storage);
-    gwd_connect_org_mate_desktop_wm_preferences_settings (mate, storage);
+    gwd_connect_org_gnome_mutter_settings (mutter, storage);
+    gwd_connect_org_gnome_desktop_wm_preferences_settings (gnome, storage);
 #else
 #ifdef USE_GSETTINGS
 #define STORAGE_USED
-    storage = gwd_settings_storage_mateconf_new (writable);
+    storage = gwd_settings_storage_gconf_new (writable);
 #endif
 #endif
 
@@ -72,7 +72,7 @@ init_settings (GWDSettingsWritable *writable,
 						    writable);
 
 #ifdef STORAGE_USED
-    gwd_settings_storage_update_marco_theme (storage);
+    gwd_settings_storage_update_metacity_theme (storage);
     gwd_settings_storage_update_opacity (storage);
     gwd_settings_storage_update_button_layout (storage);
     gwd_settings_storage_update_font (storage);

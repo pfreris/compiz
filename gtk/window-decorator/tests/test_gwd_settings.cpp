@@ -204,14 +204,14 @@ namespace testing_values
     const gint BLUR_TYPE_ALL_INT_VALUE = BLUR_TYPE_ALL;
     const std::string BLUR_TYPE_NONE_VALUE ("none");
     const gint BLUR_TYPE_NONE_INT_VALUE = BLUR_TYPE_NONE;
-    const gboolean USE_MARCO_THEME_VALUE  = TRUE;
-    const std::string MARCO_THEME_VALUE ("marco_theme");
-    const gboolean NO_USE_MARCO_THEME_VALUE  = FALSE;
-    const std::string NO_MARCO_THEME_VALUE ("");
+    const gboolean USE_METACITY_THEME_VALUE  = TRUE;
+    const std::string METACITY_THEME_VALUE ("metacity_theme");
+    const gboolean NO_USE_METACITY_THEME_VALUE  = FALSE;
+    const std::string NO_METACITY_THEME_VALUE ("");
     const gdouble ACTIVE_OPACITY_VALUE = 0.9;
     const gdouble INACTIVE_OPACITY_VALUE = 0.8;
-    const gboolean ACTIVE_SHADE_OPACITY_VALUE = !MARCO_ACTIVE_SHADE_OPACITY_DEFAULT;
-    const gboolean INACTIVE_SHADE_OPACITY_VALUE = !MARCO_INACTIVE_SHADE_OPACITY_DEFAULT;
+    const gboolean ACTIVE_SHADE_OPACITY_VALUE = !METACITY_ACTIVE_SHADE_OPACITY_DEFAULT;
+    const gboolean INACTIVE_SHADE_OPACITY_VALUE = !METACITY_INACTIVE_SHADE_OPACITY_DEFAULT;
     const std::string BUTTON_LAYOUT_VALUE ("button_layout");
     const gboolean USE_SYSTEM_FONT_VALUE = TRUE;
     const gboolean NO_USE_SYSTEM_FONT_VALUE = FALSE;
@@ -330,7 +330,7 @@ TEST_F(GWDMockSettingsWritableTest, TestMock)
     EXPECT_CALL (writableGMock, draggableBorderWidthChanged (testing_values::DRAGGABLE_BORDER_WIDTH_VALUE)).WillOnce (Return (TRUE));
     EXPECT_CALL (writableGMock, attachModalDialogsChanged (testing_values::ATTACH_MODAL_DIALOGS_VALUE)).WillOnce (Return (TRUE));
     EXPECT_CALL (writableGMock, blurChanged (Eq (testing_values::BLUR_TYPE_TITLEBAR_VALUE))).WillOnce (Return (TRUE));
-    EXPECT_CALL (writableGMock, marcoThemeChanged (TRUE, Eq (testing_values::MARCO_THEME_VALUE))).WillOnce (Return (TRUE));
+    EXPECT_CALL (writableGMock, metacityThemeChanged (TRUE, Eq (testing_values::METACITY_THEME_VALUE))).WillOnce (Return (TRUE));
     EXPECT_CALL (writableGMock, opacityChanged (testing_values::ACTIVE_OPACITY_VALUE,
 						testing_values::INACTIVE_OPACITY_VALUE,
 						testing_values::ACTIVE_SHADE_OPACITY_VALUE,
@@ -364,9 +364,9 @@ TEST_F(GWDMockSettingsWritableTest, TestMock)
     EXPECT_THAT (gwd_settings_writable_draggable_border_width_changed (writableMock.get (), testing_values::DRAGGABLE_BORDER_WIDTH_VALUE), IsTrue ());
     EXPECT_THAT (gwd_settings_writable_attach_modal_dialogs_changed (writableMock.get (), testing_values::ATTACH_MODAL_DIALOGS_VALUE), IsTrue ());
     EXPECT_THAT (gwd_settings_writable_blur_changed (writableMock.get (), testing_values::BLUR_TYPE_TITLEBAR_VALUE.c_str ()), IsTrue ());
-    EXPECT_THAT (gwd_settings_writable_marco_theme_changed (writableMock.get (),
-							       testing_values::USE_MARCO_THEME_VALUE,
-							       testing_values::MARCO_THEME_VALUE.c_str ()), IsTrue ());
+    EXPECT_THAT (gwd_settings_writable_metacity_theme_changed (writableMock.get (),
+							       testing_values::USE_METACITY_THEME_VALUE,
+							       testing_values::METACITY_THEME_VALUE.c_str ()), IsTrue ());
     EXPECT_THAT (gwd_settings_writable_opacity_changed (writableMock.get (),
 							testing_values::ACTIVE_OPACITY_VALUE,
 							testing_values::INACTIVE_OPACITY_VALUE,
@@ -443,7 +443,7 @@ TEST_F(GWDMockSettingsTest, TestMock)
     EXPECT_CALL (settingsGMock, getProperty (GWD_MOCK_SETTINGS_PROPERTY_BLUR_CHANGED,
 					     GValueMatch <gint> (0, g_value_get_int),
 					     _));
-    EXPECT_CALL (settingsGMock, getProperty (GWD_MOCK_SETTINGS_PROPERTY_MARCO_THEME,
+    EXPECT_CALL (settingsGMock, getProperty (GWD_MOCK_SETTINGS_PROPERTY_METACITY_THEME,
 					     GValueMatch <const gchar *> (NULL, g_value_get_string),
 					     _));
     EXPECT_CALL (settingsGMock, getProperty (GWD_MOCK_SETTINGS_PROPERTY_ACTIVE_OPACITY,
@@ -496,22 +496,22 @@ TEST_F(GWDMockSettingsTest, TestMock)
 			   "blur",
 			   &integerGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
-			   "marco-theme",
+			   "metacity-theme",
 			   &stringGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
-			   "marco-active-opacity",
+			   "metacity-active-opacity",
 			   &doubleGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
-			   "marco-inactive-opacity",
+			   "metacity-inactive-opacity",
 			   &doubleGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
-			   "marco-active-shade-opacity",
+			   "metacity-active-shade-opacity",
 			   &booleanGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
-			   "marco-inactive-shade-opacity",
+			   "metacity-inactive-shade-opacity",
 			   &booleanGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
-			   "marco-button-layout",
+			   "metacity-button-layout",
 			   &stringGValue);
     g_object_get_property (G_OBJECT (settingsMock.get ()),
 			   "titlebar-double-click-action",
@@ -537,8 +537,8 @@ namespace
     {
 	InSequence s;
 
-	EXPECT_CALL (*gmockNotified, updateMarcoTheme ()).Times (1);
-	EXPECT_CALL (*gmockNotified, updateMarcoButtonLayout ()).Times (1);
+	EXPECT_CALL (*gmockNotified, updateMetacityTheme ()).Times (1);
+	EXPECT_CALL (*gmockNotified, updateMetacityButtonLayout ()).Times (1);
 	EXPECT_CALL (*gmockNotified, updateFrames ()).Times (1);
 	EXPECT_CALL (*gmockNotified, updateDecorations ()).Times (1);
 
@@ -835,77 +835,77 @@ TEST_F(GWDSettingsTest, TestBlurSetCommandLine)
 						  g_value_get_int));
 }
 
-TEST_F(GWDSettingsTest, TestMarcoThemeChanged)
+TEST_F(GWDSettingsTest, TestMetacityThemeChanged)
 {
-    EXPECT_CALL (*mGMockNotified, updateMarcoTheme ());
+    EXPECT_CALL (*mGMockNotified, updateMetacityTheme ());
     EXPECT_CALL (*mGMockNotified, updateDecorations ());
-    EXPECT_THAT (gwd_settings_writable_marco_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
-							       testing_values::USE_MARCO_THEME_VALUE,
-							       testing_values::MARCO_THEME_VALUE.c_str ()), IsTrue ());
+    EXPECT_THAT (gwd_settings_writable_metacity_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
+							       testing_values::USE_METACITY_THEME_VALUE,
+							       testing_values::METACITY_THEME_VALUE.c_str ()), IsTrue ());
 
-    AutoUnsetGValue marcoThemeValue (G_TYPE_STRING);
-    GValue &marcoThemeGValue = marcoThemeValue;
+    AutoUnsetGValue metacityThemeValue (G_TYPE_STRING);
+    GValue &metacityThemeGValue = metacityThemeValue;
 
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-theme",
-			   &marcoThemeGValue);
+			   "metacity-theme",
+			   &metacityThemeGValue);
 
-    EXPECT_THAT (&marcoThemeGValue, GValueMatch <std::string> (testing_values::MARCO_THEME_VALUE,
+    EXPECT_THAT (&metacityThemeGValue, GValueMatch <std::string> (testing_values::METACITY_THEME_VALUE,
 								  g_value_get_string));
 }
 
-TEST_F(GWDSettingsTest, TestMarcoThemeChangedNoUseMarcoTheme)
+TEST_F(GWDSettingsTest, TestMetacityThemeChangedNoUseMetacityTheme)
 {
-    EXPECT_CALL (*mGMockNotified, updateMarcoTheme ());
+    EXPECT_CALL (*mGMockNotified, updateMetacityTheme ());
     EXPECT_CALL (*mGMockNotified, updateDecorations ());
-    EXPECT_THAT (gwd_settings_writable_marco_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
-							       testing_values::NO_USE_MARCO_THEME_VALUE,
-							       testing_values::MARCO_THEME_VALUE.c_str ()), IsTrue ());
+    EXPECT_THAT (gwd_settings_writable_metacity_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
+							       testing_values::NO_USE_METACITY_THEME_VALUE,
+							       testing_values::METACITY_THEME_VALUE.c_str ()), IsTrue ());
 
-    AutoUnsetGValue marcoThemeValue (G_TYPE_STRING);
-    GValue &marcoThemeGValue = marcoThemeValue;
+    AutoUnsetGValue metacityThemeValue (G_TYPE_STRING);
+    GValue &metacityThemeGValue = metacityThemeValue;
 
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-theme",
-			   &marcoThemeGValue);
+			   "metacity-theme",
+			   &metacityThemeGValue);
 
-    EXPECT_THAT (&marcoThemeGValue, GValueMatch <std::string> (testing_values::NO_MARCO_THEME_VALUE,
+    EXPECT_THAT (&metacityThemeGValue, GValueMatch <std::string> (testing_values::NO_METACITY_THEME_VALUE,
 								  g_value_get_string));
 }
 
-TEST_F(GWDSettingsTest, TestMarcoThemeChangedIsDefault)
+TEST_F(GWDSettingsTest, TestMetacityThemeChangedIsDefault)
 {
-    EXPECT_THAT (gwd_settings_writable_marco_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
-							       testing_values::USE_MARCO_THEME_VALUE,
-							       MARCO_THEME_DEFAULT), IsFalse ());
+    EXPECT_THAT (gwd_settings_writable_metacity_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
+							       testing_values::USE_METACITY_THEME_VALUE,
+							       METACITY_THEME_DEFAULT), IsFalse ());
 }
 
-TEST_F(GWDSettingsTest, TestMarcoThemeSetCommandLine)
+TEST_F(GWDSettingsTest, TestMetacityThemeSetCommandLine)
 {
-    const gchar *marcoTheme = "Ambiance";
+    const gchar *metacityTheme = "Ambiance";
 
     g_object_ref (mMockNotified.get ());
     mSettings.reset (gwd_settings_impl_new (NULL,
-					    &marcoTheme,
+					    &metacityTheme,
 					    mMockNotified.get ()),
 		     boost::bind (gwd_settings_unref, _1));
 
-    EXPECT_THAT (gwd_settings_writable_marco_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
-							       testing_values::USE_MARCO_THEME_VALUE,
-							       testing_values::MARCO_THEME_VALUE.c_str ()), IsFalse ());
+    EXPECT_THAT (gwd_settings_writable_metacity_theme_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
+							       testing_values::USE_METACITY_THEME_VALUE,
+							       testing_values::METACITY_THEME_VALUE.c_str ()), IsFalse ());
 
-    AutoUnsetGValue marcoThemeValue (G_TYPE_STRING);
-    GValue &marcoThemeGValue = marcoThemeValue;
+    AutoUnsetGValue metacityThemeValue (G_TYPE_STRING);
+    GValue &metacityThemeGValue = metacityThemeValue;
 
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-theme",
-			   &marcoThemeGValue);
+			   "metacity-theme",
+			   &metacityThemeGValue);
 
-    EXPECT_THAT (&marcoThemeGValue, GValueMatch <std::string> (std::string (marcoTheme),
+    EXPECT_THAT (&metacityThemeGValue, GValueMatch <std::string> (std::string (metacityTheme),
 								  g_value_get_string));
 }
 
-TEST_F(GWDSettingsTest, TestMarcoOpacityChanged)
+TEST_F(GWDSettingsTest, TestMetacityOpacityChanged)
 {
     EXPECT_CALL (*mGMockNotified, updateDecorations ());
     EXPECT_THAT (gwd_settings_writable_opacity_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
@@ -914,51 +914,51 @@ TEST_F(GWDSettingsTest, TestMarcoOpacityChanged)
 							testing_values::ACTIVE_SHADE_OPACITY_VALUE,
 							testing_values::INACTIVE_SHADE_OPACITY_VALUE), IsTrue ());
 
-    AutoUnsetGValue marcoInactiveOpacityValue (G_TYPE_DOUBLE);
-    AutoUnsetGValue marcoActiveOpacityValue (G_TYPE_DOUBLE);
-    AutoUnsetGValue marcoInactiveShadeOpacityValue (G_TYPE_BOOLEAN);
-    AutoUnsetGValue marcoActiveShadeOpacityValue (G_TYPE_BOOLEAN);
+    AutoUnsetGValue metacityInactiveOpacityValue (G_TYPE_DOUBLE);
+    AutoUnsetGValue metacityActiveOpacityValue (G_TYPE_DOUBLE);
+    AutoUnsetGValue metacityInactiveShadeOpacityValue (G_TYPE_BOOLEAN);
+    AutoUnsetGValue metacityActiveShadeOpacityValue (G_TYPE_BOOLEAN);
 
-    GValue &marcoInactiveOpacityGValue = marcoInactiveOpacityValue;
-    GValue &marcoActiveOpacityGValue = marcoActiveOpacityValue;
-    GValue &marcoInactiveShadeOpacityGValue = marcoInactiveShadeOpacityValue;
-    GValue &marcoActiveShadeOpacityGValue = marcoActiveShadeOpacityValue;
+    GValue &metacityInactiveOpacityGValue = metacityInactiveOpacityValue;
+    GValue &metacityActiveOpacityGValue = metacityActiveOpacityValue;
+    GValue &metacityInactiveShadeOpacityGValue = metacityInactiveShadeOpacityValue;
+    GValue &metacityActiveShadeOpacityGValue = metacityActiveShadeOpacityValue;
 
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-inactive-opacity",
-			   &marcoInactiveOpacityGValue);
+			   "metacity-inactive-opacity",
+			   &metacityInactiveOpacityGValue);
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-active-opacity",
-			   &marcoActiveOpacityGValue);
+			   "metacity-active-opacity",
+			   &metacityActiveOpacityGValue);
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-inactive-shade-opacity",
-			   &marcoInactiveShadeOpacityGValue);
+			   "metacity-inactive-shade-opacity",
+			   &metacityInactiveShadeOpacityGValue);
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-active-shade-opacity",
-			   &marcoActiveShadeOpacityGValue);
+			   "metacity-active-shade-opacity",
+			   &metacityActiveShadeOpacityGValue);
 
-    EXPECT_THAT (&marcoInactiveOpacityGValue, GValueMatch <gdouble> (testing_values::INACTIVE_OPACITY_VALUE,
+    EXPECT_THAT (&metacityInactiveOpacityGValue, GValueMatch <gdouble> (testing_values::INACTIVE_OPACITY_VALUE,
 									g_value_get_double));
-    EXPECT_THAT (&marcoActiveOpacityGValue, GValueMatch <gdouble> (testing_values::ACTIVE_OPACITY_VALUE,
+    EXPECT_THAT (&metacityActiveOpacityGValue, GValueMatch <gdouble> (testing_values::ACTIVE_OPACITY_VALUE,
 									g_value_get_double));
-    EXPECT_THAT (&marcoInactiveShadeOpacityGValue, GValueMatch <gboolean> (testing_values::INACTIVE_SHADE_OPACITY_VALUE,
+    EXPECT_THAT (&metacityInactiveShadeOpacityGValue, GValueMatch <gboolean> (testing_values::INACTIVE_SHADE_OPACITY_VALUE,
 									g_value_get_boolean));
-    EXPECT_THAT (&marcoActiveShadeOpacityGValue, GValueMatch <gboolean> (testing_values::ACTIVE_SHADE_OPACITY_VALUE,
+    EXPECT_THAT (&metacityActiveShadeOpacityGValue, GValueMatch <gboolean> (testing_values::ACTIVE_SHADE_OPACITY_VALUE,
 									g_value_get_boolean));
 }
 
-TEST_F(GWDSettingsTest, TestMarcoOpacityChangedIsDefault)
+TEST_F(GWDSettingsTest, TestMetacityOpacityChangedIsDefault)
 {
     EXPECT_THAT (gwd_settings_writable_opacity_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
-							MARCO_ACTIVE_OPACITY_DEFAULT,
-							MARCO_INACTIVE_OPACITY_DEFAULT,
-							MARCO_ACTIVE_SHADE_OPACITY_DEFAULT,
-							MARCO_INACTIVE_SHADE_OPACITY_DEFAULT), IsFalse ());
+							METACITY_ACTIVE_OPACITY_DEFAULT,
+							METACITY_INACTIVE_OPACITY_DEFAULT,
+							METACITY_ACTIVE_SHADE_OPACITY_DEFAULT,
+							METACITY_INACTIVE_SHADE_OPACITY_DEFAULT), IsFalse ());
 }
 
 TEST_F(GWDSettingsTest, TestButtonLayoutChanged)
 {
-    EXPECT_CALL (*mGMockNotified, updateMarcoButtonLayout ());
+    EXPECT_CALL (*mGMockNotified, updateMetacityButtonLayout ());
     EXPECT_CALL (*mGMockNotified, updateDecorations ());
     EXPECT_THAT (gwd_settings_writable_button_layout_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
 							      testing_values::BUTTON_LAYOUT_VALUE.c_str ()), IsTrue ());
@@ -967,7 +967,7 @@ TEST_F(GWDSettingsTest, TestButtonLayoutChanged)
     GValue &buttonLayoutGValue = buttonLayoutValue;
 
     g_object_get_property (G_OBJECT (mSettings.get ()),
-			   "marco-button-layout",
+			   "metacity-button-layout",
 			   &buttonLayoutGValue);
 
     EXPECT_THAT (&buttonLayoutGValue, GValueMatch <std::string> (testing_values::BUTTON_LAYOUT_VALUE,
@@ -977,7 +977,7 @@ TEST_F(GWDSettingsTest, TestButtonLayoutChanged)
 TEST_F(GWDSettingsTest, TestButtonLayoutChangedIsDefault)
 {
     EXPECT_THAT (gwd_settings_writable_button_layout_changed (GWD_SETTINGS_WRITABLE_INTERFACE (mSettings.get ()),
-							      MARCO_BUTTON_LAYOUT_DEFAULT), IsFalse ());
+							      METACITY_BUTTON_LAYOUT_DEFAULT), IsFalse ());
 }
 
 TEST_F(GWDSettingsTest, TestTitlebarFontChanged)
@@ -1177,8 +1177,8 @@ class GWDSettingsStorageFactoryWrapperInterface
 				 gdouble inactiveOpacity,
 				 gboolean activeShadeOpacity,
 				 gboolean inactiveShadeOpacity) = 0;
-	virtual void SetMarcoTheme (gboolean useMarcoTheme,
-					  const std::string &marcoTheme) = 0;
+	virtual void SetMetacityTheme (gboolean useMetacityTheme,
+					  const std::string &metacityTheme) = 0;
 	virtual void SetButtonLayout (const std::string &buttonLayout) = 0;
 	virtual void SetFont (gboolean useSystemFont, const std::string &titlebarFont) = 0;
 	virtual void SetTitlebarActions (const std::string &doubleClickAction,
@@ -1291,16 +1291,16 @@ TEST_P (GWDSettingsTestStorageUpdates, TestSetOpacity)
     gwd_settings_storage_update_opacity (storage);
 }
 
-TEST_P (GWDSettingsTestStorageUpdates, TestSetMarcoTheme)
+TEST_P (GWDSettingsTestStorageUpdates, TestSetMetacityTheme)
 {
     GWDSettingsStorage *storage = GetParam ()->GetStorage ();
-    GetParam ()->SetMarcoTheme (testing_values::USE_MARCO_THEME_VALUE,
-				   testing_values::MARCO_THEME_VALUE);
+    GetParam ()->SetMetacityTheme (testing_values::USE_METACITY_THEME_VALUE,
+				   testing_values::METACITY_THEME_VALUE);
 
-    EXPECT_CALL (*mSettingsMock, marcoThemeChanged (testing_values::USE_MARCO_THEME_VALUE,
-						       Eq (testing_values::MARCO_THEME_VALUE)));
+    EXPECT_CALL (*mSettingsMock, metacityThemeChanged (testing_values::USE_METACITY_THEME_VALUE,
+						       Eq (testing_values::METACITY_THEME_VALUE)));
 
-    gwd_settings_storage_update_marco_theme (storage);
+    gwd_settings_storage_update_metacity_theme (storage);
 }
 
 TEST_P (GWDSettingsTestStorageUpdates, TestSetFont)
@@ -1402,17 +1402,17 @@ class GWDMockSettingsStorageFactoryWrapper :
 				inactiveShadeOpacity)));
 	}
 
-	virtual void SetMarcoTheme (gboolean useMarcoTheme,
-				       const std::string &marcoTheme)
+	virtual void SetMetacityTheme (gboolean useMetacityTheme,
+				       const std::string &metacityTheme)
 	{
-	    EXPECT_CALL (*mStorageMock, updateMarcoTheme ())
+	    EXPECT_CALL (*mStorageMock, updateMetacityTheme ())
 		    .WillOnce (
 			InvokeFunctor (
 			    boost::bind (
-				gwd_settings_writable_marco_theme_changed,
+				gwd_settings_writable_metacity_theme_changed,
 				mWritable,
-				useMarcoTheme,
-				marcoTheme.c_str ())));
+				useMetacityTheme,
+				metacityTheme.c_str ())));
 	}
 
 	virtual void SetButtonLayout (const std::string &buttonLayout)
@@ -1488,8 +1488,8 @@ TEST_F (GWDSettingsStorageGSettingsTest, TestNoDeathOnConnectingSignalToNULLObje
 							      boost::bind (gwd_settings_storage_unref, _1));
 
     gwd_connect_org_compiz_gwd_settings (NULL, mStorage.get ());
-    gwd_connect_org_mate_mutter_settings (NULL, mStorage.get ());
-    gwd_connect_org_mate_desktop_wm_preferences_settings (NULL, mStorage.get ());
+    gwd_connect_org_gnome_mutter_settings (NULL, mStorage.get ());
+    gwd_connect_org_gnome_desktop_wm_preferences_settings (NULL, mStorage.get ());
 
     EXPECT_CALL (*mStorageMock, dispose ());
     EXPECT_CALL (*mStorageMock, finalize ());
@@ -1507,8 +1507,8 @@ class GWDSettingsStorageGSettingsFactoryWrapper :
 
 	    /* We do not need to keep a reference to these */
 	    mGWDSettings = gwd_get_org_compiz_gwd_settings ();
-	    mMutterSettings = gwd_get_org_mate_mutter_settings ();
-	    mDesktopSettings = gwd_get_org_mate_desktop_wm_preferences_settings ();
+	    mMutterSettings = gwd_get_org_gnome_mutter_settings ();
+	    mDesktopSettings = gwd_get_org_gnome_desktop_wm_preferences_settings ();
 
 	    mStorage.reset (gwd_settings_storage_gsettings_new (mDesktopSettings,
 								mMutterSettings,
@@ -1529,12 +1529,12 @@ class GWDSettingsStorageGSettingsFactoryWrapper :
 
 	virtual void SetDraggableBorderWidth (gint draggableBorderWidth)
 	{
-	    g_settings_set_int (mMutterSettings, ORG_MATE_MUTTER_DRAGGABLE_BORDER_WIDTH, draggableBorderWidth);
+	    g_settings_set_int (mMutterSettings, ORG_GNOME_MUTTER_DRAGGABLE_BORDER_WIDTH, draggableBorderWidth);
 	}
 
 	virtual void SetAttachModalDialogs (gboolean attachModalDialogs)
 	{
-	    g_settings_set_boolean (mMutterSettings, ORG_MATE_MUTTER_ATTACH_MODAL_DIALOGS, attachModalDialogs);
+	    g_settings_set_boolean (mMutterSettings, ORG_GNOME_MUTTER_ATTACH_MODAL_DIALOGS, attachModalDialogs);
 	}
 
 	virtual void SetBlur (const std::string &blurType)
@@ -1547,33 +1547,33 @@ class GWDSettingsStorageGSettingsFactoryWrapper :
 				 gboolean activeShadeOpacity,
 				 gboolean inactiveShadeOpacity)
 	{
-	    g_settings_set_double (mGWDSettings, ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_OPACITY, activeOpacity);
-	    g_settings_set_double (mGWDSettings, ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_OPACITY, inactiveOpacity);
-	    g_settings_set_boolean (mGWDSettings, ORG_COMPIZ_GWD_KEY_MARCO_THEME_ACTIVE_SHADE_OPACITY, activeShadeOpacity);
-	    g_settings_set_boolean (mGWDSettings, ORG_COMPIZ_GWD_KEY_MARCO_THEME_INACTIVE_SHADE_OPACITY, inactiveShadeOpacity);
+	    g_settings_set_double (mGWDSettings, ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_OPACITY, activeOpacity);
+	    g_settings_set_double (mGWDSettings, ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_OPACITY, inactiveOpacity);
+	    g_settings_set_boolean (mGWDSettings, ORG_COMPIZ_GWD_KEY_METACITY_THEME_ACTIVE_SHADE_OPACITY, activeShadeOpacity);
+	    g_settings_set_boolean (mGWDSettings, ORG_COMPIZ_GWD_KEY_METACITY_THEME_INACTIVE_SHADE_OPACITY, inactiveShadeOpacity);
 	}
 
-	virtual void SetMarcoTheme (gboolean useMarcoTheme,
-				       const std::string &marcoTheme)
+	virtual void SetMetacityTheme (gboolean useMetacityTheme,
+				       const std::string &metacityTheme)
 	{
-	    g_settings_set_boolean (mGWDSettings, ORG_COMPIZ_GWD_KEY_USE_MARCO_THEME, useMarcoTheme);
-	    g_settings_set_string (mDesktopSettings, ORG_MATE_DESKTOP_WM_PREFERENCES_THEME, marcoTheme.c_str ());
+	    g_settings_set_boolean (mGWDSettings, ORG_COMPIZ_GWD_KEY_USE_METACITY_THEME, useMetacityTheme);
+	    g_settings_set_string (mDesktopSettings, ORG_GNOME_DESKTOP_WM_PREFERENCES_THEME, metacityTheme.c_str ());
 	}
 
 	virtual void SetButtonLayout (const std::string &buttonLayout)
 	{
 	    g_settings_set_string (mDesktopSettings,
-				   ORG_MATE_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT,
+				   ORG_GNOME_DESKTOP_WM_PREFERENCES_BUTTON_LAYOUT,
 				   buttonLayout.c_str ());
 	}
 
 	virtual void SetFont (gboolean useSystemFont, const std::string &titlebarFont)
 	{
 	    g_settings_set_boolean (mDesktopSettings,
-				    ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT,
+				    ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_USES_SYSTEM_FONT,
 				    useSystemFont);
 	    g_settings_set_string (mDesktopSettings,
-				   ORG_MATE_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT,
+				   ORG_GNOME_DESKTOP_WM_PREFERENCES_TITLEBAR_FONT,
 				   titlebarFont.c_str ());
 	}
 
@@ -1591,13 +1591,13 @@ class GWDSettingsStorageGSettingsFactoryWrapper :
 	    boost::replace_all (translatedRC, "_", "-");
 
 	    g_settings_set_string (mDesktopSettings,
-				   ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR,
+				   ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_DOUBLE_CLICK_TITLEBAR,
 				   translatedDC.c_str ());
 	    g_settings_set_string (mDesktopSettings,
-				   ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR,
+				   ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_MIDDLE_CLICK_TITLEBAR,
 				   translatedMC.c_str ());
 	    g_settings_set_string (mDesktopSettings,
-				   ORG_MATE_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR,
+				   ORG_GNOME_DESKTOP_WM_PREFERENCES_ACTION_RIGHT_CLICK_TITLEBAR,
 				   translatedRC.c_str ());
 	    g_settings_set_string (mGWDSettings,
 				   ORG_COMPIZ_GWD_KEY_MOUSE_WHEEL_ACTION,

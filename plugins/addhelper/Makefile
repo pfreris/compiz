@@ -108,7 +108,7 @@ bcop-target     := $(shell if [ -n "$(is-bcop-target)" ]; then $(ECHO) $(BUILDDI
 bcop-target-src := $(shell if [ -n "$(is-bcop-target)" ]; then $(ECHO) $(BUILDDIR)/$(PLUGIN)_options.c; fi )
 bcop-target-hdr := $(shell if [ -n "$(is-bcop-target)" ]; then $(ECHO) $(BUILDDIR)/$(PLUGIN)_options.h; fi )
 
-gen-schemas     := $(shell if [ \( -e $(PLUGIN).xml.in -o -e $(PLUGIN).xml \) -a -n "`pkg-config --variable=xsltdir compiz-mateconf`" ]; then $(ECHO) true; fi )
+gen-schemas     := $(shell if [ \( -e $(PLUGIN).xml.in -o -e $(PLUGIN).xml \) -a -n "`pkg-config --variable=xsltdir compiz-gconf`" ]; then $(ECHO) true; fi )
 schema-target   := $(shell if [ -n "$(gen-schemas)" ]; then $(ECHO) $(BUILDDIR)/$(PLUGIN).xml; fi )
 schema-output   := $(shell if [ -n "$(gen-schemas)" ]; then $(ECHO) $(BUILDDIR)/compiz-$(PLUGIN).schema; fi )
 
@@ -252,7 +252,7 @@ $(BUILDDIR)/compiz-%.schema: $(BUILDDIR)/%.xml
 	else \
 		$(ECHO) "schema'ing  $<  ->  $@"; \
 	fi
-	@xsltproc `pkg-config --variable=xsltdir compiz-mateconf`/schemas.xslt $< > $@
+	@xsltproc `pkg-config --variable=xsltdir compiz-gconf`/schemas.xslt $< > $@
 	@if [ '$(color)' != 'no' ]; then \
 		$(ECHO) -e "\r\033[0mschema    : \033[34m$< -> $@\033[0m"; \
 	fi
@@ -406,10 +406,10 @@ install: $(DESTDIR) all
 		$(ECHO) "install   : $(schema-output)"; \
 	    fi; \
 	    if [ "x$(USER)" = "xroot" ]; then \
-		MATECONF_CONFIG_SOURCE=`mateconftool-2 --get-default-source` \
-		mateconftool-2 --makefile-install-rule $(schema-output) > /dev/null; \
+		GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source` \
+		gconftool-2 --makefile-install-rule $(schema-output) > /dev/null; \
 	    else \
-		mateconftool-2 --install-schema-file=$(schema-output) > /dev/null; \
+		gconftool-2 --install-schema-file=$(schema-output) > /dev/null; \
 	    fi; \
 	    if [ '$(color)' != 'no' ]; then \
 		$(ECHO) -e "\r\033[0minstall   : \033[34m$(schema-output)\033[0m"; \
@@ -499,8 +499,8 @@ uninstall:
 	    else \
 		$(ECHO) "uninstall : $(schema-output)"; \
 	    fi; \
-	    MATECONF_CONFIG_SOURCE=`mateconftool-2 --get-default-source` \
-	    mateconftool-2 --makefile-uninstall-rule $(schema-output) > /dev/null; \
+	    GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source` \
+	    gconftool-2 --makefile-uninstall-rule $(schema-output) > /dev/null; \
 	    if [ '$(color)' != 'no' ]; then \
 		$(ECHO) -e "\r\033[0muninstall : \033[34m$(schema-output)\033[0m"; \
 	    fi; \

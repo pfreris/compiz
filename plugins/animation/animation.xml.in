@@ -58,7 +58,7 @@
 	    <_long>The windows that will be animated.</_long>
 	    <type>match</type>
 	    <default>
-	      <value>(type=Normal | Dialog | ModalDialog | Unknown) &amp; !(name=mate-screensaver)</value>
+	      <value>(type=Normal | Dialog | ModalDialog | Unknown) &amp; !(name=gnome-screensaver)</value>
 	      <value>(type=Menu | PopupMenu | DropdownMenu | Combo)</value>
 	      <value>(type=Tooltip | Notification | Utility) &amp; !(name=compiz) &amp; !(title=notify-osd)</value>
 	    </default>
@@ -124,7 +124,7 @@
 	    <_long>The windows that will be animated.</_long>
 	    <type>match</type>
 	    <default>
-	      <value>(type=Normal | Dialog | ModalDialog | Unknown) &amp; !(name=mate-screensaver)</value>
+	      <value>(type=Normal | Dialog | ModalDialog | Unknown) &amp; !(name=gnome-screensaver)</value>
 	      <value>(type=Menu | PopupMenu | DropdownMenu | Combo)</value>
 	      <value>(type=Tooltip | Notification | Utility) &amp; !(name=compiz) &amp; !(title=notify-osd)</value>
 	    </default>

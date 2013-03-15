@@ -1,13 +1,13 @@
 /**
  *
- * MateConf libccs backend
+ * GConf libccs backend
  *
- * mateconf.c
+ * gconf.c
  *
  * Copyright (c) 2007 Danny Baumann <maniac@opencompositing.org>
  *
  * Parts of this code are taken from libberylsettings 
- * mateconf backend, written by:
+ * gconf backend, written by:
  *
  * Copyright (c) 2006 Robert Carr <racarr@opencompositing.org>
  * Copyright (c) 2007 Dennis Kasprzyk <onestone@opencompositing.org>
@@ -24,7 +24,7 @@
  *
  **/
 
-#define CCS_LOG_DOMAIN "mateconf"
+#define CCS_LOG_DOMAIN "gconf"
 
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -40,12 +40,12 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
-#include <mateconf/mateconf.h>
-#include <mateconf/mateconf-client.h>
-#include <mateconf/mateconf-value.h>
+#include <gconf/gconf.h>
+#include <gconf/gconf-client.h>
+#include <gconf/gconf-value.h>
 
-#include "ccs_mate_integration.h"
-#include "ccs_mate_integration_mateconf_integrated_setting_factory.h"
+#include "ccs_gnome_integration.h"
+#include "ccs_gnome_integration_gconf_integrated_setting_factory.h"
 
 #define COMPIZ       "/apps/compiz-1"
 #define COMPIZCONFIG "/apps/compizconfig-1"
@@ -69,11 +69,11 @@
 				 "%s/plugins/%s/%s/options/%s", COMPIZ, \
 				 ccsPluginGetName (ccsSettingGetParent (setting)), keyName, ccsSettingGetName (setting));
 
-static MateConfClient *client = NULL;
-static MateConfEngine *conf = NULL;
+static GConfClient *client = NULL;
+static GConfEngine *conf = NULL;
 static guint compizNotifyId;
 static char *currentProfile = NULL;
-static CCSMATEValueChangeData valueChangeData =
+static CCSGNOMEValueChangeData valueChangeData =
 {
     NULL,
     NULL,
@@ -120,13 +120,13 @@ updateSetting (CCSBackend *backend, CCSContext *context, CCSPlugin *plugin, CCSS
 }
 
 static void
-valueChanged (MateConfClient *client,
+valueChanged (GConfClient *client,
 	      guint       cnxn_id,
-	      MateConfEntry  *entry,
+	      GConfEntry  *entry,
 	      gpointer    user_data)
 {
     CCSContext   *context = (CCSContext *)user_data;
-    char         *keyName = (char*) mateconf_entry_get_key (entry);
+    char         *keyName = (char*) gconf_entry_get_key (entry);
     char         *pluginName;
     char         *token;
     unsigned int screenNum;
@@ -174,28 +174,28 @@ valueChanged (MateConfClient *client,
 	return;
 
     /* Passing null here is not optimal, but we are not
-     * maintaining mateconf actively here */
+     * maintaining gconf actively here */
     updateSetting (NULL, context, plugin, setting);
 }
 
 static void
 initClient (CCSBackend *backend, CCSContext *context)
 {
-    client = mateconf_client_get_for_engine (conf);
+    client = gconf_client_get_for_engine (conf);
 
     valueChangeData.context = context;
     valueChangeData.storage = ccsIntegratedSettingsStorageDefaultImplNew (&ccsDefaultObjectAllocator);
-    valueChangeData.factory = ccsMateConfIntegratedSettingFactoryNew (client, &valueChangeData, &ccsDefaultObjectAllocator);
+    valueChangeData.factory = ccsGConfIntegratedSettingFactoryNew (client, &valueChangeData, &ccsDefaultObjectAllocator);
 
-    valueChangeData.integration = ccsMATEIntegrationBackendNew (backend,
+    valueChangeData.integration = ccsGNOMEIntegrationBackendNew (backend,
 								 context,
 								 valueChangeData.factory,
 								 valueChangeData.storage,
 								 &ccsDefaultObjectAllocator);
 
-    compizNotifyId = mateconf_client_notify_add (client, COMPIZ, valueChanged,
+    compizNotifyId = gconf_client_notify_add (client, COMPIZ, valueChanged,
 					      context, NULL, NULL);
-    mateconf_client_add_dir (client, COMPIZ, MATECONF_CLIENT_PRELOAD_NONE, NULL);
+    gconf_client_add_dir (client, COMPIZ, GCONF_CLIENT_PRELOAD_NONE, NULL);
 }
 
 static void
@@ -205,20 +205,20 @@ finiClient (void)
 
     if (compizNotifyId)
     {
-	mateconf_client_notify_remove (client, compizNotifyId);
+	gconf_client_notify_remove (client, compizNotifyId);
 	compizNotifyId = 0;
     }
-    mateconf_client_remove_dir (client, COMPIZ, NULL);
-    mateconf_client_suggest_sync (client, NULL);
+    gconf_client_remove_dir (client, COMPIZ, NULL);
+    gconf_client_suggest_sync (client, NULL);
 
     g_object_unref (client);
     client = NULL;
 
-    memset (&valueChangeData, 0, sizeof (CCSMATEValueChangeData));
+    memset (&valueChangeData, 0, sizeof (CCSGNOMEValueChangeData));
 }
 
 static void
-copyGconfValues (MateConfEngine *conf,
+copyGconfValues (GConfEngine *conf,
 		 const gchar *from,
 		 const gchar *to,
 		 Bool        associate,
@@ -227,13 +227,13 @@ copyGconfValues (MateConfEngine *conf,
     GSList *values, *tmp;
     GError *err = NULL;
 
-    values = mateconf_engine_all_entries (conf, from, &err);
+    values = gconf_engine_all_entries (conf, from, &err);
     tmp = values;
 
     while (tmp)
     {
-	MateConfEntry *entry = tmp->data;
-	const char *key = mateconf_entry_get_key (entry);
+	GConfEntry *entry = tmp->data;
+	const char *key = gconf_entry_get_key (entry);
 	char       *name, *newKey, *newSchema = NULL;
 
 	name = strrchr (key, '/');
@@ -242,7 +242,7 @@ copyGconfValues (MateConfEngine *conf,
 
 	if (to)
 	{
-	    MateConfValue *value;
+	    GConfValue *value;
 
 	    if (asprintf (&newKey, "%s/%s", to, name + 1) == -1)
 		newKey = NULL;
@@ -252,15 +252,15 @@ copyGconfValues (MateConfEngine *conf,
 		    newSchema = NULL;
 
 	    if (newKey && newSchema)
-		mateconf_engine_associate_schema (conf, newKey, newSchema, NULL);
+		gconf_engine_associate_schema (conf, newKey, newSchema, NULL);
 
 	    if (newKey)
 	    {
-		value = mateconf_engine_get_without_default (conf, key, NULL);
+		value = gconf_engine_get_without_default (conf, key, NULL);
 		if (value)
 		{
-		    mateconf_engine_set (conf, newKey, value, NULL);
-		    mateconf_value_free (value);
+		    gconf_engine_set (conf, newKey, value, NULL);
+		    gconf_value_free (value);
 		}
 	    }
 
@@ -272,11 +272,11 @@ copyGconfValues (MateConfEngine *conf,
 	else
 	{
 	    if (associate)
-		mateconf_engine_associate_schema (conf, key, NULL, NULL);
-	    mateconf_engine_unset (conf, key, NULL);
+		gconf_engine_associate_schema (conf, key, NULL, NULL);
+	    gconf_engine_unset (conf, key, NULL);
 	}
 
-	mateconf_entry_unref (entry);
+	gconf_entry_unref (entry);
 	tmp = g_slist_next (tmp);
     }
 
@@ -285,7 +285,7 @@ copyGconfValues (MateConfEngine *conf,
 }
 
 static void
-copyGconfRecursively (MateConfEngine *conf,
+copyGconfRecursively (GConfEngine *conf,
 		      GSList      *subdirs,
 		      const gchar *to,
 		      Bool        associate,
@@ -312,7 +312,7 @@ copyGconfRecursively (MateConfEngine *conf,
 
 	    copyGconfValues (conf, path, newKey, associate, newSchema);
 	    copyGconfRecursively (conf,
-				  mateconf_engine_all_dirs (conf, path, NULL),
+				  gconf_engine_all_dirs (conf, path, NULL),
 				  newKey, associate, newSchema);
 
 	    if (newSchema)
@@ -322,7 +322,7 @@ copyGconfRecursively (MateConfEngine *conf,
 		free (newKey);
 
 	    if (!to)
-		mateconf_engine_remove_dir (conf, path, NULL);
+		gconf_engine_remove_dir (conf, path, NULL);
 	}
 
 	g_free (path);
@@ -343,25 +343,25 @@ copyGconfTree (CCSBackend  *backend,
 {
     GSList* subdirs;
 
-    /* we aren't allowed to have an open MateConfClient object while
-       using MateConfEngine, so shut it down and open it again afterwards */
+    /* we aren't allowed to have an open GConfClient object while
+       using GConfEngine, so shut it down and open it again afterwards */
     finiClient ();
 
-    subdirs = mateconf_engine_all_dirs (conf, from, NULL);
-    mateconf_engine_suggest_sync (conf, NULL);
+    subdirs = gconf_engine_all_dirs (conf, from, NULL);
+    gconf_engine_suggest_sync (conf, NULL);
 
     copyGconfRecursively (conf, subdirs, to, associate, schemaPath);
 
-    mateconf_engine_suggest_sync (conf, NULL);
+    gconf_engine_suggest_sync (conf, NULL);
 
     initClient (backend, context);
 }
 
 static Bool
 readListValue (CCSSetting *setting,
-	       MateConfValue *mateconfValue)
+	       GConfValue *gconfValue)
 {
-    MateConfValueType      valueType;
+    GConfValueType      valueType;
     unsigned int        nItems, i = 0;
     CCSSettingValueList list = NULL;
     GSList              *valueList = NULL;
@@ -371,29 +371,29 @@ readListValue (CCSSetting *setting,
     case TypeString:
     case TypeMatch:
     case TypeColor:
-	valueType = MATECONF_VALUE_STRING;
+	valueType = GCONF_VALUE_STRING;
 	break;
     case TypeBool:
-	valueType = MATECONF_VALUE_BOOL;
+	valueType = GCONF_VALUE_BOOL;
 	break;
     case TypeInt:
-	valueType = MATECONF_VALUE_INT;
+	valueType = GCONF_VALUE_INT;
 	break;
     case TypeFloat:
-	valueType = MATECONF_VALUE_FLOAT;
+	valueType = GCONF_VALUE_FLOAT;
 	break;
     default:
-	valueType = MATECONF_VALUE_INVALID;
+	valueType = GCONF_VALUE_INVALID;
 	break;
     }
 
-    if (valueType == MATECONF_VALUE_INVALID)
+    if (valueType == GCONF_VALUE_INVALID)
 	return FALSE;
 
-    if (valueType != mateconf_value_get_list_type (mateconfValue))
+    if (valueType != gconf_value_get_list_type (gconfValue))
 	return FALSE;
 
-    valueList = mateconf_value_get_list (mateconfValue);
+    valueList = gconf_value_get_list (gconfValue);
     if (!valueList)
     {
 	ccsSetList (setting, NULL, TRUE);
@@ -412,7 +412,7 @@ readListValue (CCSSetting *setting,
 
 	    for (; valueList; valueList = valueList->next, i++)
 		array[i] =
-		    mateconf_value_get_bool (valueList->data) ? TRUE : FALSE;
+		    gconf_value_get_bool (valueList->data) ? TRUE : FALSE;
 	    list = ccsGetValueListFromBoolArray (array, nItems, setting);
 	    free (array);
 	}
@@ -424,7 +424,7 @@ readListValue (CCSSetting *setting,
 		break;
 
 	    for (; valueList; valueList = valueList->next, i++)
-		array[i] = mateconf_value_get_int (valueList->data);
+		array[i] = gconf_value_get_int (valueList->data);
 	    list = ccsGetValueListFromIntArray (array, nItems, setting);
 	    free (array);
 	}
@@ -436,7 +436,7 @@ readListValue (CCSSetting *setting,
 		break;
 
 	    for (; valueList; valueList = valueList->next, i++)
-		array[i] = mateconf_value_get_float (valueList->data);
+		array[i] = gconf_value_get_float (valueList->data);
 	    list = ccsGetValueListFromFloatArray (array, nItems, setting);
 	    free (array);
 	}
@@ -449,7 +449,7 @@ readListValue (CCSSetting *setting,
 		break;
 
 	    for (; valueList; valueList = valueList->next, i++)
-		array[i] = strdup (mateconf_value_get_string (valueList->data));
+		array[i] = strdup (gconf_value_get_string (valueList->data));
 
 	    array[nItems] = NULL;
 
@@ -467,7 +467,7 @@ readListValue (CCSSetting *setting,
 	    for (; valueList; valueList = valueList->next, i++)
     	    {
 		memset (&array[i], 0, sizeof (CCSSettingColorValue));
-		ccsStringToColor (mateconf_value_get_string (valueList->data),
+		ccsStringToColor (gconf_value_get_string (valueList->data),
 				  &array[i]);
 	    }
 	    list = ccsGetValueListFromColorArray (array, nItems, setting);
@@ -500,7 +500,7 @@ readIntegratedOption (CCSContext *context,
 static Bool
 readOption (CCSSetting * setting)
 {
-    MateConfValue *mateconfValue = NULL;
+    GConfValue *gconfValue = NULL;
     GError     *err = NULL;
     Bool       ret = FALSE;
     Bool       valid = TRUE;
@@ -509,13 +509,13 @@ readOption (CCSSetting * setting)
     PATHNAME;
 
     /* first check if the key is set */
-    mateconfValue = mateconf_client_get_without_default (client, pathName, &err);
+    gconfValue = gconf_client_get_without_default (client, pathName, &err);
     if (err)
     {
 	g_error_free (err);
 	return FALSE;
     }
-    if (!mateconfValue)
+    if (!gconfValue)
 	/* value is not set */
 	return FALSE;
 
@@ -528,20 +528,20 @@ readOption (CCSSetting * setting)
     case TypeKey:
     case TypeButton:
     case TypeEdge:
-	valid = (mateconfValue->type == MATECONF_VALUE_STRING);
+	valid = (gconfValue->type == GCONF_VALUE_STRING);
 	break;
     case TypeInt:
-	valid = (mateconfValue->type == MATECONF_VALUE_INT);
+	valid = (gconfValue->type == GCONF_VALUE_INT);
 	break;
     case TypeBool:
     case TypeBell:
-	valid = (mateconfValue->type == MATECONF_VALUE_BOOL);
+	valid = (gconfValue->type == GCONF_VALUE_BOOL);
 	break;
     case TypeFloat:
-	valid = (mateconfValue->type == MATECONF_VALUE_FLOAT);
+	valid = (gconfValue->type == GCONF_VALUE_FLOAT);
 	break;
     case TypeList:
-	valid = (mateconfValue->type == MATECONF_VALUE_LIST);
+	valid = (gconfValue->type == GCONF_VALUE_LIST);
 	break;
     default:
 	break;
@@ -560,7 +560,7 @@ readOption (CCSSetting * setting)
     case TypeString:
 	{
 	    const char *value;
-	    value = mateconf_value_get_string (mateconfValue);
+	    value = gconf_value_get_string (gconfValue);
 	    if (value)
 	    {
 		ccsSetString (setting, value, TRUE);
@@ -571,7 +571,7 @@ readOption (CCSSetting * setting)
     case TypeMatch:
 	{
 	    const char * value;
-	    value = mateconf_value_get_string (mateconfValue);
+	    value = gconf_value_get_string (gconfValue);
 	    if (value)
 	    {
 		ccsSetMatch (setting, value, TRUE);
@@ -582,7 +582,7 @@ readOption (CCSSetting * setting)
     case TypeInt:
 	{
 	    int value;
-	    value = mateconf_value_get_int (mateconfValue);
+	    value = gconf_value_get_int (gconfValue);
 
 	    ccsSetInt (setting, value, TRUE);
 	    ret = TRUE;
@@ -591,7 +591,7 @@ readOption (CCSSetting * setting)
     case TypeBool:
 	{
 	    gboolean value;
-	    value = mateconf_value_get_bool (mateconfValue);
+	    value = gconf_value_get_bool (gconfValue);
 
 	    ccsSetBool (setting, value ? TRUE : FALSE, TRUE);
 	    ret = TRUE;
@@ -600,7 +600,7 @@ readOption (CCSSetting * setting)
     case TypeFloat:
 	{
 	    double value;
-	    value = mateconf_value_get_float (mateconfValue);
+	    value = gconf_value_get_float (gconfValue);
 
 	    ccsSetFloat (setting, (float)value, TRUE);
     	    ret = TRUE;
@@ -610,7 +610,7 @@ readOption (CCSSetting * setting)
 	{
 	    const char           *value;
 	    CCSSettingColorValue color;
-	    value = mateconf_value_get_string (mateconfValue);
+	    value = gconf_value_get_string (gconfValue);
 
 	    if (value && ccsStringToColor (value, &color))
 	    {
@@ -623,7 +623,7 @@ readOption (CCSSetting * setting)
 	{
 	    const char         *value;
 	    CCSSettingKeyValue key;
-	    value = mateconf_value_get_string (mateconfValue);
+	    value = gconf_value_get_string (gconfValue);
 
 	    if (value && ccsStringToKeyBinding (value, &key))
 	    {
@@ -636,7 +636,7 @@ readOption (CCSSetting * setting)
 	{
 	    const char            *value;
 	    CCSSettingButtonValue button;
-	    value = mateconf_value_get_string (mateconfValue);
+	    value = gconf_value_get_string (gconfValue);
 
 	    if (value && ccsStringToButtonBinding (value, &button))
 	    {
@@ -648,7 +648,7 @@ readOption (CCSSetting * setting)
     case TypeEdge:
 	{
 	    const char   *value;
-	    value = mateconf_value_get_string (mateconfValue);
+	    value = gconf_value_get_string (gconfValue);
 
 	    if (value)
 	    {
@@ -662,14 +662,14 @@ readOption (CCSSetting * setting)
     case TypeBell:
 	{
 	    gboolean value;
-	    value = mateconf_value_get_bool (mateconfValue);
+	    value = gconf_value_get_bool (gconfValue);
 
 	    ccsSetBell (setting, value ? TRUE : FALSE, TRUE);
 	    ret = TRUE;
 	}
 	break;
     case TypeList:
-	ret = readListValue (setting, mateconfValue);
+	ret = readListValue (setting, gconfValue);
 	break;
     default:
 	ccsWarning ("Attempt to read unsupported setting type %d from path %s!",
@@ -677,8 +677,8 @@ readOption (CCSSetting * setting)
 	break;
     }
 
-    if (mateconfValue)
-	mateconf_value_free (mateconfValue);
+    if (gconfValue)
+	gconf_value_free (gconfValue);
 
     return ret;
 }
@@ -688,7 +688,7 @@ writeListValue (CCSSetting *setting,
 		char       *pathName)
 {
     GSList              *valueList = NULL;
-    MateConfValueType      valueType;
+    GConfValueType      valueType;
     Bool                freeItems = FALSE;
     CCSSettingValueList list;
     gpointer            data;
@@ -706,7 +706,7 @@ writeListValue (CCSSetting *setting,
 		valueList = g_slist_append (valueList, data);
 		list = list->next;
 	    }
-	    valueType = MATECONF_VALUE_BOOL;
+	    valueType = GCONF_VALUE_BOOL;
 	}
 	break;
     case TypeInt:
@@ -717,7 +717,7 @@ writeListValue (CCSSetting *setting,
 		valueList = g_slist_append(valueList, data);
 		list = list->next;
     	    }
-	    valueType = MATECONF_VALUE_INT;
+	    valueType = GCONF_VALUE_INT;
 	}
 	break;
     case TypeFloat:
@@ -734,7 +734,7 @@ writeListValue (CCSSetting *setting,
 		list = list->next;
 	    }
 	    freeItems = TRUE;
-	    valueType = MATECONF_VALUE_FLOAT;
+	    valueType = GCONF_VALUE_FLOAT;
 	}
 	break;
     case TypeString:
@@ -745,7 +745,7 @@ writeListValue (CCSSetting *setting,
 		   			   list->data->value.asString);
 		list = list->next;
 	    }
-	    valueType = MATECONF_VALUE_STRING;
+	    valueType = GCONF_VALUE_STRING;
 	}
 	break;
     case TypeMatch:
@@ -756,7 +756,7 @@ writeListValue (CCSSetting *setting,
 		   			   list->data->value.asMatch);
 		list = list->next;
 	    }
-	    valueType = MATECONF_VALUE_STRING;
+	    valueType = GCONF_VALUE_STRING;
 	}
 	break;
     case TypeColor:
@@ -769,19 +769,19 @@ writeListValue (CCSSetting *setting,
 		list = list->next;
 	    }
 	    freeItems = TRUE;
-	    valueType = MATECONF_VALUE_STRING;
+	    valueType = GCONF_VALUE_STRING;
 	}
 	break;
     default:
 	ccsWarning ("Attempt to write unsupported list type %d at path %s!",
 	       ccsSettingGetInfo (setting)->forList.listType, pathName);
-	valueType = MATECONF_VALUE_INVALID;
+	valueType = GCONF_VALUE_INVALID;
 	break;
     }
 
-    if (valueType != MATECONF_VALUE_INVALID)
+    if (valueType != GCONF_VALUE_INVALID)
     {
-	mateconf_client_set_list (client, pathName, valueType, valueList, NULL);
+	gconf_client_set_list (client, pathName, valueType, valueList, NULL);
 
 	if (freeItems)
 	{
@@ -809,8 +809,8 @@ resetOptionToDefault (CCSSetting * setting)
     KEYNAME (ccsContextGetScreenNum (ccsPluginGetContext (ccsSettingGetParent (setting))));
     PATHNAME;
 
-    mateconf_client_recursive_unset (client, pathName, 0, NULL);
-    mateconf_client_suggest_sync (client, NULL);
+    gconf_client_recursive_unset (client, pathName, 0, NULL);
+    gconf_client_suggest_sync (client, NULL);
 }
 
 static void
@@ -825,34 +825,34 @@ writeOption (CCSSetting * setting)
 	{
 	    const char *value;
 	    if (ccsGetString (setting, &value))
-		mateconf_client_set_string (client, pathName, value, NULL);
+		gconf_client_set_string (client, pathName, value, NULL);
 	}
 	break;
     case TypeMatch:
 	{
 	    const char *value;
 	    if (ccsGetMatch (setting, &value))
-		mateconf_client_set_string (client, pathName, value, NULL);
+		gconf_client_set_string (client, pathName, value, NULL);
 	}
     case TypeFloat:
 	{
 	    float value;
 	    if (ccsGetFloat (setting, &value))
-		mateconf_client_set_float (client, pathName, value, NULL);
+		gconf_client_set_float (client, pathName, value, NULL);
 	}
 	break;
     case TypeInt:
 	{
 	    int value;
 	    if (ccsGetInt (setting, &value))
-		mateconf_client_set_int (client, pathName, value, NULL);
+		gconf_client_set_int (client, pathName, value, NULL);
 	}
 	break;
     case TypeBool:
 	{
 	    Bool value;
 	    if (ccsGetBool (setting, &value))
-		mateconf_client_set_bool (client, pathName, value, NULL);
+		gconf_client_set_bool (client, pathName, value, NULL);
 	}
 	break;
     case TypeColor:
@@ -867,7 +867,7 @@ writeOption (CCSSetting * setting)
 	    if (!colString)
 		break;
 
-	    mateconf_client_set_string (client, pathName, colString, NULL);
+	    gconf_client_set_string (client, pathName, colString, NULL);
 	    free (colString);
 	}
 	break;
@@ -883,7 +883,7 @@ writeOption (CCSSetting * setting)
 	    if (!keyString)
 		break;
 
-	    mateconf_client_set_string (client, pathName, keyString, NULL);
+	    gconf_client_set_string (client, pathName, keyString, NULL);
 	    free (keyString);
 	}
 	break;
@@ -899,7 +899,7 @@ writeOption (CCSSetting * setting)
 	    if (!buttonString)
 		break;
 
-	    mateconf_client_set_string (client, pathName, buttonString, NULL);
+	    gconf_client_set_string (client, pathName, buttonString, NULL);
 	    free (buttonString);
 	}
 	break;
@@ -915,7 +915,7 @@ writeOption (CCSSetting * setting)
 	    if (!edgeString)
 		break;
 
-	    mateconf_client_set_string (client, pathName, edgeString, NULL);
+	    gconf_client_set_string (client, pathName, edgeString, NULL);
 	    free (edgeString);
 	}
 	break;
@@ -923,7 +923,7 @@ writeOption (CCSSetting * setting)
 	{
 	    Bool value;
 	    if (ccsGetBell (setting, &value))
-		mateconf_client_set_bool (client, pathName, value, NULL);
+		gconf_client_set_bool (client, pathName, value, NULL);
 	}
 	break;
     case TypeList:
@@ -939,52 +939,52 @@ writeOption (CCSSetting * setting)
 static void
 updateCurrentProfileName (char *profile)
 {
-    MateConfSchema *schema;
-    MateConfValue  *value;
+    GConfSchema *schema;
+    GConfValue  *value;
     
-    schema = mateconf_schema_new ();
+    schema = gconf_schema_new ();
     if (!schema)
 	return;
 
-    value = mateconf_value_new (MATECONF_VALUE_STRING);
+    value = gconf_value_new (GCONF_VALUE_STRING);
     if (!value)
     {
-	mateconf_schema_free (schema);
+	gconf_schema_free (schema);
 	return;
     }
 
-    mateconf_schema_set_type (schema, MATECONF_VALUE_STRING);
-    mateconf_schema_set_locale (schema, "C");
-    mateconf_schema_set_short_desc (schema, "Current profile");
-    mateconf_schema_set_long_desc (schema, "Current profile of mateconf backend");
-    mateconf_schema_set_owner (schema, "compizconfig-1");
-    mateconf_value_set_string (value, profile);
-    mateconf_schema_set_default_value (schema, value);
+    gconf_schema_set_type (schema, GCONF_VALUE_STRING);
+    gconf_schema_set_locale (schema, "C");
+    gconf_schema_set_short_desc (schema, "Current profile");
+    gconf_schema_set_long_desc (schema, "Current profile of gconf backend");
+    gconf_schema_set_owner (schema, "compizconfig-1");
+    gconf_value_set_string (value, profile);
+    gconf_schema_set_default_value (schema, value);
 
-    mateconf_client_set_schema (client, COMPIZCONFIG "/current_profile",
+    gconf_client_set_schema (client, COMPIZCONFIG "/current_profile",
 			     schema, NULL);
 
-    mateconf_schema_free (schema);
-    mateconf_value_free (value);
+    gconf_schema_free (schema);
+    gconf_value_free (value);
 }
 
 static char*
 getCurrentProfileName (void)
 {
-    MateConfSchema *schema = NULL;
+    GConfSchema *schema = NULL;
 
-    schema = mateconf_client_get_schema (client,
+    schema = gconf_client_get_schema (client,
     				      COMPIZCONFIG "/current_profile", NULL);
 
     if (schema)
     {
-	MateConfValue *value;
+	GConfValue *value;
 	char       *ret = NULL;
 
-	value = mateconf_schema_get_default_value (schema);
+	value = gconf_schema_get_default_value (schema);
 	if (value)
-	    ret = strdup (mateconf_value_get_string (value));
-	mateconf_schema_free (schema);
+	    ret = strdup (gconf_value_get_string (value));
+	gconf_schema_free (schema);
 
 	return ret;
     }
@@ -1027,7 +1027,7 @@ checkProfile (CCSBackend *backend,
 	}
 
 	/* reset /apps/compiz-1 tree */
-	mateconf_client_recursive_unset (client, COMPIZ, 0, NULL);
+	gconf_client_recursive_unset (client, COMPIZ, 0, NULL);
 
 	/* copy new profile tree to /apps/compiz-1 */
 	if (asprintf (&pathName, "%s/%s", PROFILEPATH, currentProfile) == -1)
@@ -1068,7 +1068,7 @@ initBackend (CCSBackend *backend, CCSContext * context)
 {
     g_type_init ();
 
-    conf = mateconf_engine_get_default ();
+    conf = gconf_engine_get_default ();
     initClient (backend, context);
 
     currentProfile = getCurrentProfileName ();
@@ -1079,7 +1079,7 @@ initBackend (CCSBackend *backend, CCSContext * context)
 static Bool
 finiBackend (CCSBackend *backend)
 {
-    mateconf_client_clear_cache (client);
+    gconf_client_clear_cache (client);
     finiClient ();
 
     if (currentProfile)
@@ -1088,7 +1088,7 @@ finiBackend (CCSBackend *backend)
 	currentProfile = NULL;
     }
 
-    mateconf_engine_unref (conf);
+    gconf_engine_unref (conf);
     conf = NULL;
 
     return TRUE;
@@ -1173,8 +1173,8 @@ getExistingProfiles (CCSBackend *backend, CCSContext *context)
     CCSStringList ret = NULL;
     char          *name;
 
-    mateconf_client_suggest_sync (client, NULL);
-    data = mateconf_client_all_dirs (client, PROFILEPATH, NULL);
+    gconf_client_suggest_sync (client, NULL);
+    data = gconf_client_all_dirs (client, PROFILEPATH, NULL);
 
     for (tmp = data; tmp; tmp = g_slist_next (tmp))
     {
@@ -1216,23 +1216,23 @@ deleteProfile (CCSBackend *backend,
 
     snprintf (path, BUFSIZE, "%s/%s", PROFILEPATH, profile);
 
-    if (mateconf_client_dir_exists (client, path, NULL))
+    if (gconf_client_dir_exists (client, path, NULL))
     {
 	status =
-	    mateconf_client_recursive_unset (client, path,
-	   				  MATECONF_UNSET_INCLUDING_SCHEMA_NAMES,
+	    gconf_client_recursive_unset (client, path,
+	   				  GCONF_UNSET_INCLUDING_SCHEMA_NAMES,
 					  NULL);
-	mateconf_client_suggest_sync (client, NULL);
+	gconf_client_suggest_sync (client, NULL);
     }
 
     return status;
 }
 
-const CCSBackendInfo mateconfBackendInfo =
+const CCSBackendInfo gconfBackendInfo =
 {
-    "mateconf",
-    "MateConf Configuration Backend",
-    "MateConf Configuration Backend for libccs",
+    "gconf",
+    "GConf Configuration Backend",
+    "GConf Configuration Backend for libccs",
     TRUE,
     TRUE,
     1
@@ -1241,10 +1241,10 @@ const CCSBackendInfo mateconfBackendInfo =
 static const CCSBackendInfo *
 getInfo (CCSBackend *backend)
 {
-    return &mateconfBackendInfo;
+    return &gconfBackendInfo;
 }
 
-static CCSBackendInterface mateconfVTable = {
+static CCSBackendInterface gconfVTable = {
     getInfo,
     processEvents,
     initBackend,
@@ -1265,6 +1265,6 @@ static CCSBackendInterface mateconfVTable = {
 CCSBackendInterface *
 getBackendInfo (void)
 {
-    return &mateconfVTable;
+    return &gconfVTable;
 }
 
